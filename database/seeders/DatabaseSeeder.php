@@ -45,7 +45,7 @@ class DatabaseSeeder extends Seeder
             // ReservationSeeder::class,
             DesireToBuySeeder::class,
             PurchaseMethodSeeder::class,
-            // CustomerSeeder::class,
+            CustomerSeeder::class,
             OrderStatusSeeder::class,
             // OrderSeeder::class,
             OrderNoteSeeder::class,
