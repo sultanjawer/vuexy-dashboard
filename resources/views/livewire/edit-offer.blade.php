@@ -932,12 +932,13 @@
                     @this.set('mediators_ids', ids);
 
                     console.log(ids);
+                    console.log(typeof(ids));
 
                     if (is_direct) {
                         $('.mediators').hide(ids);
                     } else {
-                        var mediators_ids = JSON.parse(ids);
-                        $('.js-select2-multi').val(mediators_ids);
+                        // var mediators_ids = JSON.parse(ids);
+                        $('.js-select2-multi').val(ids);
                     }
                     // window.livewire.emit('setMediatorsIds');
                 });
