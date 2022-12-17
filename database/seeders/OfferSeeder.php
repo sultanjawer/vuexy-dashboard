@@ -27,17 +27,34 @@ class OfferSeeder extends Seeder
 
             $offer_code = ucwords($branch->code) . '-' . $offer_counts . '-USR1';
 
-            DB::table('offers')->insert([
-                'offer_code' => $offer_code,
-                'real_estate_id' => $real_estate->id,
-                'offer_type_id' => random_int(1, 2),
-                'user_id' => 1,
-                'who_add' => 1,
-                'who_edit' => null,
-                'who_cancel' => null,
-                'mediators_ids' => json_encode([1, 2, 3, 4, 5]),
-                'booking_ids' => json_encode([]),
-            ]);
+            $offer_type_id = random_int(1, 2);
+            if ($offer_type_id == 1) {
+                DB::table('offers')->insert([
+                    'offer_code' => $offer_code,
+                    'real_estate_id' => $real_estate->id,
+                    'offer_type_id' => random_int(1, 2),
+                    'user_id' => 1,
+                    'who_add' => 1,
+                    'who_edit' => null,
+                    'who_cancel' => null,
+                    'mediators_ids' => json_encode([]),
+                    'booking_ids' => json_encode([]),
+                ]);
+            }
+
+            if ($offer_type_id == 2) {
+                DB::table('offers')->insert([
+                    'offer_code' => $offer_code,
+                    'real_estate_id' => $real_estate->id,
+                    'offer_type_id' => random_int(1, 2),
+                    'user_id' => 1,
+                    'who_add' => 1,
+                    'who_edit' => null,
+                    'who_cancel' => null,
+                    'mediators_ids' => json_encode([1, 2, 3, 4, 5]),
+                    'booking_ids' => json_encode([]),
+                ]);
+            }
 
             $offer_counts = $offer_counts + 1;
         }

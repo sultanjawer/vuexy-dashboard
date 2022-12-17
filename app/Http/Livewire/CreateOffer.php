@@ -59,7 +59,7 @@ class CreateOffer extends Component
     #Form Three
     public $yes = 'option1';
     public $no = '';
-    public $is_direct = false;
+    public $is_direct = true;
     public $mediators_ids = [];
 
     #Switching
@@ -119,7 +119,7 @@ class CreateOffer extends Component
         if ($propertyName == 'yes') {
             $this->yes = 'option1';
             $this->no = '';
-            $this->is_direct = false;
+            $this->is_direct = true;
             $this->emit('mediators-show', $this->is_direct);
         }
 
@@ -127,7 +127,7 @@ class CreateOffer extends Component
         if ($propertyName == 'no') {
             $this->yes = '';
             $this->no = 'option2';
-            $this->is_direct = true;
+            $this->is_direct = false;
             $this->emit('mediators-show', $this->is_direct);
         }
 
@@ -177,7 +177,7 @@ class CreateOffer extends Component
 
         foreach ($fields as $field) {
             if ($field == "mediators_ids") {
-                if ($this->is_direct) {
+                if (!$this->is_direct) {
                     $validation[$field] = ['required'];
                 }
                 continue;
@@ -241,14 +241,13 @@ class CreateOffer extends Component
         $this->annual_income = (int)str_replace(',', '', $this->annual_income);
 
         $data = $this->validate();
-
         if ($this->is_direct) {
-            $data['is_direct'] = false;
+            $data['is_direct'] = true;
             $data['mediators_ids'] = [];
         }
 
         if (!$this->is_direct) {
-            $data['is_direct'] = true;
+            $data['is_direct'] = false;
         }
 
         $offer = $offerService->store($data);

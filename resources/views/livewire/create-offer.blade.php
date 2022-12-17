@@ -340,7 +340,6 @@
                                                     @enderror
                                                 </div>
 
-
                                                 <div class="col-md-6 mb-1 direction-div-hide" wire:ignore>
                                                     <label class="form-label">الاتجاه</label>
                                                     <select class="js-select2-direction select2 form-select"
@@ -850,7 +849,6 @@
                         $(".notes").show();
                         $(".branch-div-hide").show();
                         $(".real-estate-age").show();
-
                     }
 
                     if (property_type_id == 5) {
@@ -916,16 +914,25 @@
                 });
 
                 window.livewire.on('mediators-show', (is_direct) => {
+
                     if (is_direct) {
+                        $(".mediators").hide();
+                    }
+
+                    if (!is_direct) {
                         $(".mediators").show();
                         $('.js-select2-multi').select2({
                             placeholder: 'اختار الوسطاء',
                             closeOnSelect: true
                         });
-                    } else {
-                        $(".mediators").hide();
                     }
+
                 });
+
+
+
+
+
 
             });
         </script>

@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Http\Controllers\Services\OfferService;
+use App\Models\Mediator;
 use App\Models\Offer;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
@@ -27,7 +28,7 @@ class EditOffer extends Component
     public $notes = '';
 
     #Form Two
-    public $property_type_id = 1; #Type of real Estate [land, duplex, comdimiuom, flat, chalet]
+    public $property_type_id; #Type of real Estate [land, duplex, comdimiuom, flat, chalet]
     public $space;
 
     public $price_by_meter = 0;
@@ -103,7 +104,7 @@ class EditOffer extends Component
         $this->building_status_id = $offer->realEstate->building_status_id;
         $this->construction_delivery_id = $offer->realEstate->construction_delivery_id;
         $this->yes = $offer->offer_type_id == 1 ? $this->yes = 'option1' : $this->no = 'option2';
-        $this->is_direct = $offer->offer_type_id == 1 ? false : true;
+        $this->is_direct = $offer->offer_type_id == 1 ? true : false;
         $this->mediators_ids = $offer->mediators_ids;
     }
 
@@ -118,12 +119,13 @@ class EditOffer extends Component
         }
 
         if ($form == 'second') {
+            $this->emit('set-form', $this->property_type_id);
             $this->second = 'active';
         }
 
         if ($form == 'third') {
-            $this->emit('mediatorsIds', $this->mediators_ids, $this->is_direct);
             $this->third = 'active';
+            $this->emit('mediatorsIds', $this->mediators_ids, $this->is_direct);
         }
     }
 
@@ -154,15 +156,17 @@ class EditOffer extends Component
         if ($propertyName == 'yes') {
             $this->yes = 'option1';
             $this->no = '';
-            $this->is_direct = false;
+            $this->is_direct = true;
             $this->emit('mediators-show', $this->is_direct);
+            $this->emit('mediatorsIds', $this->mediators_ids, $this->is_direct);
         }
 
         if ($propertyName == 'no') {
             $this->yes = '';
             $this->no = 'option2';
-            $this->is_direct = true;
+            $this->is_direct = false;
             $this->emit('mediators-show', $this->is_direct);
+            $this->emit('mediatorsIds', $this->mediators_ids, $this->is_direct);
         }
 
         if ($propertyName == "space" || $propertyName == 'price_by_meter' || $propertyName == "price" || $propertyName == "annual_income") {
@@ -209,7 +213,7 @@ class EditOffer extends Component
 
         foreach ($fields as $field) {
             if ($field == "mediators_ids") {
-                if ($this->is_direct) {
+                if (!$this->is_direct) {
                     $validation[$field] = ['required'];
                 }
                 continue;
@@ -290,13 +294,14 @@ class EditOffer extends Component
         $data = $this->validate();
 
         if ($this->is_direct) {
-            $data['is_direct'] = false;
+            $data['is_direct'] = true;
             $data['mediators_ids'] = [];
         }
 
         if (!$this->is_direct) {
-            $data['is_direct'] = true;
+            $data['is_direct'] = false;
         }
+
 
         $offer = $offerService->update($this->offer, $data);
 

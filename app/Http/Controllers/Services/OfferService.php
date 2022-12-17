@@ -14,7 +14,7 @@ class OfferService extends Controller
         $real_estate = $this->createRealEstate($data);
 
         $offer = Offer::create([
-            'mediators_ids' => $data['mediators_ids'], #
+            'mediators_ids' => json_encode($data['mediators_ids']), #
             'offer_type_id' => $data['is_direct'] ? 1 : 2, #
             'user_id' => auth()->id(),
             'who_add' => auth()->id(),
@@ -196,7 +196,7 @@ class OfferService extends Controller
         $real_estate = RealEstate::find($offer->realEstate->id);
 
         $offer->update([
-            'mediators_ids' => $data['mediators_ids'], #
+            'mediators_ids' => json_encode($data['mediators_ids']), #
             'offer_type_id' => $data['is_direct'] ? 1 : 2, #
             // 'user_id' => auth()->id(),
             // 'who_add' => auth()->id(),

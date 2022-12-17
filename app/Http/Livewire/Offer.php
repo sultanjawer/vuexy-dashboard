@@ -22,6 +22,11 @@ class Offer extends Component
     public $in_filters = [];
 
 
+    public function mount()
+    {
+        $this->resetPage();
+    }
+
     public function getDirectOffers()
     {
 

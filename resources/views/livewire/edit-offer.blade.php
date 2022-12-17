@@ -621,7 +621,7 @@
                                                             class="js-select2-multi select2 form-select select2-hidden-accessible"
                                                             id="select2-multiple" multiple="multiple"
                                                             data-select2-id="select2-multiple" tabindex="-1"
-                                                            aria-hidden="true">
+                                                            aria-hidden="true" wire:ignore.self>
                                                             <optgroup label="الوسطاء" data-select2-id="170">
                                                                 @foreach (getMediators() as $mediator)
                                                                     <option value="{{ $mediator->id }}">
@@ -917,7 +917,7 @@
                 });
 
                 window.livewire.on('mediators-show', (is_direct) => {
-                    if (is_direct) {
+                    if (!is_direct) {
                         $(".mediators").show();
                         $('.js-select2-multi').select2({
                             placeholder: 'اختار الوسطاء',
@@ -930,13 +930,103 @@
 
                 window.livewire.on('mediatorsIds', (ids, is_direct) => {
                     @this.set('mediators_ids', ids);
-                    $('.js-select2-multi').val(ids);
-                    if (!is_direct) {
-                        $('.mediators').hide(ids);
-                    }
 
+                    if (is_direct) {
+                        $('.mediators').hide(ids);
+                    } else {
+                        var mediators_ids = JSON.parse(ids);
+                        $('.js-select2-multi').val(mediators_ids);
+                    }
                     // window.livewire.emit('setMediatorsIds');
                 });
+
+                window.livewire.on('set-form', (property_type_id) => {
+                    console.log(property_type_id);
+
+                    // Hide All
+                    $(".price-by-meter").hide();
+                    $(".total-price").hide();
+                    $(".direction-div-hide").hide();
+                    $(".land-type-div-hide").hide();
+                    $(".licensed-div-hide").hide();
+                    $(".street-width-div-hide").hide();
+                    $(".character").hide();
+                    $(".interface-length-div-hide").hide();
+                    $(".condominium-extra").hide();
+                    $(".price").hide();
+                    $(".floor-number").hide();
+                    $(".notes").hide();
+                    $(".branch-div-hide").hide();
+                    $(".owner-ship-type").hide();
+                    $(".real-estate-age").hide();
+                    $(".building-type").hide();
+                    $(".building-status").hide();
+                    $(".construction-delivery").hide();
+
+                    if (property_type_id == 1) {
+                        $(".price-by-meter").show();
+                        $(".total-price").show();
+                        $(".direction-div-hide").show();
+                        $(".land-type-div-hide").show();
+                        $(".licensed-div-hide").show();
+                        $(".street-width-div-hide").show();
+                        $(".character").show();
+                        $(".interface-length-div-hide").show();
+                        $(".notes").show();
+                        $(".branch-div-hide").show();
+
+                    }
+
+                    if (property_type_id == 2) {
+                        $(".price-by-meter").show();
+                        $(".total-price").show();
+                        $(".direction-div-hide").show();
+                        $(".land-type-div-hide").show();
+                        $(".licensed-div-hide").show();
+                        $(".street-width-div-hide").show();
+                        $(".character").show();
+                        $(".interface-length-div-hide").show();
+                        $(".building-type").show();
+                        $(".building-status").show();
+                        $(".construction-delivery").show();
+                        $(".notes").show();
+                        $(".real-estate-age").show();
+                        $(".branch-div-hide").show();
+
+                    }
+
+                    if (property_type_id == 3) {
+                        $(".condominium-extra").show();
+                        $(".real-estate-age").show();
+                        $(".notes").show();
+                        $(".total-price").show();
+                        $(".branch-div-hide").show();
+
+                    }
+
+                    if (property_type_id == 4) {
+                        $(".price").show();
+                        $(".floor-number").show();
+                        $(".notes").show();
+                        $(".branch-div-hide").show();
+                        $(".real-estate-age").show();
+                    }
+
+                    if (property_type_id == 5) {
+                        $(".direction-div-hide").show();
+                        $(".street-width-div-hide").show();
+                        $(".notes").show();
+                        $(".owner-ship-type").show();
+                        $(".real-estate-age").show();
+                        $(".price").show();
+                        $(".branch-div-hide").show();
+                    }
+
+                    window.livewire.emit('setMediatorsIds');
+                });
+
+
+
             });
         </script>
     @endpush
