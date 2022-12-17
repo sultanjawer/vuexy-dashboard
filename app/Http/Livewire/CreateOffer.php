@@ -59,7 +59,7 @@ class CreateOffer extends Component
     #Form Three
     public $yes = 'option1';
     public $no = '';
-    public $is_direct = true;
+    public $is_direct = false;
     public $mediators_ids = [];
 
     #Switching
@@ -82,6 +82,7 @@ class CreateOffer extends Component
         }
 
         if ($form == 'third') {
+            $this->emit('mediators-show', $this->is_direct);
             $this->third = 'active';
         }
     }
