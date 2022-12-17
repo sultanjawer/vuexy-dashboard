@@ -118,7 +118,7 @@ class CreateOffer extends Component
         if ($propertyName == 'yes') {
             $this->yes = 'option1';
             $this->no = '';
-            $this->is_direct = true;
+            $this->is_direct = false;
             $this->emit('mediators-show', $this->is_direct);
         }
 
@@ -126,7 +126,7 @@ class CreateOffer extends Component
         if ($propertyName == 'no') {
             $this->yes = '';
             $this->no = 'option2';
-            $this->is_direct = false;
+            $this->is_direct = true;
             $this->emit('mediators-show', $this->is_direct);
         }
 
@@ -241,12 +241,12 @@ class CreateOffer extends Component
 
         $data = $this->validate();
 
-        if (!$this->is_direct) {
+        if ($this->is_direct) {
             $data['is_direct'] = false;
             $data['mediators_ids'] = [];
         }
 
-        if ($this->is_direct) {
+        if (!$this->is_direct) {
             $data['is_direct'] = true;
         }
 
