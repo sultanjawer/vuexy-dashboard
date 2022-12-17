@@ -931,6 +931,8 @@
                 window.livewire.on('mediatorsIds', (ids, is_direct) => {
                     @this.set('mediators_ids', ids);
 
+                    console.log(ids);
+
                     if (is_direct) {
                         $('.mediators').hide(ids);
                     } else {
@@ -1024,8 +1026,6 @@
 
                     window.livewire.emit('setMediatorsIds');
                 });
-
-
 
             });
         </script>
