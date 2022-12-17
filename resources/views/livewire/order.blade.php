@@ -3,6 +3,8 @@
     <section class="app-user-list">
         <section id="basic-datatable">
             <div class="row">
+
+
                 <div class="col-12">
                     <div class="card">
 
@@ -334,6 +336,7 @@
 
                                         </tbody>
                                     </table>
+
                                     @if (!$orders->count())
                                         <div class="d-flex justify-content-center">
                                             <h4 class="btn btn-danger w-75">
@@ -670,6 +673,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </section>
     </section>

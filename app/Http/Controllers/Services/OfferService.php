@@ -3,63 +3,319 @@
 namespace App\Http\Controllers\Services;
 
 use App\Http\Controllers\Controller;
+use App\Models\Branch;
 use App\Models\Offer;
-use Illuminate\Http\Request;
+use App\Models\RealEstate;
 
 class OfferService extends Controller
 {
-    protected $request;
-
-    public function __construct(Request $request)
+    public function store($data)
     {
-        $this->request = $request;
-    }
-
-    public function store()
-    {
-        $this->request->validate([
-            'city_id' => ['required', 'exists:cities,id'],
-            'neighborhood_id' => ['required', 'exists:neighborhoods,id'],
-            'offer_type_id' => ['required', 'exists:offer_types,id'],
-            'property_type_id' => ['required', 'exists:property_types,id'],
-            'property_id' => ['required', 'exists:propertys,id'],
-            'property_status_id' => ['required', 'exists:property_statuses,id'],
-            'price_type_id' => ['required', 'exists:price_types,id'],
-            'street_id' => ['required', 'exists:streets,id'],
-            'direction_id' => ['required', 'exists:directions,id'],
-            'land_type_id' => ['required', 'exists:land_types,id'],
-            'branch_id' => ['required', 'exists:branches,id'],
-            'user_id' => ['required', 'exists:users,id'],
-            'who_edit' => ['required', 'exists:users,id'],
-            'who_cancel' => ['required', 'exists:users,id'],
-            'land_number' => ['required', 'string'],
-            'block_number' => ['required', 'string'],
-            'mediators_ids' => ['required', 'array'],
-            'booking_ids' => ['required', 'array'],
-            'full_price' => ['required', 'string'],
-        ]);
-
+        $real_estate = $this->createRealEstate($data);
 
         $offer = Offer::create([
-            'city_id' => $this->request->city_id,
-            'neighborhood_id' => $this->request->neighborhood_id,
-            'offer_type_id' => $this->request->offer_type_id,
-            'property_type_id' => $this->request->property_type_id,
-            'property_id' => $this->request->property_id,
-            'property_status_id' => $this->request->property_status_id,
-            'price_type_id' => $this->request->price_type_id,
-            'street_id' => $this->request->street_id,
-            'direction_id' => $this->request->direction_id,
-            'land_type_id' => $this->request->land_type_id,
-            'branch_id' => $this->request->branch_id,
-            'user_id' => $this->request->user_id,
-            'who_edit' => $this->request->who_edit,
-            'who_cancel' => $this->request->who_cancel,
-            'land_number' => $this->request->land_number,
-            'block_number' => $this->request->block_number,
-            'mediators_ids' => $this->request->mediators_ids,
-            'booking_ids' => $this->request->booking_ids,
-            'full_price' => $this->request->full_price,
+            'mediators_ids' => $data['mediators_ids'], #
+            'offer_type_id' => $data['is_direct'] ? 1 : 2, #
+            'user_id' => auth()->id(),
+            'who_add' => auth()->id(),
+            'who_edit' => null,
+            'who_cancel' => null,
+            'booking_ids' => [], #
+            'real_estate_id' => $real_estate->id, #
         ]);
+
+        $branch =  Branch::find($real_estate->branch_id);
+        $offer_code = ucwords($branch->code) . '-' . $offer->id . '-USR' . auth()->id();
+        $offer->offer_code = $offer_code;
+        $offer->save();
+
+        return Offer::find($offer->id);
+    }
+
+    public function getRealEstateType($id)
+    {
+        if ($id == 1) {
+            return 'land';
+        }
+        if ($id == 2) {
+            return 'duplex';
+        }
+        if ($id == 3) {
+            return 'condominium';
+        }
+        if ($id == 4) {
+            return 'flat';
+        }
+        if ($id == 5) {
+            return 'chalet';
+        }
+    }
+
+    public function createRealEstate($data)
+    {
+        $real_estate_type = $this->getRealEstateType($data['property_type_id']);
+
+        if ($real_estate_type == 'land') {
+            return $this->createLand($data);
+        }
+
+        if ($real_estate_type == 'duplex') {
+            return $this->createDuplex($data);
+        }
+
+        if ($real_estate_type == 'condominium') {
+            return $this->createCondominium($data);
+        }
+
+        if ($real_estate_type == 'flat') {
+            return $this->createFlat($data);
+        }
+
+        if ($real_estate_type == 'chalet') {
+            return $this->createChalet($data);
+        }
+    }
+
+    public function createChalet($data)
+    {
+        return RealEstate::create([
+            'city_id' => $data['city_id'],
+            'neighborhood_id' => $data['neighborhood_id'],
+            'land_number' => $data['land_number'],
+            'block_number' => $data['block_number'],
+            'property_type_id' => $data['property_type_id'],
+            'property_status_id' => 1,
+            'branch_id' => $data['branch_id'],
+            'space' => $data['space'],
+            'notes' => $data['notes'],
+            'street_width_id' => $data['street_width_id'],
+            'direction_id' => $data['direction_id'],
+            'real_estate_type' => 'chalet',
+            'price' => $data['price'],
+            'owner_ship_type_id' => $data['owner_ship_type_id'],
+            'real_estate_age' => $data['real_estate_age']
+        ]);
+    }
+
+    public function createFlat($data)
+    {
+        return RealEstate::create([
+            'city_id' => $data['city_id'],
+            'neighborhood_id' => $data['neighborhood_id'],
+            'land_number' => $data['land_number'],
+            'block_number' => $data['block_number'],
+            'property_type_id' => $data['property_type_id'],
+            'property_status_id' => 1,
+            'space' => $data['space'],
+            'branch_id' => $data['branch_id'],
+            'notes' => $data['notes'],
+            'real_estate_type' => 'flat',
+            'floor_number' => $data['floor_number'],
+            'price' => $data['price'],
+            'real_estate_age' => $data['real_estate_age'],
+        ]);
+    }
+
+    public function createCondominium($data)
+    {
+        return RealEstate::create([
+            'city_id' => $data['city_id'],
+            'neighborhood_id' => $data['neighborhood_id'],
+            'land_number' => $data['land_number'],
+            'block_number' => $data['block_number'],
+            'property_type_id' => $data['property_type_id'],
+            'property_status_id' => 1,
+            'space' => $data['space'],
+            'total_price' => $data['total_price'],
+            'notes' => $data['notes'],
+            'branch_id' => $data['branch_id'],
+            'real_estate_type' => 'condominium',
+            'floors_number' => $data['floors_number'],
+            'flats_number' => $data['flats_number'],
+            'stores_number' => $data['stores_number'],
+            'flat_rooms_number' => $data['flat_rooms_number'],
+            'annual_income' => $data['annual_income'],
+            'real_estate_age' => $data['real_estate_age'],
+        ]);
+    }
+
+    public function createDuplex($data)
+    {
+        return RealEstate::create([
+            'city_id' => $data['city_id'],
+            'neighborhood_id' => $data['neighborhood_id'],
+            'land_number' => $data['land_number'],
+            'block_number' => $data['block_number'],
+            'property_type_id' => $data['property_type_id'],
+            'property_status_id' => 1,
+            'space' => $data['space'],
+            'street_width_id' => $data['street_width_id'],
+            'direction_id' => $data['direction_id'],
+            'land_type_id' => $data['land_type_id'],
+            'licensed_id' => $data['licensed_id'],
+            'price_by_meter' => $data['price_by_meter'],
+            'total_price' => $data['total_price'],
+            'real_estate_type' => 'duplex',
+            'notes' => $data['notes'],
+            'branch_id' => $data['branch_id'],
+            'character' => $data['character'],
+            'interface_length_id' => $data['interface_length_id'],
+            'building_type_id' => $data['building_type_id'],
+            'building_status_id' => $data['building_status_id'],
+            'construction_delivery_id' => $data['construction_delivery_id'],
+            'real_estate_age' => $data['real_estate_age']
+        ]);
+    }
+
+    public function createLand($data)
+    {
+        return RealEstate::create([
+            'city_id' => $data['city_id'],
+            'neighborhood_id' => $data['neighborhood_id'],
+            'land_number' => $data['land_number'],
+            'block_number' => $data['block_number'],
+            'property_type_id' => $data['property_type_id'],
+            'property_status_id' => 1,
+            'space' => $data['space'],
+            'price_by_meter' => $data['price_by_meter'],
+            'total_price' => $data['total_price'],
+            'direction_id' => $data['direction_id'],
+            'land_type_id' => $data['land_type_id'],
+            'licensed_id' => $data['licensed_id'],
+            'street_width_id' => $data['street_width_id'],
+            'branch_id' => $data['branch_id'],
+            'real_estate_type' => 'land',
+            'notes' => $data['notes'],
+            'character' => $data['character'],
+            'interface_length_id' => $data['interface_length_id'],
+        ]);
+    }
+
+    public function update($offer, $data)
+    {
+        $real_estate = RealEstate::find($offer->realEstate->id);
+
+        $offer->update([
+            'mediators_ids' => $data['mediators_ids'], #
+            'offer_type_id' => $data['is_direct'] ? 1 : 2, #
+            // 'user_id' => auth()->id(),
+            // 'who_add' => auth()->id(),
+            'who_edit' => auth()->id(),
+            // 'who_cancel' => null,
+            // 'booking_ids' => [], #
+            // 'real_estate_id' => $real_estate->id, #
+        ]);
+
+        if ($real_estate->property_type_id == 1) {
+            $real_estate->update([
+                'city_id' => $data['city_id'],
+                'neighborhood_id' => $data['neighborhood_id'],
+                'land_number' => $data['land_number'],
+                'block_number' => $data['block_number'],
+                // 'property_type_id' => $data['property_type_id'],
+                'property_status_id' => 1,
+                'space' => $data['space'],
+                'price_by_meter' => $data['price_by_meter'],
+                'total_price' => $data['total_price'],
+                'direction_id' => $data['direction_id'],
+                'land_type_id' => $data['land_type_id'],
+                'licensed_id' => $data['licensed_id'],
+                'street_width_id' => $data['street_width_id'],
+                'branch_id' => $data['branch_id'],
+                'real_estate_type' => 'land',
+                'notes' => $data['notes'],
+                'character' => $data['character'],
+                'interface_length_id' => $data['interface_length_id'],
+            ]);
+        }
+
+        if ($real_estate->property_type_id == 2) {
+            $real_estate->update([
+                'city_id' => $data['city_id'],
+                'neighborhood_id' => $data['neighborhood_id'],
+                'land_number' => $data['land_number'],
+                'block_number' => $data['block_number'],
+                // 'property_type_id' => $data['property_type_id'],
+                'property_status_id' => 1,
+                'space' => $data['space'],
+                'street_width_id' => $data['street_width_id'],
+                'direction_id' => $data['direction_id'],
+                'land_type_id' => $data['land_type_id'],
+                'licensed_id' => $data['licensed_id'],
+                'price_by_meter' => $data['price_by_meter'],
+                'total_price' => $data['total_price'],
+                // 'real_estate_type' => 'duplex',
+                'notes' => $data['notes'],
+                'branch_id' => $data['branch_id'],
+                'character' => $data['character'],
+                'interface_length_id' => $data['interface_length_id'],
+                'building_type_id' => $data['building_type_id'],
+                'building_status_id' => $data['building_status_id'],
+                'construction_delivery_id' => $data['construction_delivery_id'],
+                'real_estate_age' => $data['real_estate_age']
+            ]);
+        }
+
+        if ($real_estate->property_type_id == 3) {
+            $real_estate->update([
+                'city_id' => $data['city_id'],
+                'neighborhood_id' => $data['neighborhood_id'],
+                'land_number' => $data['land_number'],
+                'block_number' => $data['block_number'],
+                // 'property_type_id' => $data['property_type_id'],
+                'property_status_id' => 1,
+                'space' => $data['space'],
+                'total_price' => $data['total_price'],
+                'notes' => $data['notes'],
+                'branch_id' => $data['branch_id'],
+                // 'real_estate_type' => 'condominium',
+                'floors_number' => $data['floors_number'],
+                'flats_number' => $data['flats_number'],
+                'stores_number' => $data['stores_number'],
+                'flat_rooms_number' => $data['flat_rooms_number'],
+                'annual_income' => $data['annual_income'],
+                'real_estate_age' => $data['real_estate_age'],
+            ]);
+        }
+
+        if ($real_estate->property_type_id == 4) {
+            $real_estate->update([
+                'city_id' => $data['city_id'],
+                'neighborhood_id' => $data['neighborhood_id'],
+                'land_number' => $data['land_number'],
+                'block_number' => $data['block_number'],
+                // 'property_type_id' => $data['property_type_id'],
+                'property_status_id' => 1,
+                'space' => $data['space'],
+                'branch_id' => $data['branch_id'],
+                'notes' => $data['notes'],
+                // 'real_estate_type' => 'flat',
+                'floor_number' => $data['floor_number'],
+                'price' => $data['price'],
+                'real_estate_age' => $data['real_estate_age'],
+            ]);
+        }
+
+        if ($real_estate->property_type_id == 5) {
+            $real_estate->update([
+                'city_id' => $data['city_id'],
+                'neighborhood_id' => $data['neighborhood_id'],
+                'land_number' => $data['land_number'],
+                'block_number' => $data['block_number'],
+                // 'property_type_id' => $data['property_type_id'],
+                'property_status_id' => 1,
+                'branch_id' => $data['branch_id'],
+                'space' => $data['space'],
+                'notes' => $data['notes'],
+                'street_width_id' => $data['street_width_id'],
+                'direction_id' => $data['direction_id'],
+                // 'real_estate_type' => 'chalet',
+                'price' => $data['price'],
+                'owner_ship_type_id' => $data['owner_ship_type_id'],
+                'real_estate_age' => $data['real_estate_age']
+            ]);
+        }
+
+        return true;
     }
 }

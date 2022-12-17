@@ -12,6 +12,7 @@ use App\Models\LandType;
 use App\Models\Licensed;
 use App\Models\Mediator;
 use App\Models\Neighborhood;
+use App\Models\Offer;
 use App\Models\Order;
 use App\Models\PropertyType;
 use App\Models\Street;
@@ -174,5 +175,26 @@ class HomeController extends Controller
     public function resetPassword()
     {
         return $this->userService->resetPassword();
+    }
+
+    public function offers()
+    {
+        return view('admin-panel.offer.offers');
+    }
+
+    public function createOffer()
+    {
+        return view('admin-panel.offer.create-offer');
+    }
+
+    public function updateOffer(Offer $offer)
+    {
+        return view('admin-panel.offer.update-offer', ['offer' => $offer]);
+    }
+
+
+    public function offer(Offer $offer)
+    {
+        return view('admin-panel.offer.offer-view', ['offer' => $offer]);
     }
 }

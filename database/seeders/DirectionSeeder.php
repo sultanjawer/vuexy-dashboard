@@ -16,9 +16,10 @@ class DirectionSeeder extends Seeder
     public function run()
     {
         $directions = [
-            'Street 1',
-            'Street 2',
-            'Street 3'
+            'شمال',
+            'جنوب',
+            'غرب',
+            'شرق',
         ];
 
         foreach ($directions as $direction) {

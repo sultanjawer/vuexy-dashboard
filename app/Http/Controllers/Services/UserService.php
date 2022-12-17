@@ -134,7 +134,6 @@ class UserService extends Controller
         ]);
 
         $permissions = $data['group_permissions'];
-
         $user = $this->setPermissions($user, $permissions);
 
         $user->branches()->sync([]);
@@ -151,6 +150,7 @@ class UserService extends Controller
     {
         $user->permissions()->sync([]);
         $user = User::find($user->id);
+
         foreach ($selected_group as $name) {
             $permission = Permission::where('name', $name)->first();
             if (!$user->permissions->contains($permission->id)) {

@@ -26,6 +26,11 @@ class Neighborhood extends Model
         return $this->belongsTo(City::class, 'city_id', 'id');
     }
 
+    public function realEstate()
+    {
+        return $this->belongsTo(RealEstate::class, 'neighborhood_id', 'id');
+    }
+
     public function scopeData($query)
     {
         return $query->select([

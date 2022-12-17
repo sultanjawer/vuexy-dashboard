@@ -18,6 +18,11 @@ class PropertyStatus extends Model
         return $this->hasMany(Offer::class, 'property_status_id', 'id');
     }
 
+    public function realEstate()
+    {
+        return $this->belongsTo(RealEstate::class, 'property_status_id', 'id');
+    }
+
     public function scopeData($query)
     {
         return $query->select([
@@ -25,5 +30,4 @@ class PropertyStatus extends Model
             'name',
         ]);
     }
-
 }

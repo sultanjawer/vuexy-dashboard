@@ -13,6 +13,11 @@ class Licensed extends Model
         'name'
     ];
 
+    public function realEstate()
+    {
+        return $this->belongsTo(RealEstate::class, 'land_type_id', 'id');
+    }
+
     public function scopeData($query)
     {
         return $query->select([

@@ -17,10 +17,11 @@ class PropertyTypeSeeder extends Seeder
     {
         $property_types = [
             'ارض',
-            'فيلا',
+            'دبلكس',
+            'عمارة',
             'شقة',
             'شاليه',
-            'عمارة'
+            // 'فيلا',
         ];
 
         foreach ($property_types as $property_type) {

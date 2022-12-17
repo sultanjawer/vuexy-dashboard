@@ -1,22 +1,29 @@
 <?php
 
 use App\Models\Branch;
+use App\Models\BuildingStatus;
+use App\Models\BuildingType;
 use App\Models\City;
+use App\Models\ConstructionDelivery;
 use App\Models\Customer;
 use App\Models\DesireToBuy;
 use App\Models\Direction;
+use App\Models\InterfaceLength;
 use App\Models\LandType;
 use App\Models\Licensed;
+use App\Models\Mediator;
 use App\Models\Neighborhood;
 use App\Models\OfferType;
 use App\Models\Order;
 use App\Models\OrderNoteStatuse;
 use App\Models\OrderStatus;
+use App\Models\OwnerShipType;
 use App\Models\PriceType;
 use App\Models\PropertyStatus;
 use App\Models\PropertyType;
 use App\Models\PurchaseMethod;
 use App\Models\Street;
+use App\Models\StreetWidth;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
@@ -33,6 +40,21 @@ if (!function_exists('websiteMode')) {
         return 'light-layout dark-layout';
     }
 }
+
+
+if (!function_exists('getPropertyTypeName')) {
+    function getPropertyTypeName($id)
+    {
+        $property_type = PropertyType::find($id);
+        if ($property_type) {
+            return $property_type->name;
+        } else {
+            return 'الاسم غير موجود';
+        }
+    }
+}
+
+
 
 if (!function_exists('getCities')) {
     function getCities()
@@ -106,6 +128,13 @@ if (!function_exists('getUsersMarketersCount')) {
     function getUsersMarketersCount()
     {
         return User::where('user_type', 'marketer')->where('user_status', 'active')->count();
+    }
+}
+
+if (!function_exists('getOfferTypes')) {
+    function getOfferTypes()
+    {
+        return OfferType::data()->get();
     }
 }
 
@@ -242,6 +271,26 @@ if (!function_exists('getNeighborhoodsCount')) {
 }
 
 
+if (!function_exists('getOwnerShipTypes')) {
+    function getOwnerShipTypes()
+    {
+        return OwnerShipType::data()->get();
+    }
+}
+
+if (!function_exists('getInterfaceLengths')) {
+    function getInterfaceLengths()
+    {
+        return InterfaceLength::data()->get();
+    }
+}
+
+if (!function_exists('getMediators')) {
+    function getMediators()
+    {
+        return Mediator::data()->get();
+    }
+}
 
 if (!function_exists('getBranches')) {
     function getBranches()
@@ -262,6 +311,14 @@ if (!function_exists('getOrderNoteStatuse')) {
     function getOrderNoteStatuse()
     {
         return OrderNoteStatuse::data()->get();
+    }
+}
+
+
+if (!function_exists('getDirections')) {
+    function getDirections()
+    {
+        return Direction::data()->get();
     }
 }
 
@@ -310,22 +367,22 @@ if (!function_exists('directions')) {
 }
 
 
-if (!function_exists('streets')) {
-    function streets()
+if (!function_exists('getStreets')) {
+    function getStreets()
     {
-        return Street::data()->get();
+        return StreetWidth::data()->get();
     }
 }
 
-if (!function_exists('landTypes')) {
-    function landTypes()
+if (!function_exists('getLandTypes')) {
+    function getLandTypes()
     {
         return LandType::data()->get();
     }
 }
 
-if (!function_exists('licensedes')) {
-    function licensedes()
+if (!function_exists('getLicenseds')) {
+    function getLicenseds()
     {
         return Licensed::data()->get();
     }
@@ -368,6 +425,21 @@ if (!function_exists('getCityName')) {
     }
 }
 
+
+if (!function_exists('getNeighborhoodName')) {
+    function getNeighborhoodName($id)
+    {
+        $neighborhood = Neighborhood::find($id);
+        if ($neighborhood) {
+            return $neighborhood->name;
+        } else {
+            return 'غير موجود';
+        }
+    }
+}
+
+
+
 if (!function_exists('getCustomerName')) {
     function getCustomerName($id)
     {
@@ -404,6 +476,28 @@ if (!function_exists('getPurchMethodName')) {
         }
     }
 }
+
+if (!function_exists('getBuildingTypes')) {
+    function getBuildingTypes()
+    {
+        return BuildingType::data()->get();
+    }
+}
+
+if (!function_exists('getBuildingStatuses')) {
+    function getBuildingStatuses()
+    {
+        return BuildingStatus::data()->get();
+    }
+}
+
+if (!function_exists('getConstructionDeliveries')) {
+    function getConstructionDeliveries()
+    {
+        return ConstructionDelivery::data()->get();
+    }
+}
+
 
 if (!function_exists('getDesireToBuyName')) {
     function getDesireToBuyName($id)

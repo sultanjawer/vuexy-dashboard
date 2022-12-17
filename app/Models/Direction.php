@@ -18,6 +18,11 @@ class Direction extends Model
         return $this->hasMany(Offer::class, 'direction_id', 'id');
     }
 
+    public function realEstate()
+    {
+        return $this->belongsTo(RealEstate::class, 'direction_id', 'id');
+    }
+
     public function scopeData($query)
     {
         return $query->select([

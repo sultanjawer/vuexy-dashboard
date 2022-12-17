@@ -29,4 +29,9 @@ class PropertyType extends Model
     {
         return $this->hasMany(Order::class, 'property_type_id', 'id');
     }
+
+    public function realEstate()
+    {
+        return $this->belongsTo(RealEstate::class, 'property_type_id', 'id');
+    }
 }

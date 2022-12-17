@@ -13,7 +13,7 @@
                             <div class="col-xl-4 col-md-6 col-12" wire:ignore.self>
                                 <div class="card card-congratulation-medal" wire:ignore.self>
                                     <div class="card-body" wire:ignore.self>
-                                        <h2>رقم الطلب</h2>
+                                        <h2>كود الطلب</h2>
 
                                         <h3 class="mb-75 mt-2 pt-50">
                                             <a href="#">{{ $order->order_code }}</a>

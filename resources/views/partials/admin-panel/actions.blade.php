@@ -79,6 +79,10 @@
     <script src="{{ asset('app-assets/js/scripts/pages/auth-register.js') }}"></script>
     <!-- END: Page JS-->
 
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <x-livewire-alert::scripts />
+
     <script>
         $(window).on('load', function() {
             if (feather) {
@@ -91,6 +95,8 @@
     </script>
 
     @stack('test')
+    @stack('land-form')
+
 </body>
 <!-- END: Body-->
 

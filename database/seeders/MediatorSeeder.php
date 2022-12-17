@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class MediatorSeeder extends Seeder
 {
@@ -23,7 +24,7 @@ class MediatorSeeder extends Seeder
         foreach (range(1, 100) as $i) {
             DB::table('mediators')->insert([
                 'user_id' => 1,
-                'name' => 'proamrakram',
+                'name' => Str::random(3) .  '-proamrakram',
                 'phone_number' => '059' . random_int(1111111, 9999999),
                 'type' => $types[random_int(1, 2)],
                 'status' => random_int(1, 2),

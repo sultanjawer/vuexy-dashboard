@@ -18,6 +18,11 @@ class LandType extends Model
         return $this->hasMany(Offer::class, 'land_type_id', 'id');
     }
 
+    public function realEstate()
+    {
+        return $this->belongsTo(RealEstate::class, 'land_type_id', 'id');
+    }
+
     public function scopeData($query)
     {
         return $query->select([

@@ -41,15 +41,23 @@ class DatabaseSeeder extends Seeder
             LandSeeder::class,
             LandTypeSeeder::class,
             BranchSeeder::class,
-            // MediatorSeeder::class,
-            // ReservationSeeder::class,
+            MediatorSeeder::class,
+            ReservationSeeder::class,
             DesireToBuySeeder::class,
             PurchaseMethodSeeder::class,
             CustomerSeeder::class,
             OrderStatusSeeder::class,
-            // OrderSeeder::class,
+            OrderSeeder::class,
             OrderNoteSeeder::class,
-            OrderNoteStatuseSeeder::class
+            OrderNoteStatuseSeeder::class,
+            InterfaceLengthSeeder::class,
+            ConstructionDeliverySeeder::class,
+            BuildingTypeSeeder::class,
+            BuildingStatusSeeder::class,
+            OwnerShipTypeSeeder::class,
+            StreetWidthSeeder::class,
+            RealEstateSeeder::class,
+            OfferSeeder::class,
 
         ]);
     }

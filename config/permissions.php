@@ -15,9 +15,12 @@ return [
         'customers_page',
         'branches_page',
         'orders_page',
+        'offers_page',
     ],
 
     "dynamic" => [
+
+        #Order
         'send_individual_messages',
         'send_collection_messages',
         "can_create_order",
@@ -25,6 +28,12 @@ return [
         "can_show_order",
         "can_change_order_status",
         'mediators_page',
+
+        #Offers
+        'can_create_offer',
+        'can_edit_offer',
+        'can_show_offer',
+        'can_change_offer_status',
     ],
 
     "all" => [
@@ -47,6 +56,12 @@ return [
         "can_show_order",
         "can_change_order_status",
         'mediators_page',
+
+        'offers_page',
+        'can_create_offer',
+        'can_edit_offer',
+        'can_show_offer',
+        'can_change_offer_status',
     ]
 
 

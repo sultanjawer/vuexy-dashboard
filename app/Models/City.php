@@ -41,6 +41,11 @@ class City extends Model
         return $this->hasMany(Neighborhood::class, 'city_id', 'id');
     }
 
+    public function realEstate()
+    {
+        return $this->belongsTo(RealEstate::class, 'city_id', 'id');
+    }
+
     public function scopeData($query)
     {
         return $query->select([

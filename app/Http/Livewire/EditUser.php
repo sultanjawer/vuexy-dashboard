@@ -21,14 +21,25 @@ class EditUser extends Component
     public $branches_ids = [];
     public $user_type = 'admin';
     public $group_permissions = [];
-    public $manage_mediators;
-    public $can_send_sms_collection;
-    public $can_send_sms_individually;
-    public $can_show_orders;
-    public $can_add_orders;
-    public $can_edit_orders;
-    public $can_cancel_orders;
     public $user_status;
+
+    #Mediator and SMS
+    public $mediators_page;
+    public $send_collection_messages;
+    public $send_individual_messages;
+
+    #Order
+    public $can_show_order;
+    public $can_create_order;
+    public $can_edit_order;
+    public $can_change_order_status;
+
+    #Offer
+    public $can_show_offer;
+    public $can_create_offer;
+    public $can_edit_offer;
+    public $can_change_offer_status;
+
 
     public $info = 'active';
     public $permissions;
@@ -62,46 +73,13 @@ class EditUser extends Component
         }
 
         $permissions = Permission::all();
+
         foreach ($permissions as $permission) {
             if ($user->permissions->contains($permission->id)) {
-
-                if ($permission->name == 'mediators_page') {
-                    array_push($this->group_permissions, $permission->name);
-                    $this->manage_mediators = true;
-                }
-
-                if ($permission->name == 'send_individual_messages') {
-                    array_push($this->group_permissions, $permission->name);
-                    $this->can_send_sms_individually = true;
-                }
-
-                if ($permission->name == 'send_collection_messages') {
-                    array_push($this->group_permissions, $permission->name);
-                    $this->can_send_sms_collection = true;
-                }
-
-                if ($permission->name == 'can_create_order') {
-                    array_push($this->group_permissions, $permission->name);
-                    $this->can_add_orders = true;
-                }
-
-                if ($permission->name == 'can_edit_order') {
-                    array_push($this->group_permissions, $permission->name);
-                    $this->can_edit_orders = true;
-                }
-
-                if ($permission->name == 'can_show_order') {
-                    array_push($this->group_permissions, $permission->name);
-                    $this->can_show_orders = true;
-                }
-
-                if ($permission->name == 'can_change_order_status') {
-                    array_push($this->group_permissions, $permission->name);
-                    $this->can_cancel_orders = true;
-                }
-
-                if ($permission->name == 'sms_page') {
-                    array_push($this->group_permissions, $permission->name);
+                foreach (config('permissions.dynamic') as $permission_config) {
+                    if ($permission_config == $permission->name) {
+                        $this->setPermission($permission->name);
+                    }
                 }
             }
         }
@@ -189,45 +167,31 @@ class EditUser extends Component
             }
         }
 
-        if ($propertyName == 'manage_mediators') {
-            $this->setPermission($this->manage_mediators, 'mediators_page');
-        }
+        $permissions = config('permissions.dynamic');
 
-        if ($propertyName == 'can_send_sms_collection') {
-            $this->setPermission($this->can_send_sms_collection, 'send_collection_messages');
-        }
-
-        if ($propertyName == 'can_send_sms_individually') {
-            $this->setPermission($this->can_send_sms_individually, 'send_individual_messages');
-        }
-
-        if ($propertyName == 'can_show_orders') {
-            $this->setPermission($this->can_show_orders, 'can_show_order');
-        }
-
-        if ($propertyName == 'can_add_orders') {
-            $this->setPermission($this->can_add_orders, 'can_create_order');
-        }
-
-        if ($propertyName == 'can_edit_orders') {
-            $this->setPermission($this->can_edit_orders, 'can_edit_order');
-        }
-
-        if ($propertyName == 'can_cancel_orders') {
-            $this->setPermission($this->can_cancel_orders, 'can_change_order_status');
+        foreach ($permissions as $permission) {
+            if ($permission == $propertyName) {
+                $this->setPermission($permission);
+            }
         }
 
         $this->validateOnly($propertyName);
     }
 
-    public function setPermission($check, $permission)
+    public function setPermission($permission)
     {
-        if ($check) {
-            array_push($this->group_permissions, $permission);
-        } else {
+        if (in_array($permission, $this->group_permissions)) {
             if (($key = array_search($permission, $this->group_permissions)) !== false) {
                 unset($this->group_permissions[$key]);
             }
+            $this->fill([$permission => false]);
+            return false;
+        }
+
+        if (!in_array($permission, $this->group_permissions)) {
+            array_push($this->group_permissions, $permission);
+            $this->fill([$permission => true]);
+            return true;
         }
     }
 

@@ -9,6 +9,7 @@ use App\Models\City;
 use App\Models\Customer;
 use App\Models\Mediator;
 use App\Models\Neighborhood;
+use App\Models\Offer;
 use App\Models\Order;
 use App\Models\Reservation;
 use App\Models\User;
@@ -18,6 +19,7 @@ use App\Policies\CreateUserPolicy;
 use App\Policies\CustomerPolicy;
 use App\Policies\MediatorPolicy;
 use App\Policies\NeighborhoodPolicy;
+use App\Policies\OfferPolicy;
 use App\Policies\OrderPolicy;
 use App\Policies\ReservationPolicy;
 use App\Policies\UserPolicy;
@@ -42,6 +44,7 @@ class AuthServiceProvider extends ServiceProvider
         Customer::class => CustomerPolicy::class,
         Mediator::class => MediatorPolicy::class,
         Order::class => OrderPolicy::class,
+        Offer::class => OfferPolicy::class,
         Reservation::class => ReservationPolicy::class,
         Branch::class => BranchPolicy::class
     ];

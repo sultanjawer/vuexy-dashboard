@@ -192,42 +192,6 @@ class OrderView extends Component
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public function getLastUpateTime()
     {
         if ($this->order) {

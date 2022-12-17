@@ -32,6 +32,11 @@ class Branch extends Model
         return $this->hasMany(Offer::class, 'branch_id', 'id');
     }
 
+    public function realEstate()
+    {
+        return $this->belongsTo(RealEstate::class, 'branch_id', 'id');
+    }
+
     public function order()
     {
         return $this->hasMany(Order::class, 'branch_id', 'id');

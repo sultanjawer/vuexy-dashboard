@@ -6,6 +6,7 @@ use App\Models\City;
 use App\Models\Customer;
 use App\Models\Mediator;
 use App\Models\Neighborhood;
+use App\Models\Offer;
 use App\Models\Order;
 use App\Models\Reservation;
 use App\Models\User;
@@ -39,5 +40,9 @@ Route::controller(HomeController::class)
             Route::get('/profile', 'profile')->name('profile');
             Route::get('/user/{user}', 'user')->name('user');
             Route::get('/home', 'home')->name('home');
+            Route::get('/offers', 'offers')->name('offers')->can('offers', Offer::class);
+            Route::get('/offer/{offer}', 'offer')->name('offer')->can('showOffer', Offer::class);
+            Route::get('/create-offer', 'createOffer')->name('create.offer')->can('createOffer', Offer::class);
+            Route::get('/update-offer/{offer}', 'updateOffer')->name('update.offer')->can('updateOffer', Offer::class);
         }
     );

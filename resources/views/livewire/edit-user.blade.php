@@ -153,7 +153,7 @@
                                             <div class="d-flex">
                                                 <div class="form-check me-3 me-lg-5">
                                                     <input class="form-check-input" type="checkbox"
-                                                        wire:model="manage_mediators">
+                                                        wire:model="mediators_page">
                                                     <label class="form-check-label" for="manageMediators">
                                                         تحكم </label>
                                                 </div>
@@ -167,7 +167,7 @@
                                             <div class="d-flex">
                                                 <div class="form-check me-3 me-lg-5">
                                                     <input class="form-check-input" type="checkbox"
-                                                        wire:model="can_send_sms_collection">
+                                                        wire:model="send_collection_messages">
                                                     <label class="form-check-label">
                                                         تحكم
                                                     </label>
@@ -182,7 +182,7 @@
                                             <div class="d-flex">
                                                 <div class="form-check me-3 me-lg-5">
                                                     <input class="form-check-input" type="checkbox"
-                                                        wire:model="can_send_sms_individually">
+                                                        wire:model="send_individual_messages">
                                                     <label class="form-check-label"> تحكم
                                                     </label>
                                                 </div>
@@ -196,32 +196,69 @@
                                             <div class="d-flex">
                                                 <div class="form-check me-3 me-lg-5">
                                                     <input class="form-check-input" type="checkbox"
-                                                        wire:model='can_show_orders'>
+                                                        wire:model='can_show_order'>
                                                     <label class="form-check-label"> رؤية </label>
                                                 </div>
 
                                                 <div class="form-check me-3 me-lg-5">
                                                     <input class="form-check-input" type="checkbox"
-                                                        wire:model='can_add_orders'>
+                                                        wire:model='can_create_order'>
                                                     <label class="form-check-label" for="canAdd"> اضافة </label>
                                                 </div>
 
                                                 <div class="form-check me-3 me-lg-5">
                                                     <input class="form-check-input" type="checkbox"
-                                                        wire:model='can_edit_orders'>
+                                                        wire:model='can_edit_order'>
                                                     <label class="form-check-label" for="canEdit"> تعديل
                                                     </label>
                                                 </div>
 
                                                 <div class="form-check me-3 me-lg-5">
                                                     <input class="form-check-input" type="checkbox"
-                                                        wire:model='can_cancel_orders'>
+                                                        wire:model='can_change_order_status'>
                                                     <label class="form-check-label" for="canCancel">إلغاء</label>
                                                 </div>
 
                                             </div>
                                         </td>
                                     </tr>
+
+
+
+                                    <tr>
+                                        <td class="text-nowrap fw-bolder">العروض</td>
+                                        <td>
+                                            <div class="d-flex">
+                                                <div class="form-check me-3 me-lg-5">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        wire:model='can_show_offer'>
+                                                    <label class="form-check-label"> رؤية </label>
+                                                </div>
+
+                                                <div class="form-check me-3 me-lg-5">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        wire:model='can_create_offer'>
+                                                    <label class="form-check-label" for="canAdd"> اضافة </label>
+                                                </div>
+
+                                                <div class="form-check me-3 me-lg-5">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        wire:model='can_edit_offer'>
+                                                    <label class="form-check-label" for="canEdit"> تعديل
+                                                    </label>
+                                                </div>
+
+                                                <div class="form-check me-3 me-lg-5">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        wire:model='can_change_offer_status'>
+                                                    <label class="form-check-label" for="canCancel">إلغاء</label>
+                                                </div>
+
+                                            </div>
+                                        </td>
+                                    </tr>
+
+
 
                                     <tr>
                                         <td class="text-nowrap fw-bolder">الحالة</td>
