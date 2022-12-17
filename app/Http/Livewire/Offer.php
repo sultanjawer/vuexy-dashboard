@@ -21,14 +21,10 @@ class Offer extends Component
     public $filters = [];
     public $in_filters = [];
 
-    public $direct;
-    public $in_direct;
-
 
     public function mount()
     {
         $this->resetPage();
-        $this->settingData();
     }
 
     public function getDirectOffers()
@@ -66,17 +62,14 @@ class Offer extends Component
         return  $offers;
     }
 
-    public function settingData()
-    {
-        $this->direct =  $this->getDirectOffers();
-        $this->in_direct =  $this->getInDirectOffers();
-    }
-
     public function render()
     {
+        $direct_offers =  $this->getDirectOffers();
+        $in_direct_offers =  $this->getInDirectOffers();
+
         return view('livewire.offer', [
-            'direct_offers' => $this->direct,
-            'in_direct_offers' => $this->in_direct
+            'direct_offers' => $direct_offers,
+            'in_direct_offers' => $in_direct_offers
         ]);
     }
 }
