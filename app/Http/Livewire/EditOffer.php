@@ -103,7 +103,7 @@ class EditOffer extends Component
         $this->building_status_id = $offer->realEstate->building_status_id;
         $this->construction_delivery_id = $offer->realEstate->construction_delivery_id;
         $this->yes = $offer->offer_type_id == 1 ? $this->yes = 'option1' : $this->no = 'option2';
-        $this->is_direct = $offer->offer_type_id == 1 ? true : false;
+        $this->is_direct = $offer->offer_type_id == 1 ? false : true;
         $this->mediators_ids = $offer->mediators_ids;
     }
 
@@ -154,14 +154,14 @@ class EditOffer extends Component
         if ($propertyName == 'yes') {
             $this->yes = 'option1';
             $this->no = '';
-            $this->is_direct = true;
+            $this->is_direct = false;
             $this->emit('mediators-show', $this->is_direct);
         }
 
         if ($propertyName == 'no') {
             $this->yes = '';
             $this->no = 'option2';
-            $this->is_direct = false;
+            $this->is_direct = true;
             $this->emit('mediators-show', $this->is_direct);
         }
 
@@ -289,12 +289,12 @@ class EditOffer extends Component
 
         $data = $this->validate();
 
-        if (!$this->is_direct) {
+        if ($this->is_direct) {
             $data['is_direct'] = false;
             $data['mediators_ids'] = [];
         }
 
-        if ($this->is_direct) {
+        if (!$this->is_direct) {
             $data['is_direct'] = true;
         }
 
