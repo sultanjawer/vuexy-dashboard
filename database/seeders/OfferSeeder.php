@@ -51,7 +51,7 @@ class OfferSeeder extends Seeder
                     'who_add' => 1,
                     'who_edit' => null,
                     'who_cancel' => null,
-                    'mediators_ids' => json_encode([1, 2, 3, 4, 5]),
+                    'mediators_ids' => json_encode([101, 102, 103, 104, 105]),
                     'booking_ids' => json_encode([]),
                 ]);
             }
