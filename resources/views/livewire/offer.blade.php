@@ -131,7 +131,9 @@
                                                         <td>{{ getCityName($direct_offer->realEstate->city_id) }}</td>
                                                         <td>{{ getNeighborhoodName($direct_offer->realEstate->neighborhood_id) }}
                                                         </td>
-                                                        <td>ريال {{ $direct_offer->realEstate->total_price }}</td>
+                                                        <td>ريال
+                                                            {{ number_format($direct_offer->realEstate->total_price) }}
+                                                        </td>
                                                         <td>{{ getBranchName($direct_offer->realEstate->branch_id) }}
                                                         </td>
 
