@@ -172,10 +172,10 @@
                                                 <label class="form-label">الحى</label>
                                                 <select class="js-select2-neighborhood select2 form-select"
                                                     wire:model='neighborhood_id'>
-                                                    @foreach ($city->neighborhoods as $neighborhood)
+                                                    {{-- @foreach ($city->neighborhoods as $neighborhood)
                                                         <option value="{{ $neighborhood->id }}" selected>
                                                             {{ $neighborhood->name }}</option>
-                                                    @endforeach
+                                                    @endforeach --}}
                                                 </select>
                                                 @error('neighborhood_id')
                                                     <small class="text-danger">{{ $message }}</small>
@@ -1028,6 +1028,22 @@
                     window.livewire.emit('setMediatorsIds');
                 });
 
+                window.livewire.on('neighborhoods', (data) => {
+                    console.log(data);
+                    $('.js-select2-neighborhood').html('');
+                    $('.js-select2-neighborhood').select2({
+                        placeholder: 'اختيار الحي',
+                        data: data,
+                        closeOnSelect: true
+                    });
+                });
+
+
+            });
+        </script>
+        <script>
+            window.addEventListener("DOMContentLoaded", function() {
+                Livewire.emit("setEvent");
             });
         </script>
     @endpush

@@ -10,7 +10,7 @@
                     <div class="col-md-12" wire:ignore.self>
                         <div class="row match-height" wire:ignore.self>
                             <!-- Medal Card -->
-                            <div class="col-xl-4 col-md-6 col-12" wire:ignore.self>
+                            <div class="col-xl-12 col-md-6 col-12" wire:ignore.self>
                                 <div class="card card-congratulation-medal" wire:ignore.self>
                                     <div class="card-body" wire:ignore.self>
                                         <h2>كود العرض</h2>
@@ -79,10 +79,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <!--/ Medal Card -->
 
-                            <!-- Statistics Card -->
-                            <div class="col-xl-8 col-md-6 col-12" wire:ignore.self>
+                            {{-- <div class="col-xl-8 col-md-6 col-12" wire:ignore.self>
                                 <div class="card card-statistics" wire:ignore.self>
 
 
@@ -100,37 +98,36 @@
                                         <div class="row" wire:ignore.self>
 
                                             <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                                <label class="form-label fw-bold fs-5 text-primary"> الاسم :</label>
+                                                <label class="form-label fw-bold fs-4 text-primary"> الاسم :</label>
                                                 <label class="form-label fs-6">{{ $offer->customer_name }}</label>
                                             </div>
 
 
                                             <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                                <label class="form-label fw-bold fs-5 text-primary"> رقم الجوال
+                                                <label class="form-label fw-bold fs-4 text-primary"> رقم الجوال
                                                     :</label>
                                                 <label class="form-label fs-6">{{ $offer->customer_phone }}</label>
                                             </div>
                                             <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                                <label class="form-label fw-bold fs-5 text-primary">هل مدعوم من
+                                                <label class="form-label fw-bold fs-4 text-primary">هل مدعوم من
                                                     الاسكان:</label>
                                                 @if ($offer->support_eskan)
                                                     <span class="badge badge-glow bg-success">نعم</span>
                                                 @else
                                                     <span class="badge badge-glow bg-danger">لا</span>
                                                 @endif
-                                                {{-- <label class="form-label fs-6 text-danger">{{ }}</label> --}}
                                             </div>
                                         </div>
 
                                         <div class="row" wire:ignore.self>
 
                                             <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                                <label class="form-label fw-bold fs-5 text-primary"> جهة العمل :</label>
+                                                <label class="form-label fw-bold fs-4 text-primary"> جهة العمل :</label>
                                                 <label class="form-label fs-6">{{ $offer->employer_name }}</label>
                                             </div>
 
                                             <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                                <label class="form-label fw-bold fs-5 text-primary"> نوع القطاع
+                                                <label class="form-label fw-bold fs-4 text-primary"> نوع القطاع
                                                     :</label>
                                                 <label class="form-label fs-6">قطاع
                                                     {{ $offer->employee_type == 'public' ? 'عام' : 'خاص' }}</label>
@@ -152,8 +149,9 @@
                                         </div>
                                     @endif
                                 </div>
-                            </div>
-                            <!--/ Statistics Card -->
+                            </div> --}}
+
+
                         </div>
                     </div>
 
@@ -161,7 +159,7 @@
                         <div class="card card-statistics" wire:ignore.self>
 
                             <div class="card-header" wire:ignore.self>
-                                <h4 class="card-title" wire:ignore.self>معلومات العقار</h4>
+                                <h2 wire:ignore.self>معلومات العقار</h2>
                                 <div class="d-flex align-items-center" wire:ignore.self>
                                     <p class="card-text font-small-2 me-25 mb-0">{{ $last_update_time }}</p>
                                 </div>
@@ -171,7 +169,7 @@
                                 <div class="card-boady card-statistics" wire:ignore.self>
                                     <div class="row">
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary"> نوع العقار
+                                            <label class="form-label fw-bold fs-4 text-primary"> نوع العقار
                                                 :</label>
                                             <label
                                                 class="form-label fs-6">{{ $real_estate->propertyType->name }}</label>
@@ -179,14 +177,14 @@
 
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary"> المساحة
+                                            <label class="form-label fw-bold fs-4 text-primary"> المساحة
                                                 :</label>
                                             <label
-                                                class="form-label fs-6">{{ number_format($real_estate->space) }}</label>
+                                                class="form-label fs-6">{{ number_format((int) $real_estate->space) }}</label>
                                         </div>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary"> الاتجاه
+                                            <label class="form-label fw-bold fs-4 text-primary"> الاتجاه
                                                 :</label>
                                             <label class="form-label fs-6">{{ $real_estate->direction->name }}</label>
                                         </div>
@@ -197,19 +195,19 @@
                                     <div class="row" wire:ignore.self>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary">المدينة:</label>
+                                            <label class="form-label fw-bold fs-4 text-primary">المدينة:</label>
                                             <label class="form-label fs-6">{{ $real_estate->city->name }}</label>
                                         </div>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary">الحي:
+                                            <label class="form-label fw-bold fs-4 text-primary">الحي:
                                             </label>
                                             <label
                                                 class="form-label fs-6">{{ $real_estate->neighborhood->name }}</label>
                                         </div>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary">عرض الشارع:
+                                            <label class="form-label fw-bold fs-4 text-primary">عرض الشارع:
                                             </label>
                                             <label
                                                 class="form-label fs-6">{{ $real_estate->streetWidth->street_number }}</label>
@@ -221,19 +219,19 @@
                                     <div class="row" wire:ignore.self>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary">نوع الأرض:</label>
+                                            <label class="form-label fw-bold fs-4 text-primary">نوع الأرض:</label>
                                             <label class="form-label fs-6">{{ $real_estate->landType->name }}</label>
                                         </div>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary">طول الواجهة:
+                                            <label class="form-label fw-bold fs-4 text-primary">طول الواجهة:
                                             </label>
                                             <label
                                                 class="form-label fs-6">{{ $real_estate->interfaceLength->name }}</label>
                                         </div>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary">الترخيص:
+                                            <label class="form-label fw-bold fs-4 text-primary">الترخيص:
                                             </label>
                                             <label class="form-label fs-6">{{ $real_estate->licensed->name }}</label>
                                         </div>
@@ -244,13 +242,13 @@
                                     <div class="row" wire:ignore.self>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary">حالة العقار:</label>
+                                            <label class="form-label fw-bold fs-4 text-primary">حالة العقار:</label>
                                             <label
                                                 class="form-label fs-6">{{ $real_estate->propertyStatus->name }}</label>
                                         </div>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary">الفرع:
+                                            <label class="form-label fw-bold fs-4 text-primary">الفرع:
                                             </label>
                                             <label class="form-label fs-6">{{ $real_estate->branch->name }}</label>
                                         </div>
@@ -260,7 +258,7 @@
                                     <div class="row" wire:ignore.self>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary"> ملاحظات على الطلب:
+                                            <label class="form-label fw-bold fs-4 text-primary"> ملاحظات على الطلب:
                                             </label>
                                             <p>{{ $real_estate->notes }}</p>
                                         </div>
@@ -287,7 +285,7 @@
                                     <div class="row">
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary"> نوع العقار
+                                            <label class="form-label fw-bold fs-4 text-primary"> نوع العقار
                                                 :</label>
                                             <label
                                                 class="form-label fs-6">{{ $real_estate->propertyType->name }}</label>
@@ -295,14 +293,14 @@
 
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary"> المساحة
+                                            <label class="form-label fw-bold fs-4 text-primary"> المساحة
                                                 :</label>
                                             <label
-                                                class="form-label fs-6">{{ number_format($real_estate->space) }}</label>
+                                                class="form-label fs-6">{{ number_format((int) $real_estate->space) }}</label>
                                         </div>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary"> الاتجاه
+                                            <label class="form-label fw-bold fs-4 text-primary"> الاتجاه
                                                 :</label>
                                             <label class="form-label fs-6">{{ $real_estate->direction->name }}</label>
                                         </div>
@@ -313,19 +311,19 @@
                                     <div class="row" wire:ignore.self>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary">المدينة:</label>
+                                            <label class="form-label fw-bold fs-4 text-primary">المدينة:</label>
                                             <label class="form-label fs-6">{{ $real_estate->city->name }}</label>
                                         </div>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary">الحي:
+                                            <label class="form-label fw-bold fs-4 text-primary">الحي:
                                             </label>
                                             <label
                                                 class="form-label fs-6">{{ $real_estate->neighborhood->name }}</label>
                                         </div>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary">عرض الشارع:
+                                            <label class="form-label fw-bold fs-4 text-primary">عرض الشارع:
                                             </label>
                                             <label
                                                 class="form-label fs-6">{{ $real_estate->streetWidth->street_number }}</label>
@@ -337,19 +335,19 @@
                                     <div class="row" wire:ignore.self>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary">نوع الأرض:</label>
+                                            <label class="form-label fw-bold fs-4 text-primary">نوع الأرض:</label>
                                             <label class="form-label fs-6">{{ $real_estate->landType->name }}</label>
                                         </div>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary">طول الواجهة:
+                                            <label class="form-label fw-bold fs-4 text-primary">طول الواجهة:
                                             </label>
                                             <label
                                                 class="form-label fs-6">{{ $real_estate->interfaceLength->name }}</label>
                                         </div>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary">الترخيص:
+                                            <label class="form-label fw-bold fs-4 text-primary">الترخيص:
                                             </label>
                                             <label class="form-label fs-6">{{ $real_estate->licensed->name }}</label>
                                         </div>
@@ -360,13 +358,13 @@
                                     <div class="row" wire:ignore.self>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary">حالة العقار:</label>
+                                            <label class="form-label fw-bold fs-4 text-primary">حالة العقار:</label>
                                             <label
                                                 class="form-label fs-6">{{ $real_estate->propertyStatus->name }}</label>
                                         </div>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary">نوع البناء:
+                                            <label class="form-label fw-bold fs-4 text-primary">نوع البناء:
                                             </label>
                                             <label
                                                 class="form-label fs-6">{{ $real_estate->buildingType->name }}</label>
@@ -377,20 +375,20 @@
                                     <div class="row" wire:ignore.self>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary">حالة البناء:</label>
+                                            <label class="form-label fw-bold fs-4 text-primary">حالة البناء:</label>
                                             <label
                                                 class="form-label fs-6">{{ $real_estate->buildingStatus->name }}</label>
                                         </div>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary">تسليم البناء:
+                                            <label class="form-label fw-bold fs-4 text-primary">تسليم البناء:
                                             </label>
                                             <label
                                                 class="form-label fs-6">{{ $real_estate->constructionDelivery->name }}</label>
                                         </div>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary">الفرع:
+                                            <label class="form-label fw-bold fs-4 text-primary">الفرع:
                                             </label>
                                             <label class="form-label fs-6">{{ $real_estate->branch->name }}</label>
                                         </div>
@@ -402,7 +400,7 @@
                                     <div class="row" wire:ignore.self>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary"> ملاحظات على الطلب:
+                                            <label class="form-label fw-bold fs-4 text-primary"> ملاحظات على الطلب:
                                             </label>
                                             <p>{{ $real_estate->notes }}</p>
                                         </div>
@@ -432,24 +430,24 @@
                                     <div class="row">
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary"> نوع العقار
+                                            <label class="form-label fw-bold fs-4 text-primary"> نوع العقار
                                                 :</label>
                                             <label
                                                 class="form-label fs-6">{{ $real_estate->propertyType->name }}</label>
                                         </div>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary"> المساحة
+                                            <label class="form-label fw-bold fs-4 text-primary"> المساحة
                                                 :</label>
                                             <label
-                                                class="form-label fs-6">{{ number_format($real_estate->space) }}</label>
+                                                class="form-label fs-6">{{ number_format((int) $real_estate->space) }}</label>
                                         </div>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary"> الدخل السنوي
+                                            <label class="form-label fw-bold fs-4 text-primary"> الدخل السنوي
                                                 :</label>
                                             <label
-                                                class="form-label fs-6">{{ number_format($real_estate->annual_income) }}</label>
+                                                class="form-label fs-6">{{ number_format((int) $real_estate->annual_income) }}</label>
                                         </div>
 
                                     </div>
@@ -457,18 +455,18 @@
                                     <div class="row" wire:ignore.self>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary">المدينة:</label>
+                                            <label class="form-label fw-bold fs-4 text-primary">المدينة:</label>
                                             <label class="form-label fs-6">{{ $real_estate->city->name }}</label>
                                         </div>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary">الحي:
+                                            <label class="form-label fw-bold fs-4 text-primary">الحي:
                                             </label>
                                             <label
                                                 class="form-label fs-6">{{ $real_estate->neighborhood->name }}</label>
                                         </div>
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary">رقم الأرض:</label>
+                                            <label class="form-label fw-bold fs-4 text-primary">رقم الأرض:</label>
                                             <label class="form-label fs-6">{{ $real_estate->land_number }}</label>
                                         </div>
                                     </div>
@@ -477,20 +475,20 @@
                                     <div class="row" wire:ignore.self>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary">رقم البلوك:
+                                            <label class="form-label fw-bold fs-4 text-primary">رقم البلوك:
                                             </label>
                                             <label class="form-label fs-6">{{ $real_estate->block_number }}</label>
                                         </div>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary"> عدد الأدوار
+                                            <label class="form-label fw-bold fs-4 text-primary"> عدد الأدوار
                                                 :</label>
                                             <label
                                                 class="form-label fs-6">{{ number_format($real_estate->floors_number) }}</label>
                                         </div>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary"> عدد الشقق
+                                            <label class="form-label fw-bold fs-4 text-primary"> عدد الشقق
                                                 :</label>
                                             <label
                                                 class="form-label fs-6">{{ number_format($real_estate->flats_number) }}</label>
@@ -501,21 +499,21 @@
                                     <div class="row" wire:ignore.self>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary"> عدد المحلات
+                                            <label class="form-label fw-bold fs-4 text-primary"> عدد المحلات
                                                 :</label>
                                             <label
                                                 class="form-label fs-6">{{ number_format($real_estate->stores_number) }}</label>
                                         </div>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary"> عدد غرف الشقة
+                                            <label class="form-label fw-bold fs-4 text-primary"> عدد غرف الشقة
                                                 :</label>
                                             <label
                                                 class="form-label fs-6">{{ number_format($real_estate->flat_rooms_number) }}</label>
                                         </div>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary">حالة العقار:</label>
+                                            <label class="form-label fw-bold fs-4 text-primary">حالة العقار:</label>
                                             <label
                                                 class="form-label fs-6">{{ $real_estate->propertyStatus->name }}</label>
                                         </div>
@@ -525,13 +523,13 @@
                                     <div class="row" wire:ignore.self>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary">الفرع:
+                                            <label class="form-label fw-bold fs-4 text-primary">الفرع:
                                             </label>
                                             <label class="form-label fs-6">{{ $real_estate->branch->name }}</label>
                                         </div>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary">السعر الكلي:</label>
+                                            <label class="form-label fw-bold fs-4 text-primary">السعر الكلي:</label>
                                             <label class="form-label fs-6">{{ $real_estate->total_price }}</label>
                                         </div>
                                     </div>
@@ -540,7 +538,7 @@
                                     <div class="row" wire:ignore.self>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary"> ملاحظات على الطلب:
+                                            <label class="form-label fw-bold fs-4 text-primary"> ملاحظات على الطلب:
                                             </label>
                                             <p>{{ $real_estate->notes }}</p>
                                         </div>
@@ -566,7 +564,7 @@
                                     <div class="row">
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary"> نوع العقار
+                                            <label class="form-label fw-bold fs-4 text-primary"> نوع العقار
                                                 :</label>
                                             <label
                                                 class="form-label fs-6">{{ $real_estate->propertyType->name }}</label>
@@ -574,14 +572,14 @@
 
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary"> المساحة
+                                            <label class="form-label fw-bold fs-4 text-primary"> المساحة
                                                 :</label>
                                             <label
-                                                class="form-label fs-6">{{ number_format($real_estate->space) }}</label>
+                                                class="form-label fs-6">{{ number_format((int) $real_estate->space) }}</label>
                                         </div>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary">المدينة:</label>
+                                            <label class="form-label fw-bold fs-4 text-primary">المدينة:</label>
                                             <label class="form-label fs-6">{{ $real_estate->city->name }}</label>
                                         </div>
 
@@ -590,21 +588,21 @@
                                     <div class="row" wire:ignore.self>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary">الحي:
+                                            <label class="form-label fw-bold fs-4 text-primary">الحي:
                                             </label>
                                             <label
                                                 class="form-label fs-6">{{ $real_estate->neighborhood->name }}</label>
                                         </div>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary">حالة العقار:</label>
+                                            <label class="form-label fw-bold fs-4 text-primary">حالة العقار:</label>
                                             <label
                                                 class="form-label fs-6">{{ $real_estate->propertyStatus->name }}</label>
                                         </div>
 
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary">رقم الأرض:</label>
+                                            <label class="form-label fw-bold fs-4 text-primary">رقم الأرض:</label>
                                             <label class="form-label fs-6">{{ $real_estate->land_number }}</label>
                                         </div>
 
@@ -612,18 +610,18 @@
 
                                     <div class="row" wire:ignore.self>
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary">رقم البلوك:</label>
+                                            <label class="form-label fw-bold fs-4 text-primary">رقم البلوك:</label>
                                             <label class="form-label fs-6">{{ $real_estate->block_number }}</label>
                                         </div>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary">رقم الطابق:</label>
+                                            <label class="form-label fw-bold fs-4 text-primary">رقم الطابق:</label>
                                             <label
                                                 class="form-label fs-6">{{ number_format($real_estate->floor_number) }}</label>
                                         </div>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary">الفرع:
+                                            <label class="form-label fw-bold fs-4 text-primary">الفرع:
                                             </label>
                                             <label class="form-label fs-6">{{ $real_estate->branch->name }}</label>
                                         </div>
@@ -633,7 +631,7 @@
                                     <div class="row" wire:ignore.self>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary"> ملاحظات على الطلب:
+                                            <label class="form-label fw-bold fs-4 text-primary"> ملاحظات على الطلب:
                                             </label>
                                             <p>{{ $real_estate->notes }}</p>
                                         </div>
@@ -662,7 +660,7 @@
                                     <div class="row">
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary"> نوع العقار
+                                            <label class="form-label fw-bold fs-4 text-primary"> نوع العقار
                                                 :</label>
                                             <label
                                                 class="form-label fs-6">{{ $real_estate->propertyType->name }}</label>
@@ -670,14 +668,14 @@
 
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary"> المساحة
+                                            <label class="form-label fw-bold fs-4 text-primary"> المساحة
                                                 :</label>
                                             <label
-                                                class="form-label fs-6">{{ number_format($real_estate->space) }}</label>
+                                                class="form-label fs-6">{{ number_format((int) $real_estate->space) }}</label>
                                         </div>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary">رقم الأرض:</label>
+                                            <label class="form-label fw-bold fs-4 text-primary">رقم الأرض:</label>
                                             <label class="form-label fs-6">{{ $real_estate->land_number }}</label>
                                         </div>
                                     </div>
@@ -685,17 +683,17 @@
                                     <div class="row" wire:ignore.self>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary">رقم البلوك:</label>
+                                            <label class="form-label fw-bold fs-4 text-primary">رقم البلوك:</label>
                                             <label class="form-label fs-6">{{ $real_estate->block_number }}</label>
                                         </div>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary">المدينة:</label>
+                                            <label class="form-label fw-bold fs-4 text-primary">المدينة:</label>
                                             <label class="form-label fs-6">{{ $real_estate->city->name }}</label>
                                         </div>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary">الحي:
+                                            <label class="form-label fw-bold fs-4 text-primary">الحي:
                                             </label>
                                             <label
                                                 class="form-label fs-6">{{ $real_estate->neighborhood->name }}</label>
@@ -707,20 +705,20 @@
                                     <div class="row" wire:ignore.self>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary">عرض الشارع:
+                                            <label class="form-label fw-bold fs-4 text-primary">عرض الشارع:
                                             </label>
                                             <label
                                                 class="form-label fs-6">{{ $real_estate->streetWidth->street_number }}</label>
                                         </div>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary">الاتجاه:
+                                            <label class="form-label fw-bold fs-4 text-primary">الاتجاه:
                                             </label>
                                             <label class="form-label fs-6">{{ $real_estate->direction->name }}</label>
                                         </div>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary">حالة العقار:</label>
+                                            <label class="form-label fw-bold fs-4 text-primary">حالة العقار:</label>
                                             <label
                                                 class="form-label fs-6">{{ $real_estate->propertyStatus->name }}</label>
                                         </div>
@@ -730,21 +728,21 @@
                                     <div class="row" wire:ignore.self>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary">نوع الملكية:
+                                            <label class="form-label fw-bold fs-4 text-primary">نوع الملكية:
                                             </label>
                                             <label
                                                 class="form-label fs-6">{{ $real_estate->ownerShipType->name }}</label>
                                         </div>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary"> السعر
+                                            <label class="form-label fw-bold fs-4 text-primary"> السعر
                                                 :</label>
                                             <label
                                                 class="form-label fs-6">{{ number_format($real_estate->price) }}</label>
                                         </div>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary"> عمر العقار
+                                            <label class="form-label fw-bold fs-4 text-primary"> عمر العقار
                                                 :</label>
                                             <label
                                                 class="form-label fs-6">{{ number_format($real_estate->real_estate_age) }}</label>
@@ -755,7 +753,7 @@
                                     <div class="row" wire:ignore.self>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary">الفرع:
+                                            <label class="form-label fw-bold fs-4 text-primary">الفرع:
                                             </label>
                                             <label class="form-label fs-6">{{ $real_estate->branch->name }}</label>
                                         </div>
@@ -767,7 +765,7 @@
                                     <div class="row" wire:ignore.self>
 
                                         <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-5 text-primary"> ملاحظات على الطلب:
+                                            <label class="form-label fw-bold fs-4 text-primary"> ملاحظات على الطلب:
                                             </label>
                                             <p>{{ $real_estate->notes }}</p>
                                         </div>
@@ -792,6 +790,7 @@
                         </div>
                     </div>
 
+                    {{--
                     <div class="col-md-12" wire:ignore.self>
                         <div class="row" wire:ignore.self>
                             <div class="col-lg-6" wire:ignore.self>
@@ -802,7 +801,7 @@
                                     <div class="card-body" wire:ignore.self>
                                         <ul class="timeline" wire:ignore.self>
 
-                                            {{-- @foreach ($offer->orderNotes as $note)
+                                           @foreach ($offer->orderNotes as $note)
                                                 <li class="timeline-item" wire:ignore.self>
                                                     <span
                                                         class="timeline-point
@@ -826,7 +825,7 @@
                                                         </div>
                                                     </div>
                                                 </li>
-                                            @endforeach --}}
+                                            @endforeach
 
                                         </ul>
                                     </div>
@@ -904,7 +903,7 @@
                                                                 </div>
                                                             </li>
                                                         @endif
-                                                    @endforeach --}}
+                                                    @endforeach
                                                 </ul>
                                             </div>
                                         </div>
@@ -913,6 +912,8 @@
                             @endauth
                         </div>
                     </div>
+                     --}}
+
                 </div>
             </section>
         </div>

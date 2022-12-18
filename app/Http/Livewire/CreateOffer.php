@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Http\Controllers\Services\OfferService;
+use App\Models\City;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 
@@ -10,7 +11,7 @@ class CreateOffer extends Component
 {
     use LivewireAlert;
 
-    protected $listeners = ['setMediatorsIds', 'refreshSelect2' => '$refresh'];
+    protected $listeners = ['setMediatorsIds','setEvent', 'refreshSelect2' => '$refresh'];
     public $land_fields = ['price_by_meter', 'total_price', 'direction_id', 'land_type_id', 'licensed_id', 'street_width_id', 'interface_length_id', 'character'];
     public $duplex_fields = ['price_by_meter', 'total_price', 'direction_id', 'land_type_id', 'licensed_id', 'street_width_id', 'interface_length_id', 'character', 'real_estate_age', 'building_type_id', 'building_status_id', 'construction_delivery_id'];
     public $condominium_fields = ['real_estate_age', 'floors_number', 'flats_number', 'stores_number', 'flat_rooms_number', 'annual_income', 'total_price',];
@@ -22,6 +23,7 @@ class CreateOffer extends Component
 
     #Form One
     public $city_id = 1;
+    public $city;
     public $neighborhood_id = 1;
     public $land_number;
     public $block_number;
@@ -66,6 +68,8 @@ class CreateOffer extends Component
     public $first = 'active';
     public $second = '';
     public $third = '';
+
+    public $neighborhoods_json;
 
     public function step($form)
     {
@@ -116,6 +120,27 @@ class CreateOffer extends Component
 
     public function updated($propertyName, $value)
     {
+        if ($propertyName == 'city_id') {
+            $this->city = City::find($value);
+            $neighborhoods = $this->city->neighborhoods()->get(['id', 'name'])->toArray();
+
+            foreach ($neighborhoods as $key => $neighborhood) {
+
+                foreach ($neighborhood as $index => $value) {
+                    if ($index == 'name') {
+                        $neighborhood['text'] = $value;
+                        unset($neighborhood['name']);
+                        $neighborhoods[$key] = $neighborhood;
+                    }
+                }
+            }
+
+            $neighborhoods_json = json_decode(json_encode($neighborhoods));
+
+            $this->emit('neighborhoods', $neighborhoods_json);
+        }
+
+
         if ($propertyName == 'yes') {
             $this->yes = 'option1';
             $this->no = '';

@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Http\Controllers\Services\OfferService;
+use App\Models\City;
 use App\Models\Mediator;
 use App\Models\Offer;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
@@ -12,7 +13,7 @@ class EditOffer extends Component
 {
     use LivewireAlert;
 
-    protected $listeners = ['setMediatorsIds', 'refreshSelect2' => '$refresh'];
+    protected $listeners = ['setMediatorsIds', 'setEvent', 'refreshSelect2' => '$refresh'];
     public $land_fields = ['price_by_meter', 'total_price', 'direction_id', 'land_type_id', 'licensed_id', 'street_width_id', 'interface_length_id', 'character'];
     public $duplex_fields = ['price_by_meter', 'total_price', 'direction_id', 'land_type_id', 'licensed_id', 'street_width_id', 'interface_length_id', 'character', 'real_estate_age', 'building_type_id', 'building_status_id', 'construction_delivery_id'];
     public $condominium_fields = ['real_estate_age', 'floors_number', 'flats_number', 'stores_number', 'flat_rooms_number', 'annual_income', 'total_price',];
@@ -22,6 +23,7 @@ class EditOffer extends Component
 
     #Form One
     public $city_id = 1;
+    public $city;
     public $neighborhood_id = 1;
     public $land_number;
     public $block_number;
@@ -106,6 +108,34 @@ class EditOffer extends Component
         $this->yes = $offer->offer_type_id == 1 ? $this->yes = 'option1' : $this->no = 'option2';
         $this->is_direct = $offer->offer_type_id == 1 ? true : false;
         $this->mediators_ids = $offer->mediators_ids;
+        $this->setEvent();
+    }
+
+
+    public function setEvent()
+    {
+        $this->city = City::find($this->city_id);
+        $neighborhoods = $this->city->neighborhoods()->get(['id', 'name'])->toArray();
+
+        foreach ($neighborhoods as $key => $neighborhood) {
+
+            foreach ($neighborhood as $index => $value) {
+
+                if ($this->neighborhood_id == $value) {
+                    $neighborhood['selected'] = true;
+                }
+
+                if ($index == 'name') {
+                    $neighborhood['text'] = $value;
+                    unset($neighborhood['name']);
+                    $neighborhoods[$key] = $neighborhood;
+                }
+            }
+        }
+
+        $neighborhoods_json = json_decode(json_encode($neighborhoods));
+
+        $this->emit('neighborhoods', $neighborhoods_json, $this->neighborhood_id);
     }
 
     public function step($form)
@@ -153,6 +183,11 @@ class EditOffer extends Component
 
     public function updated($propertyName, $value)
     {
+
+        if ($propertyName == 'city_id') {
+            $this->setEvent();
+        }
+
         if ($propertyName == 'yes') {
             $this->yes = 'option1';
             $this->no = '';
@@ -264,6 +299,7 @@ class EditOffer extends Component
 
     public function render()
     {
+        $this->setEvent();
         return view('livewire.edit-offer');
     }
 

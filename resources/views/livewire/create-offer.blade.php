@@ -4,6 +4,8 @@
     <div class="content-wrapper" wire:ignore.self>
         <div class="content-header row" wire:ignore.self>
         </div>
+
+
         <div class="content-body" wire:ignore.self>
             <div class="auth-wrapper auth-cover" wire:ignore.self>
                 <div class="auth-inner row m-0" wire:ignore.self>
@@ -170,10 +172,13 @@
                                                 <label class="form-label">الحى</label>
                                                 <select class="js-select2-neighborhood select2 form-select"
                                                     wire:model='neighborhood_id'>
+
+                                                    {{--
                                                     @foreach ($city->neighborhoods as $neighborhood)
                                                         <option value="{{ $neighborhood->id }}" selected>
                                                             {{ $neighborhood->name }}</option>
-                                                    @endforeach
+                                                    @endforeach --}}
+
                                                 </select>
                                                 @error('neighborhood_id')
                                                     <small class="text-danger">{{ $message }}</small>
@@ -929,13 +934,19 @@
 
                 });
 
-
-
-
-
+                window.livewire.on('neighborhoods', (data) => {
+                    console.log(data);
+                    $('.js-select2-neighborhood').html('');
+                    $('.js-select2-neighborhood').select2({
+                        placeholder: 'اختيار الحي',
+                        data: data,
+                        closeOnSelect: true
+                    });
+                });
 
             });
         </script>
+
     @endpush
 
 
