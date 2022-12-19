@@ -80,8 +80,8 @@ class RealEstateSeeder extends Seeder
             DB::table('real_estates')->insert([
                 'city_id' => random_int($min_city_id, $max_city_id),
                 'neighborhood_id' => random_int($min_neighborhood_id, $max_neighborhood_id),
-                'street_width_id' => random_int($min_street_width_id, $max_street_width_id),
-                'direction_id' => random_int($min_direction_id, $max_direction_id),
+                // 'street_width_id' => random_int($min_street_width_id, $max_street_width_id),
+                // 'direction_id' => random_int($min_direction_id, $max_direction_id),
                 'land_type_id' => random_int($min_land_type_id, $max_land_type_id),
                 'property_type_id' => $property_type_id,
                 'property_status_id' => random_int($min_property_status_id, $max_property_status_id),

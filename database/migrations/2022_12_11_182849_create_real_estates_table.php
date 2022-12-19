@@ -18,8 +18,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('city_id')->constrained('cities');
             $table->foreignId('neighborhood_id')->constrained('neighborhoods');
-            $table->foreignId('street_width_id')->nullable()->constrained('street_widths');
-            $table->foreignId('direction_id')->nullable()->constrained('directions');
+            // $table->foreignId('street_width_id')->nullable()->constrained('street_widths');
+            // $table->foreignId('direction_id')->nullable()->constrained('directions');
             $table->foreignId('land_type_id')->nullable()->constrained('land_types');
             $table->foreignId('interface_length_id')->nullable()->constrained('interface_lengths');
             $table->foreignId('licensed_id')->nullable()->constrained('licenseds');

@@ -11,9 +11,9 @@ class StreetWidth extends Model
 
     protected $fillable = ['street_number', 'name'];
 
-    public function realEstate()
+    public function realEstates()
     {
-        return $this->belongsTo(RealEstate::class, 'street_width_id', 'id');
+        return $this->belongsToMany(RealEstate::class, 'street_width_real_estate', 'street_width_id', 'real_estate_id', 'id', 'id');
     }
 
     public function scopeData($query)

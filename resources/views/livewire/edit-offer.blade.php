@@ -96,7 +96,7 @@
                                                 class=" bs-stepper-box
                                             @if ($errors->has('land_type_id') ||
                                                 $errors->has('licensed_id') ||
-                                                $errors->has('street_width_id') ||
+                                                $errors->has('street_width_ids') ||
                                                 $errors->has('notes') ||
                                                 $errors->has('property_type_id') ||
                                                 $errors->has('space') ||
@@ -342,18 +342,18 @@
                                                     @enderror
                                                 </div>
 
-
                                                 <div class="col-md-6 mb-1 direction-div-hide" wire:ignore>
                                                     <label class="form-label">الاتجاه</label>
                                                     <select class="js-select2-direction select2 form-select"
-                                                        wire:model='direction_id' wire:ignore.self>
+                                                        wire:model='direction_ids' multiple="multiple"
+                                                        wire:ignore.self>
                                                         @foreach (getDirections() as $direction)
                                                             <option value="{{ $direction->id }}" selected>
                                                                 {{ $direction->name }}</option>
                                                         @endforeach
                                                     </select>
 
-                                                    @error('direction_id')
+                                                    @error('direction_ids')
                                                         <small class="text-danger">{{ $message }}</small>
                                                     @enderror
                                                 </div>
@@ -392,14 +392,14 @@
                                                     <label class="form-label">عرض الشارع</label>
 
                                                     <select class="js-select2-street-width select2 form-select"
-                                                        wire:model='street_width_id'>
+                                                        multiple="multiple" wire:model='street_width_ids'>
                                                         @foreach (getStreets() as $street_width)
                                                             <option value="{{ $street_width->id }}" selected>
                                                                 {{ $street_width->street_number }}</option>
                                                         @endforeach
                                                     </select>
 
-                                                    @error('street_width_id')
+                                                    @error('street_width_ids')
                                                         <small class="text-danger">{{ $message }}</small>
                                                     @enderror
                                                 </div>
@@ -868,8 +868,8 @@
                 });
 
                 $('.js-select2-direction').on('change', function() {
-                    var direction_id = $('.js-select2-direction').val();
-                    @this.set('direction_id', direction_id);
+                    var direction_ids = $('.js-select2-direction').val();
+                    @this.set('direction_ids', direction_ids);
 
                     window.livewire.emit('setMediatorsIds');
                 });
@@ -887,8 +887,8 @@
                 });
 
                 $('.js-select2-street-width').on('change', function() {
-                    var street_width_id = $('.js-select2-street-width').val();
-                    @this.set('street_width_id', street_width_id);
+                    var street_width_ids = $('.js-select2-street-width').val();
+                    @this.set('street_width_ids', street_width_ids);
                     window.livewire.emit('setMediatorsIds');
                 });
 
@@ -928,23 +928,30 @@
                     }
                 });
 
-                window.livewire.on('mediatorsIds', (ids, is_direct) => {
-                    @this.set('mediators_ids', ids);
+                window.livewire.on('setids', (ids, is_direct) => {
+                    @this.set('mediators_ids', ids['mediators_ids']);
+                    @this.set('direction_ids', ids['direction_ids']);
+                    @this.set('street_width_ids', ids['street_width_ids']);
 
                     console.log(ids);
                     console.log(typeof(ids));
+                    console.log("typeof(ids)");
 
                     if (is_direct) {
                         $('.mediators').hide(ids);
                     } else {
                         // var mediators_ids = JSON.parse(ids);
-                        $('.js-select2-multi').val(ids);
+                        $('.js-select2-multi').val(ids['mediators_ids']);
                     }
+
+
+                    $('.js-select2-direction').val(ids['direction_ids']);
+                    $('.js-select2-street-width').val(ids['street_width_ids']);
+
                     // window.livewire.emit('setMediatorsIds');
                 });
 
                 window.livewire.on('set-form', (property_type_id) => {
-                    console.log(property_type_id);
 
                     // Hide All
                     $(".price-by-meter").hide();
@@ -1029,8 +1036,9 @@
                 });
 
                 window.livewire.on('neighborhoods', (data) => {
-                    console.log(data);
                     $('.js-select2-neighborhood').html('');
+                    console.log(data);
+
                     $('.js-select2-neighborhood').select2({
                         placeholder: 'اختيار الحي',
                         data: data,
@@ -1044,6 +1052,7 @@
         <script>
             window.addEventListener("DOMContentLoaded", function() {
                 Livewire.emit("setEvent");
+                Livewire.emit("setIds");
             });
         </script>
     @endpush

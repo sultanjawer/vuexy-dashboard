@@ -13,8 +13,8 @@ class RealEstate extends Model
         'id',
         'city_id',
         'neighborhood_id',
-        'street_width_id',
-        'direction_id',
+        // 'street_width_id',
+        // 'direction_id',
         'land_type_id',
         'property_type_id',
         'property_status_id',
@@ -55,14 +55,14 @@ class RealEstate extends Model
         return $this->hasOne(Neighborhood::class, 'id', 'neighborhood_id',);
     }
 
-    public function streetWidth()
+    public function streetWidths()
     {
-        return $this->hasOne(StreetWidth::class, 'id', 'street_width_id',);
+        return $this->belongsToMany(StreetWidth::class, 'street_width_real_estate', 'real_estate_id', 'street_width_id', 'id', 'id');
     }
 
-    public function direction()
+    public function directions()
     {
-        return $this->hasOne(Direction::class, 'id', 'direction_id');
+        return $this->belongsToMany(Direction::class, 'direction_real_estate', 'real_estate_id', 'direction_id', 'id', 'id');
     }
 
     public function landType()
@@ -114,6 +114,7 @@ class RealEstate extends Model
     {
         return $this->hasOne(Branch::class, 'id', 'branch_id');
     }
+
 
     #Has Many Relationship
     public function offers()

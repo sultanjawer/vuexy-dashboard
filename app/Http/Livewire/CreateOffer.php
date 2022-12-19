@@ -11,12 +11,12 @@ class CreateOffer extends Component
 {
     use LivewireAlert;
 
-    protected $listeners = ['setMediatorsIds','setEvent', 'refreshSelect2' => '$refresh'];
-    public $land_fields = ['price_by_meter', 'total_price', 'direction_id', 'land_type_id', 'licensed_id', 'street_width_id', 'interface_length_id', 'character'];
-    public $duplex_fields = ['price_by_meter', 'total_price', 'direction_id', 'land_type_id', 'licensed_id', 'street_width_id', 'interface_length_id', 'character', 'real_estate_age', 'building_type_id', 'building_status_id', 'construction_delivery_id'];
+    protected $listeners = ['setMediatorsIds', 'setNeiborhoods', 'refreshSelect2' => '$refresh'];
+    public $land_fields = ['price_by_meter', 'total_price', 'direction_ids', 'land_type_id', 'licensed_id', 'street_width_ids', 'interface_length_id', 'character'];
+    public $duplex_fields = ['price_by_meter', 'total_price', 'direction_ids', 'land_type_id', 'licensed_id', 'street_width_ids', 'interface_length_id', 'character', 'real_estate_age', 'building_type_id', 'building_status_id', 'construction_delivery_id'];
     public $condominium_fields = ['real_estate_age', 'floors_number', 'flats_number', 'stores_number', 'flat_rooms_number', 'annual_income', 'total_price',];
     public $flat_fields = ['price', 'floor_number', 'real_estate_age'];
-    public $chalet_fields = ['direction_id', 'street_width_id', 'owner_ship_type_id', 'real_estate_age', 'price'];
+    public $chalet_fields = ['direction_ids', 'street_width_ids', 'owner_ship_type_id', 'real_estate_age', 'price'];
     public $main_fields = ['city_id', 'neighborhood_id', 'land_number', 'block_number', 'notes', 'space', 'property_type_id', 'mediators_ids', 'branch_id'];
 
     public $property_types = ['land', 'duplex', 'condominium', 'flat', 'chalet'];
@@ -35,10 +35,10 @@ class CreateOffer extends Component
 
     public $price_by_meter = 0;
     public $total_price = 0;
-    public $direction_id = 1;
+    public $direction_ids = [];
     public $land_type_id = 1;
     public $licensed_id = 1;
-    public $street_width_id = 1;
+    public $street_width_ids = [];
     public $branch_id = 1;
     public $interface_length_id = 1;
     public $character = '';
@@ -70,6 +70,33 @@ class CreateOffer extends Component
     public $third = '';
 
     public $neighborhoods_json;
+
+
+    public function setNeiborhoods()
+    {
+        $this->city = City::find($this->city_id);
+        $neighborhoods = $this->city->neighborhoods()->get(['id', 'name'])->toArray();
+
+        foreach ($neighborhoods as $key => $neighborhood) {
+
+            foreach ($neighborhood as $index => $value) {
+
+                if ($this->neighborhood_id == $value) {
+                    $neighborhood['selected'] = true;
+                }
+
+                if ($index == 'name') {
+                    $neighborhood['text'] = $value;
+                    unset($neighborhood['name']);
+                    $neighborhoods[$key] = $neighborhood;
+                }
+            }
+        }
+
+        $neighborhoods_json = json_decode(json_encode($neighborhoods));
+
+        $this->emit('neighborhoods', $neighborhoods_json, $this->neighborhood_id);
+    }
 
     public function step($form)
     {
@@ -266,6 +293,7 @@ class CreateOffer extends Component
         $this->annual_income = (int)str_replace(',', '', $this->annual_income);
 
         $data = $this->validate();
+
         if ($this->is_direct) {
             $data['is_direct'] = true;
             $data['mediators_ids'] = [];
@@ -280,13 +308,5 @@ class CreateOffer extends Component
         if ($offer) {
             return redirect()->route('panel.offers')->with('message', 'تم إنشاء العرض بنجاح');
         }
-
-        $this->alert('warning', '', [
-            'toast' => true,
-            'position' => 'center',
-            'timer' => 6000,
-            'text' => '👍 لقد حدث خطأ ما يرجى المحاولة مرة أخرى',
-            'timerProgressBar' => true,
-        ]);
     }
 }

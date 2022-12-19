@@ -16,15 +16,16 @@ class StreetWidthSeeder extends Seeder
     public function run()
     {
         $streets = [
-            'Street 1',
-            'Street 2',
-            'Street 3'
+            "عرض الشارع الاول" => '15',
+            'عرض الشارع الثاني' => '30',
+            'عرض الشارع الثالث' => '50',
+
         ];
 
         foreach ($streets as $index => $street) {
             DB::table('street_widths')->insert([
-                'name' => $street,
-                'street_number' => $index,
+                'name' => $index,
+                'street_number' => $street,
                 'created_at' => now(),
             ]);
         }

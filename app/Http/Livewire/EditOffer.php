@@ -6,6 +6,7 @@ use App\Http\Controllers\Services\OfferService;
 use App\Models\City;
 use App\Models\Mediator;
 use App\Models\Offer;
+use App\Models\RealEstate;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 
@@ -13,12 +14,12 @@ class EditOffer extends Component
 {
     use LivewireAlert;
 
-    protected $listeners = ['setMediatorsIds', 'setEvent', 'refreshSelect2' => '$refresh'];
-    public $land_fields = ['price_by_meter', 'total_price', 'direction_id', 'land_type_id', 'licensed_id', 'street_width_id', 'interface_length_id', 'character'];
-    public $duplex_fields = ['price_by_meter', 'total_price', 'direction_id', 'land_type_id', 'licensed_id', 'street_width_id', 'interface_length_id', 'character', 'real_estate_age', 'building_type_id', 'building_status_id', 'construction_delivery_id'];
+    protected $listeners = ['setMediatorsIds', 'setIds', 'setEvent', 'refreshSelect2' => '$refresh'];
+    public $land_fields = ['price_by_meter', 'total_price', 'direction_ids', 'land_type_id', 'licensed_id', 'street_width_ids', 'interface_length_id', 'character'];
+    public $duplex_fields = ['price_by_meter', 'total_price', 'direction_ids', 'land_type_id', 'licensed_id', 'street_width_ids', 'interface_length_id', 'character', 'real_estate_age', 'building_type_id', 'building_status_id', 'construction_delivery_id'];
     public $condominium_fields = ['real_estate_age', 'floors_number', 'flats_number', 'stores_number', 'flat_rooms_number', 'annual_income', 'total_price',];
     public $flat_fields = ['price', 'floor_number', 'real_estate_age'];
-    public $chalet_fields = ['direction_id', 'street_width_id', 'owner_ship_type_id', 'real_estate_age', 'price'];
+    public $chalet_fields = ['direction_ids', 'street_width_ids', 'owner_ship_type_id', 'real_estate_age', 'price'];
     public $main_fields = ['city_id', 'neighborhood_id', 'land_number', 'block_number', 'notes', 'space', 'property_type_id', 'mediators_ids', 'branch_id'];
 
     #Form One
@@ -35,10 +36,10 @@ class EditOffer extends Component
 
     public $price_by_meter = 0;
     public $total_price = 0;
-    public $direction_id = 1;
+    public $direction_ids = [];
     public $land_type_id = 1;
     public $licensed_id = 1;
-    public $street_width_id = 1;
+    public $street_width_ids = [];
     public $branch_id = 1;
     public $interface_length_id = 1;
     public $character = '';
@@ -86,10 +87,10 @@ class EditOffer extends Component
         $this->property_type_id = $offer->realEstate->property_type_id;
         $this->price_by_meter = $offer->realEstate->price_by_meter;
         $this->total_price = $offer->realEstate->total_price;
-        $this->direction_id = $offer->realEstate->direction_id;
+        $this->direction_ids = $offer->realEstate->directions->pluck('id')->toArray();
         $this->land_type_id = $offer->realEstate->land_type_id;
         $this->licensed_id = $offer->realEstate->licensed_id;
-        $this->street_width_id = $offer->realEstate->street_width_id;
+        $this->street_width_ids = $offer->realEstate->streetWidths->pluck('id')->toArray();
         $this->branch_id = $offer->realEstate->branch_id;
         $this->interface_length_id = $offer->realEstate->interface_length_id;
         $this->character  = $offer->realEstate->character;
@@ -107,10 +108,18 @@ class EditOffer extends Component
         $this->construction_delivery_id = $offer->realEstate->construction_delivery_id;
         $this->yes = $offer->offer_type_id == 1 ? $this->yes = 'option1' : $this->no = 'option2';
         $this->is_direct = $offer->offer_type_id == 1 ? true : false;
-        $this->mediators_ids = $offer->mediators_ids;
+        $this->mediators_ids = array_map('intval', json_decode($offer->mediators_ids));
         $this->setEvent();
     }
 
+    public function setIds()
+    {
+        $array = [];
+        $array['mediators_ids'] = $this->mediators_ids;
+        $array['direction_ids'] = $this->direction_ids;
+        $array['street_width_ids'] = $this->street_width_ids;
+        $this->emit('setids', $array, $this->is_direct);
+    }
 
     public function setEvent()
     {
@@ -134,7 +143,6 @@ class EditOffer extends Component
         }
 
         $neighborhoods_json = json_decode(json_encode($neighborhoods));
-
         $this->emit('neighborhoods', $neighborhoods_json, $this->neighborhood_id);
     }
 
@@ -155,7 +163,6 @@ class EditOffer extends Component
 
         if ($form == 'third') {
             $this->third = 'active';
-            $this->emit('mediatorsIds', $this->mediators_ids, $this->is_direct);
         }
     }
 
@@ -315,7 +322,7 @@ class EditOffer extends Component
         $this->flat_rooms_number  = (int)str_replace(',', '', $this->flat_rooms_number);
         $this->annual_income = (int)str_replace(',', '', $this->annual_income);
 
-        if ($this->is_direct) {
+        if (!$this->is_direct) {
             if (!$this->mediators_ids) {
                 $this->alert('warning', '', [
                     'toast' => true,
@@ -324,6 +331,7 @@ class EditOffer extends Component
                     'text' => 'هذا العرض غير مباشر يرجى اختيار وسيط واحد على الاقل 😌',
                     'timerProgressBar' => true,
                 ]);
+                return false;
             }
         }
 
@@ -344,13 +352,5 @@ class EditOffer extends Component
         if ($offer) {
             return redirect()->route('panel.offers')->with('message', 'تم تحديث العرض بنجاح');
         }
-
-        $this->alert('warning', '', [
-            'toast' => true,
-            'position' => 'center',
-            'timer' => 6000,
-            'text' => '👍 لقد حدث خطأ ما يرجى المحاولة مرة أخرى',
-            'timerProgressBar' => true,
-        ]);
     }
 }
