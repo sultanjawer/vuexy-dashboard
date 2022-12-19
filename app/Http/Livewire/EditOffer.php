@@ -108,7 +108,7 @@ class EditOffer extends Component
         $this->construction_delivery_id = $offer->realEstate->construction_delivery_id;
         $this->yes = $offer->offer_type_id == 1 ? $this->yes = 'option1' : $this->no = 'option2';
         $this->is_direct = $offer->offer_type_id == 1 ? true : false;
-        dd($offer->mediators_ids);
+        dd((string)$offer->mediators_ids);
         $this->mediators_ids = array_map('intval', json_decode($offer->mediators_ids));
         $this->setEvent();
     }
