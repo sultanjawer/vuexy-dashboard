@@ -87,10 +87,11 @@ class EditOffer extends Component
         $this->property_type_id = $offer->realEstate->property_type_id;
         $this->price_by_meter = $offer->realEstate->price_by_meter;
         $this->total_price = $offer->realEstate->total_price;
-        $this->direction_ids = $offer->realEstate->directions->pluck('id')->toArray();
         $this->land_type_id = $offer->realEstate->land_type_id;
         $this->licensed_id = $offer->realEstate->licensed_id;
         $this->street_width_ids = $offer->realEstate->streetWidths->pluck('id')->toArray();
+        $this->direction_ids = $offer->realEstate->directions->pluck('id')->toArray();
+        $this->mediators_ids = $offer->mediators->pluck('id')->toArray();
         $this->branch_id = $offer->realEstate->branch_id;
         $this->interface_length_id = $offer->realEstate->interface_length_id;
         $this->character  = $offer->realEstate->character;
@@ -108,7 +109,6 @@ class EditOffer extends Component
         $this->construction_delivery_id = $offer->realEstate->construction_delivery_id;
         $this->yes = $offer->offer_type_id == 1 ? $this->yes = 'option1' : $this->no = 'option2';
         $this->is_direct = $offer->offer_type_id == 1 ? true : false;
-        $this->mediators_ids = array_map('intval', json_decode(json_encode($offer->mediators_ids)));
         $this->setEvent();
     }
 

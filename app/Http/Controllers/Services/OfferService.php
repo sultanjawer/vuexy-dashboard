@@ -11,10 +11,10 @@ class OfferService extends Controller
 {
     public function store($data)
     {
-        $real_estate = $this->createRealEstate($data);
 
+        $real_estate = $this->createRealEstate($data);
         $offer = Offer::create([
-            'mediators_ids' => json_encode($data['mediators_ids']), #
+            // 'mediators_ids' => json_encode($data['mediators_ids']), #
             'offer_type_id' => $data['is_direct'] ? 1 : 2, #
             'user_id' => auth()->id(),
             'who_add' => auth()->id(),
@@ -28,6 +28,7 @@ class OfferService extends Controller
         $offer_code = ucwords($branch->code) . '-' . $offer->id . '-USR' . auth()->id();
         $offer->offer_code = $offer_code;
         $offer->save();
+        $offer->mediators()->sync($data['mediators_ids']);
 
         return Offer::find($offer->id);
     }
@@ -215,10 +216,12 @@ class OfferService extends Controller
 
     public function update($offer, $data)
     {
+
         $real_estate = RealEstate::find($offer->realEstate->id);
         $id = $real_estate->property_type_id;
+
         $offer->update([
-            'mediators_ids' => json_encode($data['mediators_ids']), #
+            // 'mediators_ids' => json_encode($data['mediators_ids']), #
             'offer_type_id' => $data['is_direct'] ? 1 : 2, #
             // 'user_id' => auth()->id(),
             // 'who_add' => auth()->id(),
@@ -341,6 +344,10 @@ class OfferService extends Controller
         if (in_array($id, [1, 2, 5])) {
             $real_estate->directions()->sync($data['direction_ids']);
             $real_estate->streetWidths()->sync($data['street_width_ids']);
+        }
+
+        if ($offer) {
+            $offer->mediators()->sync($data['mediators_ids']);
         }
 
 

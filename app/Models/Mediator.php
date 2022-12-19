@@ -23,6 +23,12 @@ class Mediator extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
+
+    public function offers()
+    {
+        return $this->belongsToMany(Offer::class, 'offer_mediator', 'mediator_id', 'offer_id', 'id', 'id');
+    }
+
     public function scopeData($query)
     {
         return $query->select([

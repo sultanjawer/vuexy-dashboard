@@ -18,7 +18,7 @@ class Offer extends Model
         'who_add',
         'who_edit',
         'who_cancel',
-        'mediators_ids',
+        // 'mediators_ids',
         'booking_ids',
     ];
 
@@ -62,6 +62,12 @@ class Offer extends Model
         return $this->belongsTo(PropertyStatus::class, 'property_status_id', 'id');
     }
 
+    public function mediators()
+    {
+        return $this->belongsToMany(Mediator::class, 'offer_mediator', 'offer_id', 'mediator_id', 'id', 'id');
+    }
+
+
     // public function priceType()
     // {
     //     return $this->belongsTo(PriceType::class, 'price_type_id', 'id');
@@ -103,7 +109,7 @@ class Offer extends Model
             'who_add',
             'who_edit',
             'who_cancel',
-            'mediators_ids',
+            // 'mediators_ids',
             'booking_ids',
         ]);
     }
