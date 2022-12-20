@@ -958,16 +958,16 @@
                 <div class="modal-header bg-transparent" wire:ignore>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body pb-5 px-sm-5 pt-50" wire:ignore.self>
-                    <div class="text-center mb-2" wire:ignore>
+                <div class="modal-body pb-5 px-sm-5 pt-50">
+                    <div class="text-center mb-2">
                         <h1 class="mb-1">تفاصيل الحجز</h1>
                     </div>
-                    <form id="editUserForm" class="row gy-1 pt-75" onsubmit="return false" wire:ignore.self>
+                    <form class="row gy-1 pt-75" onsubmit="return false">
 
                         <div class="col-12 col-md-6 customer-name" wire:ignore>
                             <label class="form-label">اسم العميل</label>
                             <select class="js-select2-customer-name select2 form-select" wire:model='customer_id'
-                                @if ($offer->reservation) disabled @endif>
+                                @if ($offer->reservation) disabled @endif wire:ignore.self>
                                 @foreach (getCustomers() as $customer)
                                     <option value="{{ $customer->id }}" selected>
                                         {{ $customer->name }}</option>
@@ -979,7 +979,7 @@
                         </div>
 
 
-                        <div class="col-12 col-md-6" wire:ignore.self>
+                        <div class="col-12 col-md-6">
                             <div class="row">
                                 <label class="form-label" for="price">السعر</label>
                                 <div class="input-group input-group-merge">
@@ -994,7 +994,7 @@
                         </div>
 
 
-                        <div class="col-12 col-md-6" wire:ignore.self>
+                        <div class="col-12 col-md-6">
                             <label class="form-label" for="fp-range">التاريخ</label>
                             <input type="text" dir="ltr" wire:model='date'
                                 class="form-control flatpickr-range" placeholder="YYYY-MM-DD to YYYY-MM-DD"
@@ -1005,7 +1005,7 @@
                         </div>
 
 
-                        <div class="col-12 col-md-6" wire:ignore.self>
+                        <div class="col-12 col-md-6">
                             <label class="form-label" for="modalEditUserEmail">ملاحظات:</label>
                             <textarea class="form-control" wire:model='reservation_notes' rows="3" placeholder="ملاحظات"
                                 @if ($offer->reservation) disabled @endif></textarea>
@@ -1014,7 +1014,7 @@
                             @enderror
                         </div>
 
-                        <div class="col-12 text-center mt-2 pt-50" wire:ignore.self>
+                        <div class="col-12 text-center mt-2 pt-50">
                             @if (!$offer->reservation)
                                 <button type="submit" class="btn btn-primary btn-submit me-1"
                                     wire:click='storeReservation'>حفظ</button>
@@ -1039,12 +1039,12 @@
 
                 window.initSelectCompanyDrop = () => {
                     $('.js-select2-customer-name').select2({
-                        placeholder: 'اختار الوسطاء',
+                        placeholder: 'اختار العميل',
                         closeOnSelect: true
                     });
                 }
 
-                initSelectCompanyDrop();
+                // initSelectCompanyDrop();
 
                 $(".js-select2-customer-name").on('change', function() {
                     var data = $('.js-select2-customer-name').val();
@@ -1052,8 +1052,7 @@
                 });
 
                 window.livewire.on('select2', (check) => {
-                    initSelectCompanyDrop();
-
+                    // initSelectCompanyDrop();
                     if (check) {
                         $(".js-select2-customer-name").prop('disabled', true);
                     } else {
