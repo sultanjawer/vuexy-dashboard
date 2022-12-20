@@ -66,7 +66,6 @@ class Offer extends Component
     {
         $direct_offers =  $this->getDirectOffers();
         $in_direct_offers =  $this->getInDirectOffers();
-
         return view('livewire.offer', [
             'direct_offers' => $direct_offers,
             'in_direct_offers' => $in_direct_offers

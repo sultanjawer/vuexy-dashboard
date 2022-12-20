@@ -159,34 +159,38 @@
                                         </td>
                                     </tr>
 
-                                    <tr>
-                                        <td class="text-nowrap fw-bolder">الرسائل الجماعية</td>
-                                        <td>
-                                            <div class="d-flex">
-                                                <div class="form-check me-3 me-lg-5">
-                                                    <input class="form-check-input" type="checkbox"
-                                                        wire:model="send_collection_messages">
-                                                    <label class="form-check-label">
-                                                        تحكم
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
 
-                                    <tr>
-                                        <td class="text-nowrap fw-bolder">الرسائل الفردية</td>
-                                        <td>
-                                            <div class="d-flex">
-                                                <div class="form-check me-3 me-lg-5">
-                                                    <input class="form-check-input" type="checkbox"
-                                                        wire:model="send_individual_messages">
-                                                    <label class="form-check-label"> تحكم
-                                                    </label>
+                                    @if ($user_type == 'admin' || $user_type == 'superadmin')
+                                        <tr>
+                                            <td class="text-nowrap fw-bolder">الرسائل الجماعية</td>
+                                            <td>
+                                                <div class="d-flex">
+                                                    <div class="form-check me-3 me-lg-5">
+                                                        <input class="form-check-input" type="checkbox"
+                                                            wire:model="send_collection_messages">
+                                                        <label class="form-check-label">
+                                                            تحكم
+                                                        </label>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                            </td>
+                                        </tr>
+
+
+                                        <tr>
+                                            <td class="text-nowrap fw-bolder">الرسائل الفردية</td>
+                                            <td>
+                                                <div class="d-flex">
+                                                    <div class="form-check me-3 me-lg-5">
+                                                        <input class="form-check-input" type="checkbox"
+                                                            wire:model="send_individual_messages">
+                                                        <label class="form-check-label"> تحكم
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endif
 
                                     <tr>
                                         <td class="text-nowrap fw-bolder">الطلبات</td>

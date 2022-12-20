@@ -20,6 +20,18 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/js/scripts/sweetalerts/sweetalert2.min.css') }}" />
 <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/js/scripts/sweetalerts/sweetalert.css') }}" />
 <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css-rtl/custom-sweetalert.css') }}" />
+
+<link rel="stylesheet" type="text/css" href="{{asset('app-assets/vendors/css/charts/apexcharts.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('app-assets/css-rtl/plugins/charts/chart-apex.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('app-assets/css-rtl/pages/app-invoice-list.css')}}">
+
+<link rel="stylesheet" type="text/css" href="{{asset('app-assets/vendors/css/pickers/pickadate/pickadate.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('app-assets/vendors/css/extensions/sweetalert2.min.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('app-assets/css-rtl/plugins/forms/pickers/form-flat-pickr.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('app-assets/css-rtl/plugins/forms/pickers/form-pickadate.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('app-assets/css-rtl/plugins/extensions/ext-component-sweet-alerts.css')}}">
+
 <!-- END: Vendor CSS-->
 
 <!-- BEGIN: Theme CSS-->

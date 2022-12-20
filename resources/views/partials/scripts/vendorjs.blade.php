@@ -22,6 +22,10 @@
 <script src="{{ asset('app-assets/js/scripts/sweetalerts/custom-sweetalert.js') }}"></script>
 <script src="{{ asset('app-assets/vendors/js/tables/datatable/datatables.checkboxes.min.js') }}"></script>
 
+{{-- <script src="{{ asset('app-assets/vendors/js/charts/apexcharts.min.js') }}"></script> --}}
+{{-- <script src="{{ asset('app-assets/vendors/js/extensions/moment.min.js') }}"></script> --}}
+{{-- <script src="{{ asset('app-assets/js/scripts/pages/dashboard-analytics.js') }}"></script> --}}
+{{-- <script src="{{ asset('app-assets/js/scripts/pages/app-invoice-list.js') }}"></script> --}}
 
 <!-- BEGIN: Theme JS-->
 <script src="{{ asset('app-assets/js/core/app-menu.js') }}"></script>
@@ -56,6 +60,10 @@
 <script src="{{ asset('app-assets/js/scripts/forms/pickers/form-pickers.js') }}"></script>
 <script src="{{ asset('app-assets/vendors/js/extensions/sweetalert2.all.min.js') }}"></script>
 <script src="{{ asset('app-assets/js/scripts/extensions/ext-component-sweet-alerts.js') }}"></script>
+
+<script src="{{ asset('app-assets/vendors/js/extensions/polyfill.min.js') }}"></script>
+<script src="{{ asset('app-assets/js/scripts/pages/app-user-view-account.js') }}"></script>
+<script src="{{ asset('app-assets/js/scripts/pages/app-user-view.js') }}"></script>
 
 
 

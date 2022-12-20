@@ -63,6 +63,18 @@ if (!function_exists('getCities')) {
     }
 }
 
+if (!function_exists('getUser')) {
+    function getUser($id)
+    {
+        $user = User::find($id);
+        if ($user) {
+            return $user;
+        } else {
+            return 'user not found';
+        }
+    }
+}
+
 
 if (!function_exists('getUserMarketers')) {
     function getUserMarketers()
@@ -255,6 +267,14 @@ if (!function_exists('getCustomersCount')) {
         return Customer::count();
     }
 }
+
+if (!function_exists('getCustomers')) {
+    function getCustomers()
+    {
+        return Customer::data()->where('status', 1)->get();
+    }
+}
+
 
 if (!function_exists('getCitiesCount')) {
     function getCitiesCount()

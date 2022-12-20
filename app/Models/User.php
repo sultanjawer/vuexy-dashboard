@@ -63,7 +63,6 @@ class User extends Authenticatable
         return $this->belongsToMany(Branch::class, 'users_branches', 'user_id', 'branch_id', 'id', 'id');
     }
 
-
     public function userSettings()
     {
         return $this->hasOne(UserSettings::class, 'user_id', 'id');
@@ -82,6 +81,11 @@ class User extends Authenticatable
     public function orderEdits()
     {
         return $this->hasMany(OrderEditor::class, 'user_id', 'id');
+    }
+
+    public function offerEdits()
+    {
+        return $this->hasMany(OfferEditor::class, 'user_id', 'id');
     }
 
     public function orderNotes()

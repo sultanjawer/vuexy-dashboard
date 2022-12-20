@@ -173,12 +173,6 @@
                                                 <select class="js-select2-neighborhood select2 form-select"
                                                     wire:model='neighborhood_id'>
 
-                                                    {{--
-                                                    @foreach ($city->neighborhoods as $neighborhood)
-                                                        <option value="{{ $neighborhood->id }}" selected>
-                                                            {{ $neighborhood->name }}</option>
-                                                    @endforeach --}}
-
                                                 </select>
                                                 @error('neighborhood_id')
                                                     <small class="text-danger">{{ $message }}</small>
@@ -201,6 +195,17 @@
                                                 <input type="text" class="form-control" placeholder="رقم البلوك"
                                                     wire:model='block_number'>
                                                 @error('block_number')
+                                                    <small class="text-danger">{{ $message }}</small>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6 mb-1">
+                                                <label class="form-label">بيان العقار</label>
+                                                <input type="text" class="form-control"
+                                                    placeholder="أدخل بيان العقار" wire:model='real_estate_statement'>
+                                                @error('real_estate_statement')
                                                     <small class="text-danger">{{ $message }}</small>
                                                 @enderror
                                             </div>
@@ -256,9 +261,6 @@
                                                     @enderror
                                                 </div>
                                             </div>
-
-
-
 
                                             <div class="row condominium-extra" wire:ignore.self>
                                                 <div class="col-md-6 mb-1 ">
@@ -326,7 +328,8 @@
                                                     <label class="form-label" for="price">السعر بالكامل</label>
                                                     <div class="input-group input-group-merge">
                                                         <input type="text" wire:model='total_price'
-                                                            class="form-control" placeholder="0.0" disabled>
+                                                            class="form-control total-price-input" placeholder="0.0"
+                                                            wire:ignore.self>
                                                         <span class="input-group-text">ريال</span>
                                                     </div>
                                                     @error('total_price')
@@ -486,7 +489,7 @@
                                                     @enderror
                                                 </div>
 
-                                                <div class="col-md-6 mb-1 price" wire:ignore.self>
+                                                {{-- <div class="col-md-6 mb-1 price" wire:ignore.self>
                                                     <label class="form-label">السعر</label>
                                                     <div class="input-group input-group-merge">
                                                         <input type="text" wire:model='price' class="form-control"
@@ -496,7 +499,7 @@
                                                     @error('price')
                                                         <small class="text-danger">{{ $message }}</small>
                                                     @enderror
-                                                </div>
+                                                </div> --}}
 
                                                 <div class="col-md-6 mb-1 owner-ship-type" wire:ignore>
                                                     <label class="form-label">نوع الملكية</label>
@@ -586,29 +589,35 @@
 
 
                                         <form>
-                                            <div class="row">
 
-                                                <div class="col-md-6 mb-1">
-                                                    <label class="form-label">هل العرض مباشر</label>
-                                                </div>
-                                                <div class="col-md-6 mb-1" wire:ignore>
-                                                    <div class="form-check form-check-inline" wire:ignore.self>
-                                                        <input class="form-check-input" type="radio"
-                                                            name="inlineRadioOptions" id="inlineRadio1"
-                                                            value="option1" wire:model='yes'>
-                                                        <label class="form-check-label" for="inlineRadio1"
-                                                            wire:ignore.self>
-                                                            نعم</label>
+                                            @auth
+                                                @if (auth()->user()->user_type == 'admin' ||
+                                                    auth()->user()->user_type == 'superadmin' ||
+                                                    auth()->user()->user_type == 'marketer')
+                                                    <div class="row">
+                                                        <div class="col-md-6 mb-1">
+                                                            <label class="form-label">هل العرض مباشر</label>
+                                                        </div>
+                                                        <div class="col-md-6 mb-1" wire:ignore>
+                                                            <div class="form-check form-check-inline" wire:ignore.self>
+                                                                <input class="form-check-input" type="radio"
+                                                                    name="inlineRadioOptions" id="inlineRadio1"
+                                                                    value="option1" wire:model='yes'>
+                                                                <label class="form-check-label" for="inlineRadio1"
+                                                                    wire:ignore.self>
+                                                                    نعم</label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline" wire:ignore.self>
+                                                                <input class="form-check-input" type="radio"
+                                                                    name="inlineRadioOptions" id="inlineRadio2"
+                                                                    value="option2" wire:model='no' wire:ignore.self>
+                                                                <label class="form-check-label"
+                                                                    for="inlineRadio2">لا</label>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div class="form-check form-check-inline" wire:ignore.self>
-                                                        <input class="form-check-input" type="radio"
-                                                            name="inlineRadioOptions" id="inlineRadio2"
-                                                            value="option2" wire:model='no' wire:ignore.self>
-                                                        <label class="form-check-label" for="inlineRadio2">لا</label>
-                                                    </div>
-
-                                                </div>
-                                            </div>
+                                                @endif
+                                            @endauth
 
                                             <div class="row mediators" wire:ignore.self>
 
@@ -681,7 +690,7 @@
                 $(".character").hide();
                 $(".interface-length-div-hide").hide();
                 $(".condominium-extra").hide();
-                $(".price").hide();
+                // $(".price").hide();
                 $(".floor-number").hide();
                 $(".notes").hide();
                 $(".branch-div-hide").hide();
@@ -694,6 +703,7 @@
                 // Init
                 $(".price-by-meter").show();
                 $(".total-price").show();
+                $(".total-price-input").prop('disabled', true);
                 $(".direction-div-hide").show();
                 $(".land-type-div-hide").show();
                 $(".licensed-div-hide").show();
@@ -798,7 +808,7 @@
                     $(".character").hide();
                     $(".interface-length-div-hide").hide();
                     $(".condominium-extra").hide();
-                    $(".price").hide();
+                    // $(".price").hide();
                     $(".floor-number").hide();
                     $(".notes").hide();
                     $(".branch-div-hide").hide();
@@ -811,6 +821,7 @@
                     if (property_type_id == 1) {
                         $(".price-by-meter").show();
                         $(".total-price").show();
+                        $(".total-price-input").prop('disabled', true);
                         $(".direction-div-hide").show();
                         $(".land-type-div-hide").show();
                         $(".licensed-div-hide").show();
@@ -823,8 +834,9 @@
                     }
 
                     if (property_type_id == 2) {
-                        $(".price-by-meter").show();
+                        // $(".price-by-meter").show();
                         $(".total-price").show();
+                        $(".total-price-input").prop('disabled', false);
                         $(".direction-div-hide").show();
                         $(".land-type-div-hide").show();
                         $(".licensed-div-hide").show();
@@ -845,16 +857,19 @@
                         $(".real-estate-age").show();
                         $(".notes").show();
                         $(".total-price").show();
+                        $(".total-price-input").prop('disabled', false);
                         $(".branch-div-hide").show();
 
                     }
 
                     if (property_type_id == 4) {
-                        $(".price").show();
+                        // $(".price").show();
+                        $(".total-price").show();
                         $(".floor-number").show();
                         $(".notes").show();
                         $(".branch-div-hide").show();
                         $(".real-estate-age").show();
+                        $(".total-price-input").prop('disabled', false);
                     }
 
                     if (property_type_id == 5) {
@@ -863,11 +878,13 @@
                         $(".notes").show();
                         $(".owner-ship-type").show();
                         $(".real-estate-age").show();
-                        $(".price").show();
+                        // $(".price").show();
+                        $(".total-price").show();
+                        $(".total-price-input").prop('disabled', false);
                         $(".branch-div-hide").show();
                     }
 
-                    window.livewire.emit('setMediatorsIds');
+                    // window.livewire.emit('setMediatorsIds');
                 });
 
                 $('.js-select2-direction').on('change', function() {

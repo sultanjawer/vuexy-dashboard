@@ -127,7 +127,7 @@
                                                             @endif
                                                         </td>
 
-                                                        <td>{{ 'OOO' }}</td>
+                                                        <td>{{ $direct_offer->realEstate->real_estate_statement }}</td>
                                                         <td>{{ getCityName($direct_offer->realEstate->city_id) }}</td>
                                                         <td>{{ getNeighborhoodName($direct_offer->realEstate->neighborhood_id) }}
                                                         </td>
@@ -304,7 +304,8 @@
                                                                     </span>
                                                                 @endif
                                                             </td>
-                                                            <td>{{ 'OOO' }}</td>
+                                                            <td>{{ $in_direct_offer->realEstate->real_estate_statement }}
+                                                            </td>
 
                                                             <td>{{ getCityName($in_direct_offer->realEstate->city_id) }}
                                                             </td>

@@ -39,6 +39,7 @@ class OfferSeeder extends Seeder
                     'who_cancel' => null,
                     // 'mediators_ids' => json_encode([]),
                     'booking_ids' => json_encode([]),
+                    'created_at' => now()
                 ]);
             }
 
@@ -53,6 +54,7 @@ class OfferSeeder extends Seeder
                     'who_cancel' => null,
                     // 'mediators_ids' => json_encode([101, 102, 103, 104, 105]),
                     'booking_ids' => json_encode([]),
+                    'created_at' => now()
                 ]);
             }
 

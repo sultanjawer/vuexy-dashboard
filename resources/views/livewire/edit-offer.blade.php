@@ -203,6 +203,16 @@
                                             </div>
                                         </div>
 
+                                        <div class="row">
+                                            <div class="col-md-6 mb-1">
+                                                <label class="form-label">بيان العقار</label>
+                                                <input type="text" class="form-control"
+                                                    placeholder="أدخل بيان العقار" wire:model='real_estate_statement'>
+                                                @error('real_estate_statement')
+                                                    <small class="text-danger">{{ $message }}</small>
+                                                @enderror
+                                            </div>
+                                        </div>
 
                                         <div class="d-flex justify-content-between mt-2">
                                             <button class="btn btn-outline-secondary" disabled wire:ignore>
@@ -323,7 +333,8 @@
                                                     <label class="form-label" for="price">السعر بالكامل</label>
                                                     <div class="input-group input-group-merge">
                                                         <input type="text" wire:model='total_price'
-                                                            class="form-control" placeholder="0.0" disabled>
+                                                            class="form-control total-price-input" placeholder="0.0"
+                                                            wire:ignore.self>
                                                         <span class="input-group-text">ريال</span>
                                                     </div>
                                                     @error('total_price')
@@ -482,7 +493,7 @@
                                                         <small class="text-danger">{{ $message }}</small>
                                                     @enderror
                                                 </div>
-
+                                                {{--
                                                 <div class="col-md-6 mb-1 price" wire:ignore.self>
                                                     <label class="form-label">السعر</label>
                                                     <div class="input-group input-group-merge">
@@ -493,7 +504,7 @@
                                                     @error('price')
                                                         <small class="text-danger">{{ $message }}</small>
                                                     @enderror
-                                                </div>
+                                                </div> --}}
 
                                                 <div class="col-md-6 mb-1 owner-ship-type" wire:ignore>
                                                     <label class="form-label">نوع الملكية</label>
@@ -677,7 +688,7 @@
                 $(".character").hide();
                 $(".interface-length-div-hide").hide();
                 $(".condominium-extra").hide();
-                $(".price").hide();
+                // $(".price").hide();
                 $(".floor-number").hide();
                 $(".notes").hide();
                 $(".branch-div-hide").hide();
@@ -690,6 +701,7 @@
                 // Init
                 $(".price-by-meter").show();
                 $(".total-price").show();
+
                 $(".direction-div-hide").show();
                 $(".land-type-div-hide").show();
                 $(".licensed-div-hide").show();
@@ -698,6 +710,8 @@
                 $(".interface-length-div-hide").show();
                 $(".notes").show();
                 $(".branch-div-hide").show();
+                $(".total-price-input").prop('disabled', true);
+
 
 
                 window.initSelectCompanyDrop = () => {
@@ -794,7 +808,7 @@
                     $(".character").hide();
                     $(".interface-length-div-hide").hide();
                     $(".condominium-extra").hide();
-                    $(".price").hide();
+                    // // // // $(".price").hide();
                     $(".floor-number").hide();
                     $(".notes").hide();
                     $(".branch-div-hide").hide();
@@ -812,6 +826,7 @@
                         $(".licensed-div-hide").show();
                         $(".street-width-div-hide").show();
                         $(".character").show();
+                        $(".total-price-input").prop('disabled', true);
                         $(".interface-length-div-hide").show();
                         $(".notes").show();
                         $(".branch-div-hide").show();
@@ -819,7 +834,7 @@
                     }
 
                     if (property_type_id == 2) {
-                        $(".price-by-meter").show();
+                        // $(".price-by-meter").show();
                         $(".total-price").show();
                         $(".direction-div-hide").show();
                         $(".land-type-div-hide").show();
@@ -846,7 +861,7 @@
                     }
 
                     if (property_type_id == 4) {
-                        $(".price").show();
+                        // // // $(".price").show();
                         $(".floor-number").show();
                         $(".notes").show();
                         $(".branch-div-hide").show();
@@ -860,7 +875,7 @@
                         $(".notes").show();
                         $(".owner-ship-type").show();
                         $(".real-estate-age").show();
-                        $(".price").show();
+                        // // // $(".price").show();
                         $(".branch-div-hide").show();
                     }
 
@@ -963,7 +978,7 @@
                     $(".character").hide();
                     $(".interface-length-div-hide").hide();
                     $(".condominium-extra").hide();
-                    $(".price").hide();
+                    // // // $(".price").hide();
                     $(".floor-number").hide();
                     $(".notes").hide();
                     $(".branch-div-hide").hide();
@@ -979,6 +994,7 @@
                         $(".direction-div-hide").show();
                         $(".land-type-div-hide").show();
                         $(".licensed-div-hide").show();
+                        $(".total-price-input").prop('disabled', true);
                         $(".street-width-div-hide").show();
                         $(".character").show();
                         $(".interface-length-div-hide").show();
@@ -988,7 +1004,7 @@
                     }
 
                     if (property_type_id == 2) {
-                        $(".price-by-meter").show();
+                        // $(".price-by-meter").show();
                         $(".total-price").show();
                         $(".direction-div-hide").show();
                         $(".land-type-div-hide").show();
@@ -1015,7 +1031,7 @@
                     }
 
                     if (property_type_id == 4) {
-                        $(".price").show();
+                        // // $(".price").show();
                         $(".floor-number").show();
                         $(".notes").show();
                         $(".branch-div-hide").show();
@@ -1028,7 +1044,7 @@
                         $(".notes").show();
                         $(".owner-ship-type").show();
                         $(".real-estate-age").show();
-                        $(".price").show();
+                        // $(".price").show();
                         $(".branch-div-hide").show();
                     }
 

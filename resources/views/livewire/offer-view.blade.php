@@ -2,920 +2,885 @@
     <div class="content-overlay" wire:ignore.self></div>
     <div class="header-navbar-shadow" wire:ignore.self></div>
     <div class="content-wrapper container-xxl p-0" wire:ignore.self>
+
+
         <div class="content-header row" wire:ignore.self></div>
-
         <div class="content-body" wire:ignore.self>
-            <section class="app-user-view-account" wire:ignore.self>
-                <div class="row" wire:ignore.self>
-                    <div class="col-md-12" wire:ignore.self>
-                        <div class="row match-height" wire:ignore.self>
-                            <!-- Medal Card -->
-                            <div class="col-xl-12 col-md-6 col-12" wire:ignore.self>
-                                <div class="card card-congratulation-medal" wire:ignore.self>
-                                    <div class="card-body" wire:ignore.self>
-                                        <h2>كود العرض</h2>
 
-                                        <h3 class="mb-75 mt-2 pt-50">
-                                            <a href="#">{{ $offer->offer_code }}</a>
-                                        </h3>
+            <section id="dashboard-analytics">
+                <div class="row match-height">
+                    <div class="col-lg-4 col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row pb-40">
+                                    <div
+                                        class="col-sm-6 col-12 d-flex justify-content-between flex-column order-sm-1 order-2 mt-1 mt-sm-0">
+                                        <div class="mb-1 mb-sm-0">
+                                            <h2 wire:ignore.self="">كود العرض</h2>
+                                            <h2 class="fw-bolder mb-25"><a href="#"> {{ $offer->offer_code }}</a>
+                                            </h2>
+                                            <div class="font-medium-2">
+                                                {{-- <span class="fs-6">صاحب العرض: </span>
+                                                <a href="{{ route('panel.user', $offer->user_id) }}">
+                                                    <span class="text-success me-25 fs-6">
+                                                        {{ getUserName($offer->user_id) }}</span>
+                                                </a> --}}
 
-                                        @if ($real_estate->property_type_id == 1)
-                                            <div class="mb-2">
-                                                <a class="btn bg-light-warning waves-effect waves-float waves-light">
+                                                <a
+                                                    class="btn  bg-light-warning waves-effect waves-float waves-light mt-1">
                                                     <span>
-                                                        أرض
+                                                        {{ $offer->realEstate->propertyType->name }}
                                                     </span>
                                                 </a>
+
                                             </div>
-                                        @endif
+                                        </div>
 
+                                        <a href="javascript:;"
+                                            class="btn bg-light-success mt-2 waves-effect waves-float waves-light"
+                                            data-bs-target="#addReservation" data-bs-toggle="modal">
+                                            @if (!$offer->reservation)
+                                                حجز
+                                            @endif
 
+                                            @if ($offer->reservation)
+                                                تفاصيل الحجز
+                                            @endif
+                                        </a>
 
-                                        @if ($real_estate->property_type_id == 2)
-                                            <div class="mb-2">
-                                                <a class="btn bg-light-success waves-effect waves-float waves-light">
-                                                    <span>
-                                                        دبلكس
-                                                    </span>
-                                                </a>
+                                        <a href="javascript:;"
+                                            class="btn bg-light-primary mt-1 waves-effect waves-float waves-light"
+                                            data-bs-target="#" data-bs-toggle="modal">
+                                            بيع
+                                        </a>
+
+                                    </div>
+
+                                    <div class="col-sm-6 col-12 d-flex justify-content-between flex-column text-end order-sm-2 order-1"
+                                        style="position: relative;">
+                                        <div class="dropdown chart-dropdown">
+                                            <button
+                                                class="btn btn-sm border-0 dropdown-toggle p-50 waves-effect waves-float waves-light text-white"
+                                                type="button">
+                                                {{ $last_update_time }}
+                                            </button>
+                                        </div>
+
+                                        <div style="min-height: 150px;">
+                                            <div class="d-flex justify-content-center">
+
                                             </div>
-                                        @endif
+                                        </div>
 
-                                        @if ($real_estate->property_type_id == 3)
-                                            <div class="mb-2">
-                                                <a class="btn bg-light-success waves-effect waves-float waves-light">
-                                                    <span>
-                                                        عمارة
-                                                    </span>
-                                                </a>
+                                        <div class="resize-triggers">
+                                            <div class="expand-trigger">
+                                                <div style="width: 300px; height: 229px;"></div>
                                             </div>
-                                        @endif
+                                            <div class="contract-trigger"></div>
+                                        </div>
+                                    </div>
 
-
-                                        @if ($real_estate->property_type_id == 4)
-                                            <div class="mb-2">
-                                                <a class="btn bg-light-danger waves-effect waves-float waves-light">
-                                                    <span>
-                                                        شقة
-                                                    </span>
-                                                </a>
+                                </div>
+                                <hr>
+                                <div class="row avg-sessions pt-50">
+                                    <div class="col-6 mb-2">
+                                        <div class="avatar bg-light-primary rounded float-start me-1">
+                                            <div class="avatar-content">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="feather feather-package font-medium-5">
+                                                    <line x1="16.5" y1="9.4" x2="7.5" y2="4.21">
+                                                    </line>
+                                                    <path
+                                                        d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                                                    </path>
+                                                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                                                    <line x1="12" y1="22.08" x2="12" y2="12">
+                                                    </line>
+                                                </svg>
                                             </div>
-                                        @endif
+                                        </div>
+                                        <div class="transaction-percentage">
+                                            <h6 class="transaction-title">{{ 'رقم الارض' }}:</h6>
+                                            <span>{{ $offer->realEstate->land_number }}</span>
+                                        </div>
+                                    </div>
 
-
-                                        @if ($real_estate->property_type_id == 5)
-                                            <div class="mb-2">
-                                                <a class="btn bg-light-info waves-effect waves-float waves-light">
-                                                    <span>
-                                                        شاليه
-                                                    </span>
-                                                </a>
+                                    <div class="col-6 mb-2">
+                                        <div class="avatar bg-light-primary rounded float-start me-1">
+                                            <div class="avatar-content">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="feather feather-package font-medium-5">
+                                                    <line x1="16.5" y1="9.4" x2="7.5" y2="4.21">
+                                                    </line>
+                                                    <path
+                                                        d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                                                    </path>
+                                                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                                                    <line x1="12" y1="22.08" x2="12" y2="12">
+                                                    </line>
+                                                </svg>
                                             </div>
-                                        @endif
+                                        </div>
+                                        <div class="transaction-percentage">
+                                            <h6 class="transaction-title">{{ 'رقم البلوك' }}:</h6>
+                                            <span>{{ $offer->realEstate->block_number }}</span>
+                                        </div>
+                                    </div>
 
+                                    <div class="col-6 mb-2">
+                                        <div class="avatar bg-light-primary rounded float-start me-1">
+                                            <div class="avatar-content">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="feather feather-map-pin avatar-icon font-medium-3">
+                                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                                    <circle cx="12" cy="10" r="3"></circle>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <div class="transaction-percentage">
+                                            <h6 class="transaction-title">{{ 'المدينة' }}:</h6>
+                                            <span>{{ $offer->realEstate->city->name }}</span>
+                                        </div>
+                                    </div>
 
-                                        <img src="{{ asset('app-assets/images/illustration/badge.svg') }}"
-                                            class="congratulation-medal" alt="Medal Pic">
+                                    <div class="col-6 mb-2">
+                                        <div class="avatar bg-light-primary rounded float-start me-1">
+                                            <div class="avatar-content">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="feather feather-map-pin avatar-icon font-medium-3">
+                                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                                    <circle cx="12" cy="10" r="3"></circle>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <div class="transaction-percentage">
+                                            <h6 class="transaction-title">{{ 'الحي' }}:</h6>
+                                            <span>{{ $offer->realEstate->neighborhood->name }}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 mb-2">
+                                        <div class="avatar bg-light-primary rounded float-start me-1">
+                                            <div class="avatar-content">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="feather feather-package font-medium-5">
+                                                    <line x1="16.5" y1="9.4" x2="7.5"
+                                                        y2="4.21"></line>
+                                                    <path
+                                                        d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                                                    </path>
+                                                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                                                    <line x1="12" y1="22.08" x2="12"
+                                                        y2="12"></line>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <div class="transaction-percentage">
+                                            <h6 class="transaction-title">{{ 'بيان العقار' }}:</h6>
+                                            <span>{{ $offer->realEstate->real_estate_statement }}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 mb-2">
+                                        <div class="avatar bg-light-primary rounded float-start me-1">
+                                            <div class="avatar-content">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="feather feather-package font-medium-5">
+                                                    <line x1="16.5" y1="9.4" x2="7.5"
+                                                        y2="4.21"></line>
+                                                    <path
+                                                        d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                                                    </path>
+                                                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                                                    <line x1="12" y1="22.08" x2="12"
+                                                        y2="12"></line>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <div class="transaction-percentage">
+                                            <h6 class="transaction-title">{{ 'نوع العقار' }}:</h6>
+                                            <span>{{ $offer->realEstate->propertyType->name }}</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
 
-                            {{-- <div class="col-xl-8 col-md-6 col-12" wire:ignore.self>
-                                <div class="card card-statistics" wire:ignore.self>
+                    <div class="col-lg-8 col-md-6 col-12">
+                        <div class="card card-developer-meetup">
+                            <div class="meetup-img-wrapper rounded-top text-center">
+                                <img src="{{ asset('app-assets/images/illustration/email.svg') }}" alt="Meeting Pic"
+                                    height="170">
+                            </div>
 
+                            <div class="card-body">
+                                <div class="meetup-header d-flex align-items-center">
+                                    <div class="meetup-day">
+                                        <h6 class="mb-0">{{ strtoupper($offer->created_at->format('D')) }}</h6>
+                                        <h3 class="mb-0">{{ $offer->created_at->format('d') }}</h3>
+                                    </div>
 
+                                    <div class="my-auto col-sm-3">
+                                        <h4 class="card-title mb-25">معلومات العقار</h4>
+                                        <p class="card-text mb-0">
+                                            <a class="btn btn-sm bg-light-danger waves-effect waves-float waves-light"
+                                                href="{{ route('panel.update.offer', $offer->id) }}"> تعديل هذا
+                                                العقار</a>
+                                        </p>
+                                    </div>
 
-                                    <div class="card-header" wire:ignore.self>
-                                        <h4 class="card-title" wire:ignore.self>معلومات العميل</h4>
-                                        <div class="d-flex align-items-center" wire:ignore.self>
-                                            <p class="card-text font-small-2 me-25 mb-0">{{ $last_update_time }}</p>
+                                    @if ($offer->realEstate->property_type_id == 1 ||
+                                        $offer->realEstate->property_type_id == 2 ||
+                                        $offer->realEstate->property_type_id == 3)
+
+                                        <div
+                                            class="col-sm-5 col-12 d-flex justify-content-between flex-column text-end order-sm-2 order-1">
+                                            <div class="dropdown chart-dropdown">
+                                                <button class="btn btn-sm border-0 dropdown-toggle p-50"
+                                                    type="button" id="dropdownItem5" data-bs-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false">
+                                                    <a
+                                                        class="btn btn-sm bg-light-success waves-effect waves-float waves-light">
+                                                        <span>
+                                                            الاتجاهات
+                                                        </span>
+                                                    </a>
+                                                </button>
+                                                <div class="dropdown-menu dropdown-menu-end"
+                                                    aria-labelledby="dropdownItem5">
+                                                    @if (!$offer->realEstate->directions->count())
+                                                        <a class="dropdown-item"
+                                                            href="#">{{ 'البيانات غير متوفرة' }}</a>
+                                                    @endif
+                                                    @foreach ($offer->realEstate->directions as $direction)
+                                                        <a class="dropdown-item"
+                                                            href="#">{{ $direction->name }}</a>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                            <div id="avg-sessions-chart"></div>
+                                        </div>
+
+                                        <div
+                                            class="col-sm-2 col-12 d-flex justify-content-between flex-column text-end order-sm-2 order-1">
+                                            <div class="dropdown chart-dropdown">
+                                                <button class="btn btn-sm border-0 dropdown-toggle p-50"
+                                                    type="button" id="dropdownItem5" data-bs-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false">
+                                                    <a
+                                                        class="btn btn-sm bg-light-success waves-effect waves-float waves-light">
+                                                        <span>
+                                                            عرض الشوارع
+                                                        </span>
+                                                    </a>
+                                                </button>
+                                                <div class="dropdown-menu dropdown-menu-end"
+                                                    aria-labelledby="dropdownItem5">
+                                                    @if (!$offer->realEstate->streetWidths->count())
+                                                        <a class="dropdown-item"
+                                                            href="#">{{ 'البيانات غير متوفرة' }}</a>
+                                                    @endif
+                                                    @foreach ($offer->realEstate->streetWidths as $street_width)
+                                                        <a class="dropdown-item"
+                                                            href="#">{{ $street_width->street_number }}</a>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                            <div id="avg-sessions-chart"></div>
+                                        </div>
+                                    @endif
+
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="col-3 mb-2">
+                                        <div class="avatar float-start bg-light-success rounded me-1">
+                                            <div class="avatar-content">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="feather feather-maximize-2">
+                                                    <polyline points="15 3 21 3 21 9"></polyline>
+                                                    <polyline points="9 21 3 21 3 15"></polyline>
+                                                    <line x1="21" y1="3" x2="14"
+                                                        y2="10"></line>
+                                                    <line x1="3" y1="21" x2="10"
+                                                        y2="14"></line>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <div class="more-info">
+                                            <h6 class="mb-0">مساحة العقار</h6>
+                                            <span>{{ $offer->realEstate->space }}</span>
                                         </div>
                                     </div>
 
-
-
-                                    <div class="card-boady card-statistics" wire:ignore.self>
-                                        <div class="row" wire:ignore.self>
-
-                                            <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                                <label class="form-label fw-bold fs-4 text-primary"> الاسم :</label>
-                                                <label class="form-label fs-6">{{ $offer->customer_name }}</label>
+                                    @if ($offer->realEstate->property_type_id == 1)
+                                        <div class="col-3 mb-2">
+                                            <div class="avatar float-start bg-light-success rounded me-1">
+                                                <div class="avatar-content">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14"
+                                                        height="14" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        class="feather feather-dollar-sign avatar-icon font-medium-3">
+                                                        <line x1="12" y1="1" x2="12"
+                                                            y2="23">
+                                                        </line>
+                                                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6">
+                                                        </path>
+                                                    </svg>
+                                                </div>
                                             </div>
-
-
-                                            <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                                <label class="form-label fw-bold fs-4 text-primary"> رقم الجوال
-                                                    :</label>
-                                                <label class="form-label fs-6">{{ $offer->customer_phone }}</label>
-                                            </div>
-                                            <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                                <label class="form-label fw-bold fs-4 text-primary">هل مدعوم من
-                                                    الاسكان:</label>
-                                                @if ($offer->support_eskan)
-                                                    <span class="badge badge-glow bg-success">نعم</span>
-                                                @else
-                                                    <span class="badge badge-glow bg-danger">لا</span>
-                                                @endif
-                                            </div>
-                                        </div>
-
-                                        <div class="row" wire:ignore.self>
-
-                                            <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                                <label class="form-label fw-bold fs-4 text-primary"> جهة العمل :</label>
-                                                <label class="form-label fs-6">{{ $offer->employer_name }}</label>
-                                            </div>
-
-                                            <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                                <label class="form-label fw-bold fs-4 text-primary"> نوع القطاع
-                                                    :</label>
-                                                <label class="form-label fs-6">قطاع
-                                                    {{ $offer->employee_type == 'public' ? 'عام' : 'خاص' }}</label>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    @if (!($offer->order_status_id == 3) && !($offer->order_status_id == 6))
-                                        <div class="col-md-12" wire:ignore.self>
-                                            <div class="mb-1 text-center" wire:ignore.self>
-                                                <a href="javascript:;" class="btn bg-light-warning"
-                                                    data-bs-target="#addNote" data-bs-toggle="modal">
-
-                                                    <span wire:ignore>
-                                                        <i data-feather='plus-square'></i> إضافة ملاحظة
-                                                    </span>
-                                                </a>
+                                            <div class="more-info">
+                                                <h6 class="mb-0">سعر المتر</h6>
+                                                <span>{{ $offer->realEstate->price_by_meter }}</span>
                                             </div>
                                         </div>
                                     @endif
+
+                                    <div class="col-3 mb-2">
+                                        <div class="avatar float-start bg-light-success rounded me-1">
+                                            <div class="avatar-content">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="feather feather-dollar-sign avatar-icon font-medium-3">
+                                                    <line x1="12" y1="1" x2="12"
+                                                        y2="23"></line>
+                                                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <div class="more-info">
+                                            <h6 class="mb-0">السعر بالكامل</h6>
+                                            <span>{{ $offer->realEstate->total_price }}</span>
+                                        </div>
+                                    </div>
+
+                                    @if ($offer->realEstate->property_type_id == 3)
+                                        <div class="col-3 mb-2">
+                                            <div class="avatar float-start bg-light-success rounded me-1">
+                                                <div class="avatar-content">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14"
+                                                        height="14" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        class="feather feather-dollar-sign avatar-icon font-medium-3">
+                                                        <line x1="12" y1="1" x2="12"
+                                                            y2="23">
+                                                        </line>
+                                                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6">
+                                                        </path>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <div class="more-info">
+                                                <h6 class="mb-0">الدخل السنوي</h6>
+                                                <span>{{ $offer->realEstate->annual_income }}</span>
+                                            </div>
+                                        </div>
+                                    @endif
+
+                                    @if ($offer->realEstate->property_type_id == 1 || $offer->realEstate->property_type_id == 2)
+                                        <div class="col-3 mb-2">
+                                            <div class="avatar float-start bg-light-warning rounded me-1">
+                                                <div class="avatar-content">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14"
+                                                        height="14" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        class="feather feather-pocket avatar-icon font-medium-3">
+                                                        <path
+                                                            d="M4 3h16a2 2 0 0 1 2 2v6a10 10 0 0 1-10 10A10 10 0 0 1 2 11V5a2 2 0 0 1 2-2z">
+                                                        </path>
+                                                        <polyline points="8 10 12 14 16 10"></polyline>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <div class="more-info">
+                                                <h6 class="mb-0">نوع الأرض</h6>
+                                                <span>{{ $offer->realEstate->landType->name }}</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-3 mb-2">
+                                            <div class="avatar float-start bg-light-info rounded me-1">
+                                                <div class="avatar-content">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14"
+                                                        height="14" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        class="feather feather-credit-card avatar-icon font-medium-3">
+                                                        <rect x="1" y="4" width="22"
+                                                            height="16" rx="2" ry="2"></rect>
+                                                        <line x1="1" y1="10" x2="23"
+                                                            y2="10">
+                                                        </line>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <div class="more-info">
+                                                <h6 class="mb-0">الترخيص</h6>
+                                                <span>{{ $offer->realEstate->licensed->name }}</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-3 mb-2">
+                                            <div class="avatar float-start bg-light-warning rounded me-1">
+                                                <div class="avatar-content">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14"
+                                                        height="14" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        class="feather feather-pocket avatar-icon font-medium-3">
+                                                        <path
+                                                            d="M4 3h16a2 2 0 0 1 2 2v6a10 10 0 0 1-10 10A10 10 0 0 1 2 11V5a2 2 0 0 1 2-2z">
+                                                        </path>
+                                                        <polyline points="8 10 12 14 16 10"></polyline>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <div class="more-info">
+                                                <h6 class="mb-0">طول الواجهة</h6>
+                                                <span>{{ $offer->realEstate->interfaceLength->id }}</span>
+                                            </div>
+                                        </div>
+                                    @endif
+
+                                    @if ($offer->realEstate->property_type_id == 2)
+                                        <div class="col-3 mb-2">
+                                            <div class="avatar float-start bg-light-warning rounded me-1">
+                                                <div class="avatar-content">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14"
+                                                        height="14" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        class="feather feather-pocket avatar-icon font-medium-3">
+                                                        <path
+                                                            d="M4 3h16a2 2 0 0 1 2 2v6a10 10 0 0 1-10 10A10 10 0 0 1 2 11V5a2 2 0 0 1 2-2z">
+                                                        </path>
+                                                        <polyline points="8 10 12 14 16 10"></polyline>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <div class="more-info">
+                                                <h6 class="mb-0">حالة العقار</h6>
+                                                <span>{{ $offer->realEstate->propertyStatus->name }}</span>
+                                            </div>
+                                        </div>
+                                    @endif
+
+                                    @if ($offer->realEstate->property_type_id == 2 ||
+                                        $offer->realEstate->property_type_id == 3 ||
+                                        $offer->realEstate->property_type_id == 4 ||
+                                        $offer->realEstate->property_type_id == 5)
+                                        <div class="col-3 mb-2">
+                                            <div class="avatar float-start bg-light-warning rounded me-1">
+                                                <div class="avatar-content">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14"
+                                                        height="14" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        class="feather feather-pocket avatar-icon font-medium-3">
+                                                        <path
+                                                            d="M4 3h16a2 2 0 0 1 2 2v6a10 10 0 0 1-10 10A10 10 0 0 1 2 11V5a2 2 0 0 1 2-2z">
+                                                        </path>
+                                                        <polyline points="8 10 12 14 16 10"></polyline>
+                                                    </svg>
+                                                </div>
+                                            </div>
+
+                                            <div class="more-info">
+                                                <h6 class="mb-0">عمر العقار</h6>
+                                                @if ($offer->realEstate->real_estate_age == 0)
+                                                    <span>{{ 'جديد' }}</span>
+                                                @else
+                                                    <span> عمر العقار: {{ $offer->realEstate->real_estate_age }}
+                                                        عاما</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    @endif
+
+                                    @if ($offer->realEstate->property_type_id == 1 || $offer->realEstate->property_type_id == 2)
+                                        <div class="col-3 mb-2">
+                                            <div class="avatar float-start bg-light-info rounded me-1">
+                                                <div class="avatar-content">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14"
+                                                        height="14" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        class="feather feather-pocket avatar-icon font-medium-3">
+                                                        <path
+                                                            d="M4 3h16a2 2 0 0 1 2 2v6a10 10 0 0 1-10 10A10 10 0 0 1 2 11V5a2 2 0 0 1 2-2z">
+                                                        </path>
+                                                        <polyline points="8 10 12 14 16 10"></polyline>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <div class="more-info">
+                                                <h6 class="mb-0">الحرف أو المجاور</h6>
+                                                <span>{{ $offer->realEstate->character }}</span>
+                                            </div>
+                                        </div>
+                                    @endif
+
+                                    <div class="col-3 mb-2">
+                                        <div class="avatar float-start bg-light-info rounded me-1">
+                                            <div class="avatar-content">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="feather feather-pocket avatar-icon font-medium-3">
+                                                    <path
+                                                        d="M4 3h16a2 2 0 0 1 2 2v6a10 10 0 0 1-10 10A10 10 0 0 1 2 11V5a2 2 0 0 1 2-2z">
+                                                    </path>
+                                                    <polyline points="8 10 12 14 16 10"></polyline>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <div class="more-info">
+                                            <h6 class="mb-0">الفرع</h6>
+                                            <span>{{ $offer->realEstate->branch->name }}</span>
+                                        </div>
+                                    </div>
+
+                                    @if ($offer->realEstate->property_type_id == 2)
+                                        <div class="col-3 mb-2">
+                                            <div class="avatar float-start bg-light-danger rounded me-1">
+                                                <div class="avatar-content">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14"
+                                                        height="14" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        class="feather feather-pocket avatar-icon font-medium-3">
+                                                        <path
+                                                            d="M4 3h16a2 2 0 0 1 2 2v6a10 10 0 0 1-10 10A10 10 0 0 1 2 11V5a2 2 0 0 1 2-2z">
+                                                        </path>
+                                                        <polyline points="8 10 12 14 16 10"></polyline>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <div class="more-info">
+                                                <h6 class="mb-0">نوع البناء</h6>
+                                                <span>{{ $offer->realEstate->buildingType->name }}</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-3 mb-2">
+                                            <div class="avatar float-start bg-light-danger rounded me-1">
+                                                <div class="avatar-content">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14"
+                                                        height="14" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        class="feather feather-pocket avatar-icon font-medium-3">
+                                                        <path
+                                                            d="M4 3h16a2 2 0 0 1 2 2v6a10 10 0 0 1-10 10A10 10 0 0 1 2 11V5a2 2 0 0 1 2-2z">
+                                                        </path>
+                                                        <polyline points="8 10 12 14 16 10"></polyline>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <div class="more-info">
+                                                <h6 class="mb-0">حالة البناء</h6>
+                                                <span>{{ $offer->realEstate->buildingStatus->name }}</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-3 mb-2">
+                                            <div class="avatar float-start bg-light-danger rounded me-1">
+                                                <div class="avatar-content">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14"
+                                                        height="14" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        class="feather feather-pocket avatar-icon font-medium-3">
+                                                        <path
+                                                            d="M4 3h16a2 2 0 0 1 2 2v6a10 10 0 0 1-10 10A10 10 0 0 1 2 11V5a2 2 0 0 1 2-2z">
+                                                        </path>
+                                                        <polyline points="8 10 12 14 16 10"></polyline>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <div class="more-info">
+                                                <h6 class="mb-0">تسليم البناء</h6>
+                                                <span>{{ $offer->realEstate->constructionDelivery->name }}</span>
+                                            </div>
+                                        </div>
+                                    @endif
+
+                                    @if ($offer->realEstate->property_type_id == 5)
+                                        <div class="col-3 mb-2">
+                                            <div class="avatar float-start bg-light-danger rounded me-1">
+                                                <div class="avatar-content">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14"
+                                                        height="14" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        class="feather feather-pocket avatar-icon font-medium-3">
+                                                        <path
+                                                            d="M4 3h16a2 2 0 0 1 2 2v6a10 10 0 0 1-10 10A10 10 0 0 1 2 11V5a2 2 0 0 1 2-2z">
+                                                        </path>
+                                                        <polyline points="8 10 12 14 16 10"></polyline>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <div class="more-info">
+                                                <h6 class="mb-0">نوع التمليك</h6>
+                                                <span>{{ $offer->realEstate->ownerShipType->name }}</span>
+                                            </div>
+                                        </div>
+                                    @endif
+
+                                    @if ($offer->realEstate->property_type_id == 4)
+                                        <div class="col-3 mb-2">
+                                            <div class="avatar float-start bg-light-danger rounded me-1">
+                                                <div class="avatar-content">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14"
+                                                        height="14" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        class="feather feather-pocket avatar-icon font-medium-3">
+                                                        <path
+                                                            d="M4 3h16a2 2 0 0 1 2 2v6a10 10 0 0 1-10 10A10 10 0 0 1 2 11V5a2 2 0 0 1 2-2z">
+                                                        </path>
+                                                        <polyline points="8 10 12 14 16 10"></polyline>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <div class="more-info">
+                                                <h6 class="mb-0">رقم الطابق</h6>
+                                                <span>{{ $offer->realEstate->floor_number }}</span>
+                                            </div>
+                                        </div>
+                                    @endif
+
+                                    @if ($offer->realEstate->property_type_id == 3)
+                                        <div class="col-3 mb-2">
+                                            <div class="avatar float-start bg-light-danger rounded me-1">
+                                                <div class="avatar-content">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14"
+                                                        height="14" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        class="feather feather-pocket avatar-icon font-medium-3">
+                                                        <path
+                                                            d="M4 3h16a2 2 0 0 1 2 2v6a10 10 0 0 1-10 10A10 10 0 0 1 2 11V5a2 2 0 0 1 2-2z">
+                                                        </path>
+                                                        <polyline points="8 10 12 14 16 10"></polyline>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <div class="more-info">
+                                                <h6 class="mb-0">عدد الأدوار</h6>
+                                                <span>{{ $offer->realEstate->floors_number }}</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-3 mb-2">
+                                            <div class="avatar float-start bg-light-danger rounded me-1">
+                                                <div class="avatar-content">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14"
+                                                        height="14" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        class="feather feather-pocket avatar-icon font-medium-3">
+                                                        <path
+                                                            d="M4 3h16a2 2 0 0 1 2 2v6a10 10 0 0 1-10 10A10 10 0 0 1 2 11V5a2 2 0 0 1 2-2z">
+                                                        </path>
+                                                        <polyline points="8 10 12 14 16 10"></polyline>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <div class="more-info">
+                                                <h6 class="mb-0">عدد الشقق</h6>
+                                                <span>{{ $offer->realEstate->flats_numbers }}</span>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-3 mb-2">
+                                            <div class="avatar float-start bg-light-danger rounded me-1">
+                                                <div class="avatar-content">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14"
+                                                        height="14" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        class="feather feather-pocket avatar-icon font-medium-3">
+                                                        <path
+                                                            d="M4 3h16a2 2 0 0 1 2 2v6a10 10 0 0 1-10 10A10 10 0 0 1 2 11V5a2 2 0 0 1 2-2z">
+                                                        </path>
+                                                        <polyline points="8 10 12 14 16 10"></polyline>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <div class="more-info">
+                                                <h6 class="mb-0">عدد غرف الشقة</h6>
+                                                <span>{{ $offer->realEstate->flat_rooms_number }}</span>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-3 mb-2">
+                                            <div class="avatar float-start bg-light-danger rounded me-1">
+                                                <div class="avatar-content">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14"
+                                                        height="14" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        class="feather feather-pocket avatar-icon font-medium-3">
+                                                        <path
+                                                            d="M4 3h16a2 2 0 0 1 2 2v6a10 10 0 0 1-10 10A10 10 0 0 1 2 11V5a2 2 0 0 1 2-2z">
+                                                        </path>
+                                                        <polyline points="8 10 12 14 16 10"></polyline>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <div class="more-info">
+                                                <h6 class="mb-0">عدد المحلات</h6>
+                                                <span>{{ $offer->realEstate->stores_number }}</span>
+                                            </div>
+                                        </div>
+                                    @endif
+
                                 </div>
-                            </div> --}}
 
-
-                        </div>
-                    </div>
-
-                    <div class="col-md-12" wire:ignore.self>
-                        <div class="card card-statistics" wire:ignore.self>
-
-                            <div class="card-header" wire:ignore.self>
-                                <h2 wire:ignore.self>معلومات العقار</h2>
-                                <div class="d-flex align-items-center" wire:ignore.self>
-                                    <p class="card-text font-small-2 me-25 mb-0">{{ $last_update_time }}</p>
+                                <div class="row meetup-footer d-flex align-items-center">
+                                    <div class="my-auto">
+                                        <h4 class="card-title mb-25">ملاحظات العقار</h4>
+                                        <p class="card-text mb-0">
+                                            <textarea class="form-control" rows="2" disabled>{{ $offer->realEstate->notes }}</textarea>
+                                        </p>
+                                    </div>
                                 </div>
+
                             </div>
-
-                            @if ($real_estate->property_type_id == 1)
-                                <div class="card-boady card-statistics" wire:ignore.self>
-                                    <div class="row">
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary"> نوع العقار
-                                                :</label>
-                                            <label
-                                                class="form-label fs-6">{{ $real_estate->propertyType->name }}</label>
-                                        </div>
-
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary"> المساحة
-                                                :</label>
-                                            <label
-                                                class="form-label fs-6">{{ number_format((int) $real_estate->space) }}</label>
-                                        </div>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary"> الاتجاه
-                                                :</label>
-                                            <label class="form-label fs-6">{{ $real_estate->direction->name }}</label>
-                                        </div>
-
-
-                                    </div>
-
-                                    <div class="row" wire:ignore.self>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary">المدينة:</label>
-                                            <label class="form-label fs-6">{{ $real_estate->city->name }}</label>
-                                        </div>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary">الحي:
-                                            </label>
-                                            <label
-                                                class="form-label fs-6">{{ $real_estate->neighborhood->name }}</label>
-                                        </div>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary">عرض الشارع:
-                                            </label>
-                                            <label
-                                                class="form-label fs-6">{{ $real_estate->streetWidth->street_number }}</label>
-                                        </div>
-
-                                    </div>
-
-
-                                    <div class="row" wire:ignore.self>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary">نوع الأرض:</label>
-                                            <label class="form-label fs-6">{{ $real_estate->landType->name }}</label>
-                                        </div>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary">طول الواجهة:
-                                            </label>
-                                            <label
-                                                class="form-label fs-6">{{ $real_estate->interfaceLength->name }}</label>
-                                        </div>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary">الترخيص:
-                                            </label>
-                                            <label class="form-label fs-6">{{ $real_estate->licensed->name }}</label>
-                                        </div>
-
-                                    </div>
-
-
-                                    <div class="row" wire:ignore.self>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary">حالة العقار:</label>
-                                            <label
-                                                class="form-label fs-6">{{ $real_estate->propertyStatus->name }}</label>
-                                        </div>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary">الفرع:
-                                            </label>
-                                            <label class="form-label fs-6">{{ $real_estate->branch->name }}</label>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="row" wire:ignore.self>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary"> ملاحظات على الطلب:
-                                            </label>
-                                            <p>{{ $real_estate->notes }}</p>
-                                        </div>
-
-                                        <div class="mb-1 text-center">
-                                            <div class="d-flex justify-content-center pt-2 clear">
-                                                <a href="javascript:;"
-                                                    class="btn btn-success me-1 waves-effect waves-float waves-light"
-                                                    data-bs-target="#editUser" data-bs-toggle="modal">
-                                                    حجز
-                                                </a>
-                                                <a href="create-sell.html"
-                                                    class="btn btn-primary  waves-effect waves-float waves-light">بيع</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endif
-
-                            @if ($real_estate->property_type_id == 2)
-                                <div class="card-boady card-statistics" wire:ignore.self>
-
-
-                                    <div class="row">
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary"> نوع العقار
-                                                :</label>
-                                            <label
-                                                class="form-label fs-6">{{ $real_estate->propertyType->name }}</label>
-                                        </div>
-
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary"> المساحة
-                                                :</label>
-                                            <label
-                                                class="form-label fs-6">{{ number_format((int) $real_estate->space) }}</label>
-                                        </div>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary"> الاتجاه
-                                                :</label>
-                                            <label class="form-label fs-6">{{ $real_estate->direction->name }}</label>
-                                        </div>
-
-
-                                    </div>
-
-                                    <div class="row" wire:ignore.self>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary">المدينة:</label>
-                                            <label class="form-label fs-6">{{ $real_estate->city->name }}</label>
-                                        </div>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary">الحي:
-                                            </label>
-                                            <label
-                                                class="form-label fs-6">{{ $real_estate->neighborhood->name }}</label>
-                                        </div>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary">عرض الشارع:
-                                            </label>
-                                            <label
-                                                class="form-label fs-6">{{ $real_estate->streetWidth->street_number }}</label>
-                                        </div>
-
-                                    </div>
-
-
-                                    <div class="row" wire:ignore.self>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary">نوع الأرض:</label>
-                                            <label class="form-label fs-6">{{ $real_estate->landType->name }}</label>
-                                        </div>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary">طول الواجهة:
-                                            </label>
-                                            <label
-                                                class="form-label fs-6">{{ $real_estate->interfaceLength->name }}</label>
-                                        </div>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary">الترخيص:
-                                            </label>
-                                            <label class="form-label fs-6">{{ $real_estate->licensed->name }}</label>
-                                        </div>
-
-                                    </div>
-
-
-                                    <div class="row" wire:ignore.self>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary">حالة العقار:</label>
-                                            <label
-                                                class="form-label fs-6">{{ $real_estate->propertyStatus->name }}</label>
-                                        </div>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary">نوع البناء:
-                                            </label>
-                                            <label
-                                                class="form-label fs-6">{{ $real_estate->buildingType->name }}</label>
-                                        </div>
-
-                                    </div>
-
-                                    <div class="row" wire:ignore.self>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary">حالة البناء:</label>
-                                            <label
-                                                class="form-label fs-6">{{ $real_estate->buildingStatus->name }}</label>
-                                        </div>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary">تسليم البناء:
-                                            </label>
-                                            <label
-                                                class="form-label fs-6">{{ $real_estate->constructionDelivery->name }}</label>
-                                        </div>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary">الفرع:
-                                            </label>
-                                            <label class="form-label fs-6">{{ $real_estate->branch->name }}</label>
-                                        </div>
-
-                                    </div>
-
-
-
-                                    <div class="row" wire:ignore.self>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary"> ملاحظات على الطلب:
-                                            </label>
-                                            <p>{{ $real_estate->notes }}</p>
-                                        </div>
-
-                                        <div class="mb-1 text-center">
-
-                                            <div class="d-flex justify-content-center pt-2 clear">
-                                                <a href="javascript:;"
-                                                    class="btn btn-success me-1 waves-effect waves-float waves-light"
-                                                    data-bs-target="#editUser" data-bs-toggle="modal">
-                                                    حجز
-                                                </a>
-                                                <a href="create-sell.html"
-                                                    class="btn btn-primary  waves-effect waves-float waves-light">بيع</a>
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-
-
-                                </div>
-                            @endif
-
-                            @if ($real_estate->property_type_id == 3)
-                                <div class="card-boady card-statistics" wire:ignore.self>
-                                    <div class="row">
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary"> نوع العقار
-                                                :</label>
-                                            <label
-                                                class="form-label fs-6">{{ $real_estate->propertyType->name }}</label>
-                                        </div>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary"> المساحة
-                                                :</label>
-                                            <label
-                                                class="form-label fs-6">{{ number_format((int) $real_estate->space) }}</label>
-                                        </div>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary"> الدخل السنوي
-                                                :</label>
-                                            <label
-                                                class="form-label fs-6">{{ number_format((int) $real_estate->annual_income) }}</label>
-                                        </div>
-
-                                    </div>
-
-                                    <div class="row" wire:ignore.self>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary">المدينة:</label>
-                                            <label class="form-label fs-6">{{ $real_estate->city->name }}</label>
-                                        </div>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary">الحي:
-                                            </label>
-                                            <label
-                                                class="form-label fs-6">{{ $real_estate->neighborhood->name }}</label>
-                                        </div>
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary">رقم الأرض:</label>
-                                            <label class="form-label fs-6">{{ $real_estate->land_number }}</label>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="row" wire:ignore.self>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary">رقم البلوك:
-                                            </label>
-                                            <label class="form-label fs-6">{{ $real_estate->block_number }}</label>
-                                        </div>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary"> عدد الأدوار
-                                                :</label>
-                                            <label
-                                                class="form-label fs-6">{{ number_format($real_estate->floors_number) }}</label>
-                                        </div>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary"> عدد الشقق
-                                                :</label>
-                                            <label
-                                                class="form-label fs-6">{{ number_format($real_estate->flats_number) }}</label>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="row" wire:ignore.self>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary"> عدد المحلات
-                                                :</label>
-                                            <label
-                                                class="form-label fs-6">{{ number_format($real_estate->stores_number) }}</label>
-                                        </div>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary"> عدد غرف الشقة
-                                                :</label>
-                                            <label
-                                                class="form-label fs-6">{{ number_format($real_estate->flat_rooms_number) }}</label>
-                                        </div>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary">حالة العقار:</label>
-                                            <label
-                                                class="form-label fs-6">{{ $real_estate->propertyStatus->name }}</label>
-                                        </div>
-
-                                    </div>
-
-                                    <div class="row" wire:ignore.self>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary">الفرع:
-                                            </label>
-                                            <label class="form-label fs-6">{{ $real_estate->branch->name }}</label>
-                                        </div>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary">السعر الكلي:</label>
-                                            <label class="form-label fs-6">{{ $real_estate->total_price }}</label>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="row" wire:ignore.self>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary"> ملاحظات على الطلب:
-                                            </label>
-                                            <p>{{ $real_estate->notes }}</p>
-                                        </div>
-
-                                        <div class="mb-1 text-center">
-                                            <div class="d-flex justify-content-center pt-2 clear">
-                                                <a href="javascript:;"
-                                                    class="btn btn-success me-1 waves-effect waves-float waves-light"
-                                                    data-bs-target="#editUser" data-bs-toggle="modal">
-                                                    حجز
-                                                </a>
-                                                <a href="create-sell.html"
-                                                    class="btn btn-primary  waves-effect waves-float waves-light">بيع</a>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            @endif
-
-                            @if ($real_estate->property_type_id == 4)
-                                <div class="card-boady card-statistics" wire:ignore.self>
-                                    <div class="row">
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary"> نوع العقار
-                                                :</label>
-                                            <label
-                                                class="form-label fs-6">{{ $real_estate->propertyType->name }}</label>
-                                        </div>
-
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary"> المساحة
-                                                :</label>
-                                            <label
-                                                class="form-label fs-6">{{ number_format((int) $real_estate->space) }}</label>
-                                        </div>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary">المدينة:</label>
-                                            <label class="form-label fs-6">{{ $real_estate->city->name }}</label>
-                                        </div>
-
-                                    </div>
-
-                                    <div class="row" wire:ignore.self>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary">الحي:
-                                            </label>
-                                            <label
-                                                class="form-label fs-6">{{ $real_estate->neighborhood->name }}</label>
-                                        </div>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary">حالة العقار:</label>
-                                            <label
-                                                class="form-label fs-6">{{ $real_estate->propertyStatus->name }}</label>
-                                        </div>
-
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary">رقم الأرض:</label>
-                                            <label class="form-label fs-6">{{ $real_estate->land_number }}</label>
-                                        </div>
-
-                                    </div>
-
-                                    <div class="row" wire:ignore.self>
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary">رقم البلوك:</label>
-                                            <label class="form-label fs-6">{{ $real_estate->block_number }}</label>
-                                        </div>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary">رقم الطابق:</label>
-                                            <label
-                                                class="form-label fs-6">{{ number_format($real_estate->floor_number) }}</label>
-                                        </div>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary">الفرع:
-                                            </label>
-                                            <label class="form-label fs-6">{{ $real_estate->branch->name }}</label>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="row" wire:ignore.self>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary"> ملاحظات على الطلب:
-                                            </label>
-                                            <p>{{ $real_estate->notes }}</p>
-                                        </div>
-
-                                        <div class="mb-1 text-center">
-
-                                            <div class="d-flex justify-content-center pt-2 clear">
-                                                <a href="javascript:;"
-                                                    class="btn btn-success me-1 waves-effect waves-float waves-light"
-                                                    data-bs-target="#editUser" data-bs-toggle="modal">
-                                                    حجز
-                                                </a>
-                                                <a href="create-sell.html"
-                                                    class="btn btn-primary  waves-effect waves-float waves-light">بيع</a>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            @endif
-
-                            @if ($real_estate->property_type_id == 5)
-                                <div class="card-boady card-statistics" wire:ignore.self>
-
-
-                                    <div class="row">
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary"> نوع العقار
-                                                :</label>
-                                            <label
-                                                class="form-label fs-6">{{ $real_estate->propertyType->name }}</label>
-                                        </div>
-
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary"> المساحة
-                                                :</label>
-                                            <label
-                                                class="form-label fs-6">{{ number_format((int) $real_estate->space) }}</label>
-                                        </div>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary">رقم الأرض:</label>
-                                            <label class="form-label fs-6">{{ $real_estate->land_number }}</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="row" wire:ignore.self>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary">رقم البلوك:</label>
-                                            <label class="form-label fs-6">{{ $real_estate->block_number }}</label>
-                                        </div>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary">المدينة:</label>
-                                            <label class="form-label fs-6">{{ $real_estate->city->name }}</label>
-                                        </div>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary">الحي:
-                                            </label>
-                                            <label
-                                                class="form-label fs-6">{{ $real_estate->neighborhood->name }}</label>
-                                        </div>
-
-                                    </div>
-
-
-                                    <div class="row" wire:ignore.self>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary">عرض الشارع:
-                                            </label>
-                                            <label
-                                                class="form-label fs-6">{{ $real_estate->streetWidth->street_number }}</label>
-                                        </div>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary">الاتجاه:
-                                            </label>
-                                            <label class="form-label fs-6">{{ $real_estate->direction->name }}</label>
-                                        </div>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary">حالة العقار:</label>
-                                            <label
-                                                class="form-label fs-6">{{ $real_estate->propertyStatus->name }}</label>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="row" wire:ignore.self>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary">نوع الملكية:
-                                            </label>
-                                            <label
-                                                class="form-label fs-6">{{ $real_estate->ownerShipType->name }}</label>
-                                        </div>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary"> السعر
-                                                :</label>
-                                            <label
-                                                class="form-label fs-6">{{ number_format($real_estate->price) }}</label>
-                                        </div>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary"> عمر العقار
-                                                :</label>
-                                            <label
-                                                class="form-label fs-6">{{ number_format($real_estate->real_estate_age) }}</label>
-                                        </div>
-
-                                    </div>
-
-                                    <div class="row" wire:ignore.self>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary">الفرع:
-                                            </label>
-                                            <label class="form-label fs-6">{{ $real_estate->branch->name }}</label>
-                                        </div>
-
-                                    </div>
-
-
-
-                                    <div class="row" wire:ignore.self>
-
-                                        <div class="col-md-3 mb-1 ms-4" wire:ignore.self>
-                                            <label class="form-label fw-bold fs-4 text-primary"> ملاحظات على الطلب:
-                                            </label>
-                                            <p>{{ $real_estate->notes }}</p>
-                                        </div>
-
-                                        <div class="mb-1 text-center">
-
-                                            <div class="d-flex justify-content-center pt-2 clear">
-                                                <a href="javascript:;"
-                                                    class="btn btn-success me-1 waves-effect waves-float waves-light"
-                                                    data-bs-target="#editUser" data-bs-toggle="modal">
-                                                    حجز
-                                                </a>
-                                                <a href="create-sell.html"
-                                                    class="btn btn-primary  waves-effect waves-float waves-light">بيع</a>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            @endif
-
                         </div>
                     </div>
-
-                    {{--
-                    <div class="col-md-12" wire:ignore.self>
-                        <div class="row" wire:ignore.self>
-                            <div class="col-lg-6" wire:ignore.self>
-                                <div class="card" wire:ignore.self>
-                                    <div class="card-header" wire:ignore>
-                                        <h4 class="card-title ">تتبع حالة العرض</h4>
-                                    </div>
-                                    <div class="card-body" wire:ignore.self>
-                                        <ul class="timeline" wire:ignore.self>
-
-                                           @foreach ($offer->orderNotes as $note)
-                                                <li class="timeline-item" wire:ignore.self>
-                                                    <span
-                                                        class="timeline-point
-                                                        @if ($note->status == 1) timeline-point-success @endif
-                                                        @if ($note->status == 2) timeline-point-warning @endif
-                                                        @if ($note->status == 3) timeline-point-danger @endif
-                                                         timeline-point-indicator"
-                                                        wire:ignore.self></span>
-                                                    <div class="timeline-event" wire:ignore.self>
-
-                                                        <div class="d-flex justify-content-between flex-sm-row flex-column mb-sm-0 mb-1"
-                                                            wire:ignore.self>
-                                                            <h6>{{ getUserName($note->user_id) }}</h6>
-                                                            <span
-                                                                class="timeline-event-time ">{{ $note->created_at->format('Y-m-d') }}</span>
-                                                        </div>
-
-                                                        <div class="d-flex justify-content-between flex-sm-row flex-column mb-sm-0 mb-1"
-                                                            wire:ignore.self>
-                                                            <h6>{{ $note->note }}</h6>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            @endforeach
-
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            @auth
-                                @if (auth()->user()->user_type == 'superadmin' || auth()->user()->user_type == 'admin')
-                                    <div class="col-lg-6" wire:ignore.self>
-                                        <div class="card" wire:ignore.self>
-                                            <div class="card-header" wire:ignore>
-                                                <h4 class="card-title ">حالات التعديل والإضافة على العرض</h4>
-                                            </div>
-                                            <div class="card-body" wire:ignore.self>
-                                                <ul class="timeline" wire:ignore.self>
-
-                                                    {{-- @foreach ($offer->offerEdits as $offer_edit)
-                                                        @if ($offer_edit->action == 'edit')
-                                                            <li class="timeline-item">
-                                                                <span
-                                                                    class="timeline-point timeline-point-warning timeline-point-indicator "></span>
-                                                                <div class="timeline-event ">
-                                                                    <div
-                                                                        class="d-flex justify-content-between flex-sm-row flex-column mb-sm-0 mb-1 ">
-                                                                        <h6> {!! $offer_edit->note !!}</h6>
-                                                                        <span
-                                                                            class="timeline-event-time ">{{ $this->getLastUpateOrderEditTime($offer_edit->id) }}</span>
-                                                                    </div>
-                                                                </div>
-                                                            </li>
-                                                        @endif
-
-                                                        @if ($offer_edit->action == 'add')
-                                                            <li class="timeline-item">
-                                                                <span
-                                                                    class="timeline-point timeline-point-success timeline-point-indicator "></span>
-                                                                <div class="timeline-event ">
-                                                                    <div
-                                                                        class="d-flex justify-content-between flex-sm-row flex-column mb-sm-0 mb-1 ">
-                                                                        <h6>{!! $offer_edit->note !!}</h6>
-                                                                        <span
-                                                                            class="timeline-event-time ">{{ $this->getLastUpateOrderEditTime($offer_edit->id) }}</span>
-                                                                    </div>
-                                                                </div>
-                                                            </li>
-                                                        @endif
-
-                                                        @if ($offer_edit->action == 'cancel')
-                                                            <li class="timeline-item">
-                                                                <span
-                                                                    class="timeline-point timeline-point-danger timeline-point-indicator "></span>
-                                                                <div class="timeline-event ">
-                                                                    <div
-                                                                        class="d-flex justify-content-between flex-sm-row flex-column mb-sm-0 mb-1 ">
-                                                                        <h6>{!! $offer_edit->note !!}</h6>
-                                                                        <span
-                                                                            class="timeline-event-time ">{{ $this->getLastUpateOrderEditTime($offer_edit->id) }}</span>
-                                                                    </div>
-                                                                </div>
-                                                            </li>
-                                                        @endif
-
-                                                        @if ($offer_edit->action == 'active')
-                                                            <li class="timeline-item">
-                                                                <span
-                                                                    class="timeline-point timeline-point-warning timeline-point-indicator "></span>
-                                                                <div class="timeline-event ">
-                                                                    <div
-                                                                        class="d-flex justify-content-between flex-sm-row flex-column mb-sm-0 mb-1 ">
-                                                                        <h6>{!! $offer_edit->note !!}</h6>
-                                                                        <span
-                                                                            class="timeline-event-time ">{{ $this->getLastUpateOrderEditTime($offer_edit->id) }}</span>
-                                                                    </div>
-                                                                </div>
-                                                            </li>
-                                                        @endif
-                                                    @endforeach
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endif
-                            @endauth
-                        </div>
-                    </div>
-                     --}}
-
                 </div>
+
+                <div class="row match-height">
+
+                    <div class="col-lg-4 col-12">
+                        <div class="card card-user-timeline">
+                            <div class="card-header">
+                                <div class="d-flex align-items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round"
+                                        class="feather feather-list user-timeline-title-icon">
+                                        <line x1="8" y1="6" x2="21" y2="6"></line>
+                                        <line x1="8" y1="12" x2="21" y2="12"></line>
+                                        <line x1="8" y1="18" x2="21" y2="18"></line>
+                                        <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                                        <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                                        <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                                    </svg>
+
+                                    @if ($offer->mediators->count())
+                                        <h4 class="card-title">الوسطاء</h4>
+                                    @else
+                                        <h4 class="card-title">لا يوجد وسطاء للعرض</h4>
+                                    @endif
+
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <ul class="timeline ms-50">
+
+                                    @foreach ($offer->mediators as $mediator)
+                                        <li class="timeline-item">
+                                            <span
+                                                class="timeline-point timeline-point-danger timeline-point-indicator"></span>
+                                            <div class="timeline-event">
+                                                <h6>{{ $mediator->name }}</h6>
+                                                {{-- <p class="mb-0">{{ $mediator }}</p> --}}
+                                            </div>
+                                        </li>
+                                    @endforeach
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-lg-6">
+                        <div class="card card-user-timeline">
+
+                            <div class="card-header">
+                                <div class="d-flex align-items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round"
+                                        class="feather feather-list user-timeline-title-icon">
+                                        <line x1="8" y1="6" x2="21" y2="6"></line>
+                                        <line x1="8" y1="12" x2="21" y2="12"></line>
+                                        <line x1="8" y1="18" x2="21" y2="18"></line>
+                                        <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                                        <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                                        <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                                    </svg>
+
+                                    @if ($offer->offerEdits->count())
+                                        <h4 class="card-title">التعديلات</h4>
+                                    @else
+                                        <h4 class="card-title">لا يوجد عمليات تعديل على العرض</h4>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="card-body">
+                                <ul class="timeline ms-50">
+
+                                    @foreach ($offer->offerEdits as $offer_edit)
+                                        <li class="timeline-item">
+
+                                            @if ($offer_edit->action == 'add')
+                                                <span
+                                                    class="timeline-point timeline-point-success timeline-point-indicator"></span>
+                                            @endif
+
+                                            @if ($offer_edit->action == 'edit')
+                                                <span
+                                                    class="timeline-point timeline-point-danger timeline-point-indicator"></span>
+                                            @endif
+
+                                            <div class="timeline-event">
+                                                <div
+                                                    class="d-flex justify-content-between flex-sm-row flex-column mb-sm-0 mb-1">
+                                                    <h6>{!! $offer_edit->note !!} </h6>
+                                                    <span
+                                                        class="timeline-event-time">{{ $this->getLastUpateOfferEditTime($offer_edit->id) }}</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    @endforeach
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </section>
+
         </div>
     </div>
 
@@ -967,12 +932,10 @@
                         </div>
 
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
-
 
     <div class="modal fade" id="connectToOffer" tabindex="-1" aria-hidden="true" wire:ignore.self>
         <div class="modal-dialog modal-lg modal-dialog-centered modal-edit-user" wire:ignore.self>
@@ -989,13 +952,123 @@
         </div>
     </div>
 
-    @push('order-create')
+    <div class="modal fade" id="addReservation" tabindex="-1" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-edit-user" wire:ignore.self>
+            <div class="modal-content" wire:ignore.self>
+                <div class="modal-header bg-transparent" wire:ignore>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body pb-5 px-sm-5 pt-50" wire:ignore.self>
+                    <div class="text-center mb-2" wire:ignore>
+                        <h1 class="mb-1">تفاصيل الحجز</h1>
+                    </div>
+                    <form id="editUserForm" class="row gy-1 pt-75" onsubmit="return false" wire:ignore.self>
+
+                        <div class="col-12 col-md-6 customer-name" wire:ignore>
+                            <label class="form-label">اسم العميل</label>
+                            <select class="js-select2-customer-name select2 form-select" wire:model='customer_id'
+                                @if ($offer->reservation) disabled @endif>
+                                @foreach (getCustomers() as $customer)
+                                    <option value="{{ $customer->id }}" selected>
+                                        {{ $customer->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('customer_id')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+
+                        <div class="col-12 col-md-6" wire:ignore.self>
+                            <div class="row">
+                                <label class="form-label" for="price">السعر</label>
+                                <div class="input-group input-group-merge">
+                                    <input type="text" class="form-control" wire:model='price'
+                                        placeholder="السعر" @if ($offer->reservation) disabled @endif>
+                                    <span class="input-group-text">ريال</span>
+                                </div>
+                                @error('price')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
+
+
+                        <div class="col-12 col-md-6" wire:ignore.self>
+                            <label class="form-label" for="fp-range">التاريخ</label>
+                            <input type="text" dir="ltr" wire:model='date'
+                                class="form-control flatpickr-range" placeholder="YYYY-MM-DD to YYYY-MM-DD"
+                                @if ($offer->reservation) disabled @endif />
+                            @error('date')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+
+                        <div class="col-12 col-md-6" wire:ignore.self>
+                            <label class="form-label" for="modalEditUserEmail">ملاحظات:</label>
+                            <textarea class="form-control" wire:model='reservation_notes' rows="3" placeholder="ملاحظات"
+                                @if ($offer->reservation) disabled @endif></textarea>
+                            @error('reservation_notes')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        <div class="col-12 text-center mt-2 pt-50" wire:ignore.self>
+                            @if (!$offer->reservation)
+                                <button type="submit" class="btn btn-primary btn-submit me-1"
+                                    wire:click='storeReservation'>حفظ</button>
+                            @endif
+
+                            <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal"
+                                aria-label="Close">
+                                الغاء
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    @push('test')
         <script>
-            window.livewire.on('submitNote', () => {
-                $('#addNote').modal('hide');
+            $(document).ready(function() {
+
+                window.initSelectCompanyDrop = () => {
+                    $('.js-select2-customer-name').select2({
+                        placeholder: 'اختار الوسطاء',
+                        closeOnSelect: true
+                    });
+                }
+
+                initSelectCompanyDrop();
+
+                $(".js-select2-customer-name").on('change', function() {
+                    var data = $('.js-select2-customer-name').val();
+                    @this.set('customer_id', data);
+                });
+
+                window.livewire.on('select2', (check) => {
+                    initSelectCompanyDrop();
+
+                    if (check) {
+                        $(".js-select2-customer-name").prop('disabled', true);
+                    } else {
+                        $(".js-select2-customer-name").prop('disabled', false);
+                    }
+                });
+            });
+
+            window.livewire.on('submitReservation', () => {
+                $('#addReservation').modal('hide');
                 console.log('Ok');
-            })
+            });
         </script>
     @endpush
+
+
 
 </div>

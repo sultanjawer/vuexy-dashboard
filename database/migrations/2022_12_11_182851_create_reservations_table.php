@@ -17,6 +17,8 @@ return new class extends Migration
             $table->id()->startingValue(100);
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->string('customer_id')->constrained('customers')->cascadeOnDelete();
+            $table->string('offer_id')->unique()->constrained('offers')->cascadeOnDelete();
+            $table->string('offer_code')->unique()->constrained('offers')->cascadeOnDelete();
             $table->string('customer_name');
             $table->double('price')->default(0.0);
             $table->enum('status', [1, 2]);

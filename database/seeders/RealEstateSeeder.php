@@ -99,16 +99,18 @@ class RealEstateSeeder extends Seeder
                 'rooms_number' => random_int(10, 100),
                 'stores_number' => random_int(10, 100),
                 'price_by_meter' => random_int(10, 100),
-                'price' => random_int(10, 100),
+                // 'price' => random_int(10, 100),
                 'total_price' => random_int(10, 100),
                 'annual_income' => random_int(10, 100),
                 'space' => random_int(10, 100),
                 'notes' => Str::random(10),
+                'real_estate_statement' => Str::random(10),
                 'land_number' => random_int(1111111, 9999999),
                 'block_number' => random_int(1111111, 9999999),
                 'branch_id' => random_int($min_branch_id, $max_branch_id),
                 'character' => Str::random(10),
                 'real_estate_type' => $property_types[$property_type_id],
+                'created_at' => now(),
             ]);
 
             $count = $count + 1;

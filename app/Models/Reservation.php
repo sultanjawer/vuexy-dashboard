@@ -13,11 +13,14 @@ class Reservation extends Model
     protected $fillable = [
         'user_id',
         'customer_id',
+        'offer_id',
+        'offer_code',
         'customer_name',
         'price',
         'status',
         'date_from',
         'date_to',
+        'note',
         'created_at',
         'updated_at'
     ];
@@ -32,17 +35,25 @@ class Reservation extends Model
         return $this->belongsTo(Customer::class, 'customer_id', 'id');
     }
 
+    public function offer()
+    {
+        return $this->belongsTo(Offer::class, 'offer_id', 'id');
+    }
+
     public function scopeData($query)
     {
         return $query->select([
             'id',
             'user_id',
             'customer_id',
+            'offer_id',
+            'offer_code',
             'customer_name',
             'price',
             'status',
             'date_from',
             'date_to',
+            'note',
             'created_at',
             'updated_at'
         ]);

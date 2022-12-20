@@ -46,6 +46,7 @@ return new class extends Migration
             $table->string('total_price')->nullable();
             $table->string('annual_income')->nullable();
             $table->string('space')->nullable();
+            $table->string('real_estate_statement')->nullable();
 
             #Fields Text
             $table->text('notes')->nullable();

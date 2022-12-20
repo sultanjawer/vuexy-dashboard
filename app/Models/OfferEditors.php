@@ -5,20 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class OrderEditor extends Model
+class OfferEditors extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'order_id',
+        'offer_id',
         'user_id',
         'note',
         'action',
     ];
 
-    public function order()
+    public function offer()
     {
-        return $this->belongsTo(Order::class, 'user_id', 'id');
+        return $this->belongsTo(Offer::class, 'offer_id', 'id');
     }
 
     public function user()
@@ -30,7 +30,7 @@ class OrderEditor extends Model
     {
         return $query->select([
             'id',
-            'order_id',
+            'offer_id',
             'user_id',
             'note',
             'action',

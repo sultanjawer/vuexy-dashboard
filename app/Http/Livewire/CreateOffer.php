@@ -15,9 +15,9 @@ class CreateOffer extends Component
     public $land_fields = ['price_by_meter', 'total_price', 'direction_ids', 'land_type_id', 'licensed_id', 'street_width_ids', 'interface_length_id', 'character'];
     public $duplex_fields = ['price_by_meter', 'total_price', 'direction_ids', 'land_type_id', 'licensed_id', 'street_width_ids', 'interface_length_id', 'character', 'real_estate_age', 'building_type_id', 'building_status_id', 'construction_delivery_id'];
     public $condominium_fields = ['real_estate_age', 'floors_number', 'flats_number', 'stores_number', 'flat_rooms_number', 'annual_income', 'total_price',];
-    public $flat_fields = ['price', 'floor_number', 'real_estate_age'];
+    public $flat_fields = ['floor_number', 'real_estate_age'];
     public $chalet_fields = ['direction_ids', 'street_width_ids', 'owner_ship_type_id', 'real_estate_age', 'price'];
-    public $main_fields = ['city_id', 'neighborhood_id', 'land_number', 'block_number', 'notes', 'space', 'property_type_id', 'mediators_ids', 'branch_id'];
+    public $main_fields = ['city_id', 'neighborhood_id', 'land_number', 'real_estate_statement', 'block_number', 'notes', 'space', 'property_type_id', 'mediators_ids', 'branch_id'];
 
     public $property_types = ['land', 'duplex', 'condominium', 'flat', 'chalet'];
 
@@ -27,6 +27,7 @@ class CreateOffer extends Component
     public $neighborhood_id = 1;
     public $land_number;
     public $block_number;
+    public $real_estate_statement = '';
     public $notes = '';
 
     #Form Two
@@ -59,9 +60,9 @@ class CreateOffer extends Component
     public $construction_delivery_id = 1;
 
     #Form Three
-    public $yes = 'option1';
-    public $no = '';
-    public $is_direct = true;
+    public $yes = '';
+    public $no = 'option2';
+    public $is_direct = false;
     public $mediators_ids = [];
 
     #Switching
