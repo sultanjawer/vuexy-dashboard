@@ -172,7 +172,6 @@ class OfferService extends Controller
             'annual_income' => $data['annual_income'],
             'real_estate_age' => $data['real_estate_age'],
             'real_estate_statement' => $data['real_estate_statement']
-
         ]);
 
         return $condominium;
