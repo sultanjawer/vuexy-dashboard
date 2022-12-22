@@ -822,67 +822,79 @@
                     </div>
 
 
-                    <div class="col-lg-6">
-                        <div class="card card-user-timeline">
+                    @auth
+                        @if (auth()->user()->user_type == 'admin' || auth()->user()->user_type == 'superadmin')
+                            <div class="col-lg-6">
+                                <div class="card card-user-timeline">
 
-                            <div class="card-header">
-                                <div class="d-flex align-items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round"
-                                        class="feather feather-list user-timeline-title-icon">
-                                        <line x1="8" y1="6" x2="21" y2="6"></line>
-                                        <line x1="8" y1="12" x2="21" y2="12"></line>
-                                        <line x1="8" y1="18" x2="21" y2="18"></line>
-                                        <line x1="3" y1="6" x2="3.01" y2="6"></line>
-                                        <line x1="3" y1="12" x2="3.01" y2="12"></line>
-                                        <line x1="3" y1="18" x2="3.01" y2="18"></line>
-                                    </svg>
+                                    <div class="card-header">
+                                        <div class="d-flex align-items-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                class="feather feather-list user-timeline-title-icon">
+                                                <line x1="8" y1="6" x2="21" y2="6">
+                                                </line>
+                                                <line x1="8" y1="12" x2="21" y2="12">
+                                                </line>
+                                                <line x1="8" y1="18" x2="21" y2="18">
+                                                </line>
+                                                <line x1="3" y1="6" x2="3.01" y2="6">
+                                                </line>
+                                                <line x1="3" y1="12" x2="3.01" y2="12">
+                                                </line>
+                                                <line x1="3" y1="18" x2="3.01" y2="18">
+                                                </line>
+                                            </svg>
 
-                                    @if ($offer->offerEdits->count())
-                                        <h4 class="card-title">التعديلات</h4>
-                                    @else
-                                        <h4 class="card-title">لا يوجد عمليات تعديل على العرض</h4>
-                                    @endif
+                                            @if ($offer->offerEdits->count())
+                                                <h4 class="card-title">التعديلات</h4>
+                                            @else
+                                                <h4 class="card-title">لا يوجد عمليات تعديل على العرض</h4>
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    <div class="card-body">
+                                        <ul class="timeline ms-50">
+
+                                            @foreach ($offer->offerEdits as $offer_edit)
+                                                <li class="timeline-item">
+
+                                                    @if ($offer_edit->action == 'add')
+                                                        <span
+                                                            class="timeline-point timeline-point-success timeline-point-indicator"></span>
+                                                    @endif
+
+                                                    @if ($offer_edit->action == 'edit')
+                                                        <span
+                                                            class="timeline-point timeline-point-danger timeline-point-indicator"></span>
+                                                    @endif
+
+                                                    @if ($offer_edit->action == 'book')
+                                                        <span
+                                                            class="timeline-point timeline-point-warning timeline-point-indicator"></span>
+                                                    @endif
+
+                                                    <div class="timeline-event">
+                                                        <div
+                                                            class="d-flex justify-content-between flex-sm-row flex-column mb-sm-0 mb-1">
+                                                            <h6>{!! $offer_edit->note !!} </h6>
+                                                            <span
+                                                                class="timeline-event-time">{{ $this->getLastUpateOfferEditTime($offer_edit->id) }}</span>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            @endforeach
+
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
+                        @endif
+                    @endauth
 
-                            <div class="card-body">
-                                <ul class="timeline ms-50">
 
-                                    @foreach ($offer->offerEdits as $offer_edit)
-                                        <li class="timeline-item">
-
-                                            @if ($offer_edit->action == 'add')
-                                                <span
-                                                    class="timeline-point timeline-point-success timeline-point-indicator"></span>
-                                            @endif
-
-                                            @if ($offer_edit->action == 'edit')
-                                                <span
-                                                    class="timeline-point timeline-point-danger timeline-point-indicator"></span>
-                                            @endif
-
-                                            @if ($offer_edit->action == 'book')
-                                                <span
-                                                    class="timeline-point timeline-point-warning timeline-point-indicator"></span>
-                                            @endif
-
-                                            <div class="timeline-event">
-                                                <div
-                                                    class="d-flex justify-content-between flex-sm-row flex-column mb-sm-0 mb-1">
-                                                    <h6>{!! $offer_edit->note !!} </h6>
-                                                    <span
-                                                        class="timeline-event-time">{{ $this->getLastUpateOfferEditTime($offer_edit->id) }}</span>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    @endforeach
-
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
             </section>
