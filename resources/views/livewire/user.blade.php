@@ -2,13 +2,45 @@
     <div class="col-12">
         <div class="card">
 
-            <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
-
+            <div class="dataTables_wrapper dt-bootstrap5 no-footer">
+                <style>
+                    .export:hover {
+                        background-color: rgb(247, 232, 182);
+                        color: rgb(0, 0, 0);
+                    }
+                </style>
 
                 <div class="card-header border-bottom p-1">
                     <div class="head-label"></div>
-                    <div class="dt-action-buttons text-end">
-                        {{-- <div class="dt-buttons">
+
+                    <div class="btn-group">
+                        <button class="btn btn-gradient-warning dropdown-toggle" type="button" id="dropdownMenuButton303"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            تصدير
+                        </button>
+                        <div class="dropdown-menu text-center export p-0" aria-labelledby="dropdownMenuButton303"
+                            style="">
+
+                            <button class="btn export" tabindex="0" wire:click="export('excel')"
+                                aria-controls="DataTables_Table_0" type="button">
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round"
+                                        class="feather feather-file font-small-4 me-50">
+                                        <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                                        <polyline points="13 2 13 9 20 9"></polyline>
+                                    </svg>Excel
+                                </span>
+                            </button>
+
+
+                            {{-- <a class="dropdown-item" href="#">Excel</a> --}}
+                        </div>
+                    </div>
+
+                    {{-- <div class="dt-action-buttons text-end">
+                        <div class="dt-buttons">
                             <button class="dt-button buttons-collection btn btn-outline-secondary dropdown-toggle me-2"
                                 tabindex="0" aria-controls="DataTables_Table_0" type="button" aria-haspopup="true"
                                 aria-expanded="false">
@@ -16,8 +48,8 @@
                                     تصدير
                                 </span>
                             </button>
-                        </div> --}}
-                    </div>
+                        </div>
+                    </div> --}}
                 </div>
 
 
@@ -81,8 +113,7 @@
 
                 </div>
 
-                <table class="table dataTable no-footer text-center" role="grid"
-                    aria-describedby="DataTables_Table_0_info">
+                <table class="table dataTable no-footer text-center" role="grid">
                     <thead>
                         <tr role="row">
                             <th class="sorting sorting_asc" tabindex="0" rowspan="1" colspan="1"
@@ -183,15 +214,12 @@
                 </table>
 
                 <div class="d-flex justify-content-between mx-0 row">
-
-
                     <div class="col-sm-12 col-md-6">
                         <div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite">
                             إظهار
                             {{ $users->perPage() }} من اصل {{ $users->total() }}
                         </div>
                     </div>
-
 
                     <div class="col-sm-12 col-md-6">
                         <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
@@ -206,4 +234,6 @@
 
         </div>
     </div>
+
+
 </div>

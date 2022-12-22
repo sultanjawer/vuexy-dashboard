@@ -2,10 +2,12 @@
 
 namespace App\Http\Livewire;
 
+use App\Exports\MediatorsExport;
 use App\Models\Mediator as ModelsMediator;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
 
 class Mediator extends Component
 {
@@ -69,8 +71,26 @@ class Mediator extends Component
         if ($mediators->count() < 9) {
             $this->resetPage();
         }
+
         return view('livewire.mediator', [
             'mediators' => $mediators
         ]);
+    }
+
+    public function export($type)
+    {
+        if ($type == 'excel') {
+            $excel = Excel::download(new MediatorsExport, 'mediators.xlsx');
+
+            $this->alert('success', '', [
+                'toast' => true,
+                'position' => 'center',
+                'timer' => 6000,
+                'text' => 'تم تصدير الملف بنجاح',
+                'timerProgressBar' => true,
+            ]);
+
+            return $excel;
+        }
     }
 }

@@ -2,9 +2,11 @@
 
 namespace App\Http\Livewire;
 
+use App\Exports\NeighborhoodsExport;
 use App\Models\Neighborhood as ModelsNeighborhood;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
 
 class Neighborhood extends Component
 {
@@ -51,5 +53,23 @@ class Neighborhood extends Component
             $neighborhood->update(['status' => 1]);
         }
     }
+
+    public function export($type)
+    {
+        if ($type == 'excel') {
+            $excel = Excel::download(new NeighborhoodsExport, 'neighborhoods.xlsx');
+
+            $this->alert('success', '', [
+                'toast' => true,
+                'position' => 'center',
+                'timer' => 6000,
+                'text' => 'تم تصدير الملف بنجاح',
+                'timerProgressBar' => true,
+            ]);
+
+            return $excel;
+        }
+    }
+
 }
 

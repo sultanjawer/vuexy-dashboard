@@ -2,10 +2,12 @@
 
 namespace App\Http\Livewire;
 
+use App\Exports\OffersExport;
 use App\Models\Offer as ModelsOffer;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
 
 class Offer extends Component
 {
@@ -66,9 +68,27 @@ class Offer extends Component
     {
         $direct_offers =  $this->getDirectOffers();
         $in_direct_offers =  $this->getInDirectOffers();
+
         return view('livewire.offer', [
             'direct_offers' => $direct_offers,
             'in_direct_offers' => $in_direct_offers
         ]);
+    }
+
+    public function export($type)
+    {
+        if ($type == 'excel') {
+            $excel = Excel::download(new OffersExport, 'offers.xlsx');
+
+            $this->alert('success', '', [
+                'toast' => true,
+                'position' => 'center',
+                'timer' => 6000,
+                'text' => 'تم تصدير الملف بنجاح',
+                'timerProgressBar' => true,
+            ]);
+
+            return $excel;
+        }
     }
 }

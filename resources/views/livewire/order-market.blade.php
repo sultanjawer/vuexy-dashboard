@@ -28,6 +28,44 @@
                             <div class="tab-pane active" id="home-fill" role="tabpanel" aria-labelledby="home-tab-fill"
                                 wire:ignore.self>
                                 <div class="dataTables_wrapper dt-bootstrap5 no-footer">
+
+                                    {{-- Export Section --}}
+                                    <div class="card-header border-bottom p-1">
+                                        <div class="head-label"></div>
+                                        <div class="btn-group">
+                                            <button class="btn btn-gradient-warning dropdown-toggle" type="button"
+                                                id="dropdownMenuButton303" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                تصدير
+                                            </button>
+                                            <div class="dropdown-menu text-center export p-0"
+                                                aria-labelledby="dropdownMenuButton303" style="">
+
+                                                <button class="btn export" tabindex="0"
+                                                    wire:click="export('excel', 1)" aria-controls="DataTables_Table_0"
+                                                    type="button">
+                                                    <span>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                            height="24" viewBox="0 0 24 24" fill="none"
+                                                            stroke="currentColor" stroke-width="2"
+                                                            stroke-linecap="round" stroke-linejoin="round"
+                                                            class="feather feather-file font-small-4 me-50">
+                                                            <path
+                                                                d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z">
+                                                            </path>
+                                                            <polyline points="13 2 13 9 20 9"></polyline>
+                                                        </svg>Excel
+                                                    </span>
+                                                </button>
+
+
+                                                {{-- <a class="dropdown-item" href="#">Excel</a> --}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{-- Export Section --}}
+
+
                                     <div class="d-flex justify-content-between align-items-center mx-0 row">
 
                                         {{-- Number of Rows Sections --}}
@@ -103,8 +141,8 @@
                                                 </label>
 
                                                 <label>التاريخ الى:
-                                                    <input type="date" wire:change='ooDateTo' wire:model='oo_date_to'
-                                                        class="form-control">
+                                                    <input type="date" wire:change='ooDateTo'
+                                                        wire:model='oo_date_to' class="form-control">
                                                 </label>
 
                                             </div>
@@ -127,8 +165,8 @@
                                                     wire:click="oo_sortBy('city_id')" tabindex="0" rowspan="1"
                                                     colspan="1">المدينة </th>
                                                 <th class="sorting {{ $oo_style_sort_direction }}"
-                                                    wire:click="oo_sortBy('customer_id')" tabindex="0" rowspan="1"
-                                                    colspan="1">اسم العميل</th>
+                                                    wire:click="oo_sortBy('customer_id')" tabindex="0"
+                                                    rowspan="1" colspan="1">اسم العميل</th>
                                                 <th class="sorting" tabindex="0" rowspan="1" colspan="1">
                                                     الميزانية</th>
                                                 <th class="sorting" tabindex="0" rowspan="1" colspan="1">
@@ -322,10 +360,46 @@
                                 wire:ignore.self>
                                 <div class="dataTables_wrapper dt-bootstrap5 no-footer">
 
+                                    {{-- Export Section --}}
+                                    <div class="card-header border-bottom p-1">
+                                        <div class="head-label"></div>
+                                        <div class="btn-group">
+                                            <button class="btn btn-gradient-warning dropdown-toggle" type="button"
+                                                id="dropdownMenuButton303" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                تصدير
+                                            </button>
+                                            <div class="dropdown-menu text-center export p-0"
+                                                aria-labelledby="dropdownMenuButton303" style="">
+
+                                                <button class="btn export" tabindex="0"
+                                                    wire:click="export('excel', 0)" aria-controls="DataTables_Table_0"
+                                                    type="button">
+                                                    <span>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                            height="24" viewBox="0 0 24 24" fill="none"
+                                                            stroke="currentColor" stroke-width="2"
+                                                            stroke-linecap="round" stroke-linejoin="round"
+                                                            class="feather feather-file font-small-4 me-50">
+                                                            <path
+                                                                d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z">
+                                                            </path>
+                                                            <polyline points="13 2 13 9 20 9"></polyline>
+                                                        </svg>Excel
+                                                    </span>
+                                                </button>
+
+
+                                                {{-- <a class="dropdown-item" href="#">Excel</a> --}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{-- Export Section --}}
+
+
+
 
                                     <div class="d-flex justify-content-between align-items-center mx-0 row">
-
-
                                         <div class="col-sm-12 col-md-3">
                                             <div class="col-sm-12 col-md-6">
                                                 <div class="dataTables_length">
@@ -340,7 +414,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
 
                                         {{-- Search Sections --}}
                                         <div class="col-sm-12 col-md-9">

@@ -2,10 +2,12 @@
 
 namespace App\Http\Livewire;
 
+use App\Exports\CustomersExport;
 use App\Models\Customer as ModelsCustomer;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
 
 class Customer extends Component
 {
@@ -78,5 +80,22 @@ class Customer extends Component
         return view('livewire.customer', [
             'customers' => $customers
         ]);
+    }
+
+    public function export($type)
+    {
+        if ($type == 'excel') {
+            $excel = Excel::download(new CustomersExport, 'customers.xlsx');
+
+            $this->alert('success', '', [
+                'toast' => true,
+                'position' => 'center',
+                'timer' => 6000,
+                'text' => 'تم تصدير الملف بنجاح',
+                'timerProgressBar' => true,
+            ]);
+
+            return $excel;
+        }
     }
 }

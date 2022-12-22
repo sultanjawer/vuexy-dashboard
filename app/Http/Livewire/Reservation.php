@@ -2,11 +2,13 @@
 
 namespace App\Http\Livewire;
 
+use App\Exports\ReservationsExport;
 use App\Models\Reservation as ModelsReservation;
 use App\Models\User;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
 
 class Reservation extends Component
 {
@@ -125,5 +127,22 @@ class Reservation extends Component
     public function callReservationModal($reservation_id)
     {
         return $this->emit('reservationModal', $reservation_id);
+    }
+
+    public function export($type)
+    {
+        if ($type == 'excel') {
+            $excel = Excel::download(new ReservationsExport, 'reservations.xlsx');
+
+            $this->alert('success', '', [
+                'toast' => true,
+                'position' => 'center',
+                'timer' => 6000,
+                'text' => 'تم تصدير الملف بنجاح',
+                'timerProgressBar' => true,
+            ]);
+
+            return $excel;
+        }
     }
 }

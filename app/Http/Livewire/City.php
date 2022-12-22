@@ -2,9 +2,11 @@
 
 namespace App\Http\Livewire;
 
+use App\Exports\CitiesExport;
 use App\Models\City as ModelsCity;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
 
 class City extends Component
 {
@@ -42,6 +44,23 @@ class City extends Component
             $city->update(['status' => 2]);
         } else {
             $city->update(['status' => 1]);
+        }
+    }
+
+    public function export($type)
+    {
+        if ($type == 'excel') {
+            $excel = Excel::download(new CitiesExport, 'cities.xlsx');
+
+            $this->alert('success', '', [
+                'toast' => true,
+                'position' => 'center',
+                'timer' => 6000,
+                'text' => 'تم تصدير الملف بنجاح',
+                'timerProgressBar' => true,
+            ]);
+
+            return $excel;
         }
     }
 }

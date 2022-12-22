@@ -2,11 +2,13 @@
 
 namespace App\Http\Livewire;
 
+use App\Exports\OrdersExport;
 use App\Models\Order;
 use App\Models\OrderEditor;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OrderMarket extends Component
 {
@@ -236,4 +238,23 @@ class OrderMarket extends Component
             'timerProgressBar' => true,
         ]);
     }
+
+    public function export($type, $check)
+    {
+        if ($type == 'excel' && $check) {
+            $excel = Excel::download(new OrdersExport, 'orders.xlsx');
+
+            $this->alert('success', '', [
+                'toast' => true,
+                'position' => 'center',
+                'timer' => 6000,
+                'text' => 'تم تصدير الملف بنجاح',
+                'timerProgressBar' => true,
+            ]);
+
+            return $excel;
+        }
+    }
+
+
 }

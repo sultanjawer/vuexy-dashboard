@@ -13,6 +13,7 @@ use App\Models\LandType;
 use App\Models\Licensed;
 use App\Models\Mediator;
 use App\Models\Neighborhood;
+use App\Models\Offer;
 use App\Models\OfferType;
 use App\Models\Order;
 use App\Models\OrderNoteStatuse;
@@ -586,6 +587,13 @@ if (!function_exists('getBranchesUser')) {
                 return $user->branches;
             }
         }
+    }
+}
+
+if (!function_exists('getOffer')) {
+    function getOffer($offer_id)
+    {
+        return Offer::find($offer_id);
     }
 }
 
