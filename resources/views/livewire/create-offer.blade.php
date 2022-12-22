@@ -549,7 +549,7 @@
                                                     <label class="form-label">الفرع</label>
                                                     <select class="js-select2-branch select2 form-select"
                                                         wire:model='branch_id'>
-                                                        @foreach (getBranches() as $branch)
+                                                        @foreach (getBranchesUser() as $branch)
                                                             <option value="{{ $branch->id }}" selected>
                                                                 {{ $branch->name }}
                                                             </option>
