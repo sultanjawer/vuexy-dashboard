@@ -16,20 +16,20 @@ class ReservationSeeder extends Seeder
      */
     public function run()
     {
-        // foreach (range(1, 100) as $i) {
-        //     DB::table('reservations')->insert([
-        //         'user_id' => 1,
-        //         'customer_name' => 'proamrakram',
-        //         'customer_id' => 1,
-        //         'offer_id' => 1,
-        //         'offer_code' => 'QTE',
-        //         'price' => 1000,
-        //         'status' => random_int(1, 2),
-        //         'note' => Str::random(16),
-        //         'date_from' => now(),
-        //         'date_to' => now()->addDays(10),
-        //         'created_at' => now()->addDays(random_int(1, 100))
-        //     ]);
-        // }
+        foreach (range(1, 100) as $i) {
+            DB::table('reservations')->insert([
+                'user_id' => 1,
+                'customer_name' => 'proamrakram',
+                'customer_id' => 1,
+                'offer_id' => 1,
+                'offer_code' => 'QTE',
+                'price' => 1000,
+                'status' => random_int(1, 2),
+                'note' => Str::random(16),
+                'date_from' => now(),
+                'date_to' => now()->addDays(10),
+                'created_at' => now()->addDays(random_int(1, 100))
+            ]);
+        }
     }
 }

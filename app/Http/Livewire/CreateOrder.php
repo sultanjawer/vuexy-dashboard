@@ -24,7 +24,7 @@ class CreateOrder extends Component
     #Form Two
     public $property_type_id = 1;
     public $city_id = 1;
-    public $branch_id = 1;
+    public $branch_id;
     public $area = '';
     public $price_from = '';
     public $price_to = '';
@@ -52,11 +52,21 @@ class CreateOrder extends Component
     public $search_customer_value = '';
     public $selected_customer_value = '';
 
-
     public $info_active = 'active';
     public $home_active = '';
     public $note_active = '';
     public $messages = '';
+
+    public function mount()
+    {
+        $user = auth()->user();
+        $branches = $user->branches;
+        if ($branches->count()) {
+            if ($branches->first()) {
+                $this->branch_id = $branches->first()->id;
+            }
+        }
+    }
 
     public function render()
     {

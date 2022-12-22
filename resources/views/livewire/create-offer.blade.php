@@ -635,6 +635,11 @@
                                                             data-select2-id="select2-multiple" tabindex="-1"
                                                             aria-hidden="true">
                                                             <optgroup label="الوسطاء" data-select2-id="170">
+
+                                                                @if (!getMediators()->count())
+                                                                    <option>لا يوجد وسطاء</option>
+                                                                @endif
+
                                                                 @foreach (getMediators() as $mediator)
                                                                     <option value="{{ $mediator->id }}">
                                                                         {{ $mediator->name }}</option>

@@ -110,6 +110,12 @@ class OrderView extends Component
                 $note = "قام المدير $admin بإغلاق الطلب";
             }
 
+            if ($user->user_type == 'office') {
+                $link_office =  route('panel.user', $user->id);
+                $office = "<a href='$link_office'>$user->name</a>";
+                $note = "قام المكتب $office بإغلاق الطلب";
+            }
+
             $this->order->update([
                 'closed_date' => now(),
                 'who_cancel' => auth()->id(),
@@ -149,6 +155,12 @@ class OrderView extends Component
                 $link_admin =  route('panel.user', $user->id);
                 $admin = "<a href='$link_admin'>$user->name</a>";
                 $note = "قام المدير $admin بتعليق الطلب";
+            }
+
+            if ($user->user_type == 'office') {
+                $link_office =  route('panel.user', $user->id);
+                $office = "<a href='$link_office'>$user->name</a>";
+                $note = "قام المكتب $office بتعليق الطلب";
             }
 
             OrderEditor::create([
@@ -278,6 +290,12 @@ class OrderView extends Component
                     $note = "قام المدير $admin بتنشيط الطلب";
                 }
 
+                if ($user->user_type == 'office') {
+                    $link_office =  route('panel.user', $user->id);
+                    $office = "<a href='$link_office'>$user->name</a>";
+                    $note = "قام المكتب $office بتنشيط الطلب";
+                }
+
                 OrderEditor::create([
                     'order_id' => $order->id,
                     'user_id' => $user->id,
@@ -312,6 +330,12 @@ class OrderView extends Component
                     $link_admin =  route('panel.user', $user->id);
                     $admin = "<a href='$link_admin'>$user->name</a>";
                     $note = "قام المدير $admin بإغلاق الطلب";
+                }
+
+                if ($user->user_type == 'office') {
+                    $link_office =  route('panel.user', $user->id);
+                    $office = "<a href='$link_office'>$user->name</a>";
+                    $note = "قام المكتب $office بإغلاق الطلب";
                 }
 
                 OrderEditor::create([

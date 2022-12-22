@@ -140,6 +140,7 @@ class OrderMarket extends Component
     {
         $assign_market_orders = $this->getAssignMarketOrders();
         $market_orders = $this->getMarketOrders();
+
         return view('livewire.order-market', [
             'assign_market_orders' => $assign_market_orders,
             'market_orders' => $market_orders
@@ -178,11 +179,23 @@ class OrderMarket extends Component
 
         if ($order) {
             if ($order->order_status_id == 3) {
+
                 $order->update(['order_status_id' =>  5]);
 
                 if ($user->user_type == 'marketer') {
-                    $note = "قام المسوق $user->name بإغلاق الطلب";
+                    $marketer_name = getUserName($user->id);
+                    $link_marketer = route('panel.user', $user->id);
+                    $marketer = "<a href='$link_marketer'> $marketer_name</a>";
+                    $note = "قام المسوق $marketer بإغلاق الطلب";
                 }
+
+                if ($user->user_type == 'office') {
+                    $office_name = getUserName($user->id);
+                    $link_office = route('panel.user', $user->id);
+                    $office = "<a href='$link_office'> $office_name</a>";
+                    $note = "قام المكتب $office بإغلاق الطلب";
+                }
+
                 OrderEditor::create([
                     'order_id' => $order->id,
                     'user_id' => $user->id,
@@ -193,8 +206,19 @@ class OrderMarket extends Component
                 $order->update(['order_status_id' => 3]);
 
                 if ($user->user_type == 'marketer') {
-                    $note = "قام المسوق $user->name بإغلاق الطلب";
+                    $marketer_name = getUserName($user->id);
+                    $link_marketer = route('panel.user', $user->id);
+                    $marketer = "<a href='$link_marketer'> $marketer_name</a>";
+                    $note = "قام المسوق $marketer بإغلاق الطلب";
                 }
+
+                if ($user->user_type == 'office') {
+                    $office_name = getUserName($user->id);
+                    $link_office = route('panel.user', $user->id);
+                    $office = "<a href='$link_office'> $office_name</a>";
+                    $note = "قام المكتب $office بإغلاق الطلب";
+                }
+
                 OrderEditor::create([
                     'order_id' => $order->id,
                     'user_id' => $user->id,

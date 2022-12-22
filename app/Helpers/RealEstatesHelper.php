@@ -582,7 +582,7 @@ if (!function_exists('getBranchesUser')) {
                 return $user->branches;
             }
 
-            if ($user->user_type == 'officer') {
+            if ($user->user_type == 'office') {
                 return $user->branches;
             }
         }

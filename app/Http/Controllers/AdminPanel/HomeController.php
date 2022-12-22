@@ -47,7 +47,18 @@ class HomeController extends Controller
 
     public function orders()
     {
-        return view('admin-panel.order.orders');
+        $user = auth()->user();
+        if ($user) {
+            if ($user->user_type == 'admin' || $user->user_type == 'superadmin' || $user->user_type == 'office') {
+                return view('admin-panel.order.orders');
+            }
+
+            if ($user->user_type == 'marketer') {
+                return view('admin-panel.order.orders-marketer');
+            }
+        }
+
+        return redirect()->route('login');
     }
 
     public function reservations()

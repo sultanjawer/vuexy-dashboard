@@ -38,7 +38,8 @@
 
                                         <a href="javascript:;"
                                             class="btn bg-light-success mt-2 waves-effect waves-float waves-light"
-                                            data-bs-target="#addReservation" data-bs-toggle="modal">
+                                            data-bs-target="#addReservation" wire:click='reservationData'
+                                            data-bs-toggle="modal">
                                             @if (!$offer->reservation)
                                                 حجز
                                             @endif
@@ -860,6 +861,11 @@
                                             @if ($offer_edit->action == 'edit')
                                                 <span
                                                     class="timeline-point timeline-point-danger timeline-point-indicator"></span>
+                                            @endif
+
+                                            @if ($offer_edit->action == 'book')
+                                                <span
+                                                    class="timeline-point timeline-point-warning timeline-point-indicator"></span>
                                             @endif
 
                                             <div class="timeline-event">

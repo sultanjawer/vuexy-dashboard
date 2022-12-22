@@ -124,7 +124,10 @@ class Order extends Component
                 $order->update(['order_status_id' =>  5]);
 
                 if ($user->user_type == 'admin' || $user->user_type == 'superadmin') {
-                    $note = "قام المدير $user->name بتغير حالة الطلب";
+                    $admin_name = getUserName($user->id);
+                    $link_admin = route('panel.user', $user->id);
+                    $admin = "<a href='$link_admin'> $admin_name</a>";
+                    $note = "قام المدير $admin بتغير حالة الطلب";
                 }
 
                 OrderEditor::create([
@@ -137,7 +140,17 @@ class Order extends Component
                 $order->update(['order_status_id' => 3]);
 
                 if ($user->user_type == 'admin' || $user->user_type == 'superadmin') {
-                    $note = "قام المدير $user->name بإغلاق الطلب";
+                    $admin_name = getUserName($user->id);
+                    $link_admin = route('panel.user', $user->id);
+                    $admin = "<a href='$link_admin'> $admin_name</a>";
+                    $note = "قام المدير $admin بإغلاق الطلب";
+                }
+
+                if ($user->user_type == 'office') {
+                    $office_name = getUserName($user->id);
+                    $link_office = route('panel.user', $user->id);
+                    $office = "<a href='$link_office'> $office_name</a>";
+                    $note = "قام المكتب $office بإغلاق الطلب";
                 }
 
                 OrderEditor::create([

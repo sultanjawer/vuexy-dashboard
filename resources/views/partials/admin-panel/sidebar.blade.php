@@ -41,10 +41,13 @@
                         </svg></span>
                     <h2 class="brand-text">المدار العقارية</h2>
                 </a></li>
-            <li class="nav-item nav-toggle"><a class="nav-link modern-nav-toggle pe-0" data-bs-toggle="collapse"><i
-                        class="d-block d-xl-none text-primary toggle-icon font-medium-4" data-feather="x"></i><i
-                        class="d-none d-xl-block collapse-toggle-icon font-medium-4  text-primary" data-feather="disc"
-                        data-ticon="disc"></i></a></li>
+            <li class="nav-item nav-toggle">
+                <a class="nav-link modern-nav-toggle pe-0" data-bs-toggle="collapse">
+                    <i class="d-block d-xl-none text-primary toggle-icon font-medium-4" data-feather="x"></i>
+                    <i class="d-none d-xl-block collapse-toggle-icon font-medium-4  text-primary" data-feather="disc"
+                        data-ticon="disc"></i>
+                </a>
+            </li>
         </ul>
     </div>
     <div class="shadow-bottom"></div>
@@ -122,45 +125,56 @@
                             </a>
                         </li>
                     @endcan
+
+                    @can('orders', App\Models\Order::class)
+                        <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('panel.orders') }}">
+                                <i data-feather="shopping-cart"></i>
+                                <span class="menu-title text-truncate" data-i18n="Calendar">الطلبات
+                                </span>
+                            </a>
+                        </li>
+                    @endcan
+
+                    @can('offers', App\Models\Offer::class)
+                        <li class=" nav-item">
+                            <a class="d-flex align-items-center" href="{{ route('panel.offers') }}">
+                                <i data-feather="star"></i>
+                                <span class="menu-title text-truncate" data-i18n="Chat">العروض</span>
+                            </a>
+                        </li>
+                    @endcan
+
+                    @can('mediators', App\Models\Mediator::class)
+                        <li class="nav-item">
+                            <a class="d-flex align-items-center" href="{{ route('panel.mediators') }}">
+                                <i data-feather="briefcase"></i>
+                                <span class="menu-title text-truncate" data-i18n="mediators">الوسطاء</span>
+                            </a>
+                        </li>
+                    @endcan
+
+                    @can('sms', App\Models\User::class)
+                        <li class=" nav-item">
+                            <a class="d-flex align-items-center" href="{{ route('panel.sms') }}">
+                                <i data-feather="message-square"></i>
+                                <span class="menu-title text-truncate" data-i18n="sendSMS">إرسال رسالة</span>
+                            </a>
+                        </li>
+                    @endcan
                 @endif
+            @endauth
 
-
-                @can('orders', App\Models\Order::class)
-                    <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('panel.orders') }}">
-                            <i data-feather="shopping-cart"></i>
-                            <span class="menu-title text-truncate" data-i18n="Calendar">الطلبات
-                            </span>
-                        </a>
-                    </li>
-                @endcan
-
-
-                @can('offers', App\Models\Offer::class)
-                    <li class=" nav-item">
-                        <a class="d-flex align-items-center" href="{{ route('panel.offers') }}">
-                            <i data-feather="star"></i>
-                            <span class="menu-title text-truncate" data-i18n="Chat">العروض</span>
-                        </a>
-                    </li>
-                @endcan
-
-                @can('mediators', App\Models\Mediator::class)
-                    <li class="nav-item">
-                        <a class="d-flex align-items-center" href="{{ route('panel.mediators') }}">
-                            <i data-feather="briefcase"></i>
-                            <span class="menu-title text-truncate" data-i18n="mediators">الوسطاء</span>
-                        </a>
-                    </li>
-                @endcan
-
-                @can('sms', App\Models\User::class)
-                    <li class=" nav-item">
-                        <a class="d-flex align-items-center" href="{{ route('panel.sms') }}">
-                            <i data-feather="message-square"></i>
-                            <span class="menu-title text-truncate" data-i18n="sendSMS">إرسال رسالة</span>
-                        </a>
-                    </li>
-                @endcan
+            @auth
+                @if (auth()->user()->user_type == 'office')
+                    @can('offers', App\Models\Offer::class)
+                        <li class=" nav-item">
+                            <a class="d-flex align-items-center" href="{{ route('panel.offers') }}">
+                                <i data-feather="star"></i>
+                                <span class="menu-title text-truncate" data-i18n="Chat">العروض</span>
+                            </a>
+                        </li>
+                    @endcan
+                @endif
             @endauth
 
             @auth
@@ -172,20 +186,32 @@
                             </span>
                         </a>
                     </li>
+
+                    @can('offers', App\Models\Offer::class)
+                        <li class=" nav-item">
+                            <a class="d-flex align-items-center" href="{{ route('panel.offers') }}">
+                                <i data-feather="star"></i>
+                                <span class="menu-title text-truncate" data-i18n="Chat">العروض</span>
+                            </a>
+                        </li>
+                    @endcan
+
+                    @can('reservations', App\Models\Reservation::class)
+                        <li class=" nav-item">
+                            <a class="d-flex align-items-center" href="{{ route('panel.reservations') }}">
+                                <i data-feather="phone"></i>
+                                <span class="menu-title text-truncate" data-i18n="Todo">الحجوزات</span>
+                            </a>
+                        </li>
+                    @endcan
                 @endif
             @endauth
-
-
 
             {{-- <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('panel.selles') }}"><i
                         data-feather="dollar-sign"></i><span class="menu-title text-truncate"
                         data-i18n="Kanban">المبيعات</span></a>
             </li> --}}
 
-            {{--
-
-
-         --}}
         </ul>
     </div>
 

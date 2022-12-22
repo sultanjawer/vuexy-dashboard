@@ -44,6 +44,13 @@ class OfferService extends Controller
             $note = "قام المسوق $marketer بإضافة العرض";
         }
 
+        if ($user->user_type == 'office') {
+            $office_name = getUserName($user->id);
+            $link_office = route('panel.user', $user->id);
+            $office = "<a href='$link_office'> $office_name</a>";
+            $note = "قام المكتب $office بإضافة العرض";
+        }
+
         OfferEditors::create([
             'offer_id' => $offer->id,
             'user_id' => $user->id,
@@ -352,6 +359,13 @@ class OfferService extends Controller
             $link_ma = route('panel.user', $user->id);
             $marketer = "<a href='$link_ma'> $marketer_name</a>";
             $note = "قام المسوق $marketer بتعديل العرض";
+        }
+
+        if ($user->user_type == 'office') {
+            $office_name = getUserName($user->id);
+            $link_office = route('panel.user', $user->id);
+            $office = "<a href='$link_office'> $office_name</a>";
+            $note = "قام المكتب $office بتعديل العرض";
         }
 
         OfferEditors::create([

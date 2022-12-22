@@ -114,6 +114,13 @@ class OrderService extends Controller
             $note = "قام المسوق $marketer بإضافة الطلب";
         }
 
+        if ($user->user_type == 'office') {
+            $office_name = getUserName($user->id);
+            $link_office = route('panel.user', $user->id);
+            $office = "<a href='$link_office'> $office_name</a>";
+            $note = "قام المكتب $office بإضافة الطلب";
+        }
+
         OrderEditor::create([
             'order_id' => $order->id,
             'user_id' => $user->id,
@@ -269,6 +276,13 @@ class OrderService extends Controller
             $link_ma = route('panel.user', $user->id);
             $marketer = "<a href='$link_ma'> $marketer_name</a>";
             $note = "قام المسوق $marketer بتعديل الطلب";
+        }
+
+        if ($user->user_type == 'office') {
+            $office_name = getUserName($user->id);
+            $link_office = route('panel.user', $user->id);
+            $office = "<a href='$link_office'> $office_name</a>";
+            $note = "قام المكتب $office بتعديل الطلب";
         }
 
         OrderEditor::create([

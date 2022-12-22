@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Mail\NewMessage;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -11,6 +12,7 @@ use Illuminate\Notifications\Notification;
 class NewUser extends Notification
 {
     use Queueable;
+
     public $user;
 
     /**
@@ -31,7 +33,7 @@ class NewUser extends Notification
      */
     public function via($notifiable)
     {
-        return ['database'];
+        return ['mail'];
     }
 
     /**
@@ -42,7 +44,7 @@ class NewUser extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)
+        return (new NewMessage)
             ->line('The introduction to the notification.')
             ->action('Notification Action', url('/'))
             ->line('Thank you for using our application!');

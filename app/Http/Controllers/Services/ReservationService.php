@@ -45,6 +45,13 @@ class ReservationService extends Controller
             $note = "قام المسوق $marketer بحجز العرض";
         }
 
+        if ($user->user_type == 'office') {
+            $office_name = getUserName($user->id);
+            $link_office = route('panel.user', $user->id);
+            $office = "<a href='$link_office'> $office_name</a>";
+            $note = "قام المكتب $office بحجز العرض";
+        }
+
         OfferEditors::create([
             'offer_id' => $offer->id,
             'user_id' => $user->id,

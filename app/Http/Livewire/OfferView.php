@@ -17,8 +17,8 @@ class OfferView extends Component
     public $offer;
     public $real_estate;
     public $offer_id;
-    public $last_update_time = 'لم يتم التعديل على هذا الطلب بعد';
-    public $last_update_note_time = 'لم يتم التعديل على هذا الطلب بعد';
+    public $last_update_time = '';
+    public $last_update_note_time = '';
 
     public $customer_id;
     public $price;
@@ -45,6 +45,14 @@ class OfferView extends Component
             $check = true;
         }
         $this->emit('select2', $check);
+    }
+
+    public function reservationData()
+    {
+        $this->customer_id = $this->offer->reservation->customer->id;
+        $this->price = $this->offer->reservation->price;
+        $this->date = $this->offer->reservation->date_from . ' to ' . $this->offer->reservation->date_to;
+        $this->reservation_notes = $this->offer->reservation->note;
     }
 
     public function getLastUpateTime()

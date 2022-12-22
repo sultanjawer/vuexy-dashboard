@@ -143,33 +143,22 @@
                                                 <th class="sorting {{ $style_sort_direction }}"
                                                     wire:click="sortBy('id')" tabindex="0"
                                                     rowspan="1"colspan="1">كود الطلب </th>
-                                                <th class="sorting" tabindex="0" rowspan="1" colspan="1">
-                                                    التاريخ
+                                                <th class="sorting" tabindex="0" rowspan="1" colspan="1">التاريخ
                                                 </th>
-                                                <th class="sorting {{ $style_sort_direction }}"
-                                                    wire:click="sortBy('property_type_id')" tabindex="0"
-                                                    rowspan="1" colspan="1">نوع العقار</th>
-                                                <th class="sorting {{ $style_sort_direction }}"
-                                                    wire:click="sortBy('city_id')" tabindex="0" rowspan="1"
-                                                    colspan="1">المدينة </th>
-                                                <th class="sorting {{ $style_sort_direction }}"
-                                                    wire:click="sortBy('customer_id')" tabindex="0" rowspan="1"
-                                                    colspan="1">اسم العميل</th>
+                                                <th class="sorting" tabindex="0" rowspan="1" colspan="1">نوع
+                                                    العقار</th>
+                                                <th class="sorting" tabindex="0" rowspan="1" colspan="1">المدينة
+                                                </th>
+                                                <th class="sorting" tabindex="0" rowspan="1" colspan="1">اسم
+                                                    العميل</th>
                                                 <th class="sorting" tabindex="0" rowspan="1" colspan="1">
                                                     الميزانية</th>
                                                 <th class="sorting" tabindex="0" rowspan="1" colspan="1">
-                                                    الحالة
-                                                </th>
-
+                                                    الحالة</th>
                                                 <th class="sorting" tabindex="0" rowspan="1" colspan="1">
-                                                    الطلب
-                                                    مسند ل
-                                                </th>
-
-                                                <th class="sorting {{ $style_sort_direction }}"
-                                                    wire:click="sortBy('branch_id')" tabindex="0" rowspan="1"
-                                                    colspan="1">الفرع
-                                                </th>
+                                                    الطلب مسند ل</th>
+                                                <th class="sorting" tabindex="0" rowspan="1" colspan="1">
+                                                    الفرع</th>
                                                 @auth
                                                     @if (auth()->user()->can('showOrder', App\Models\Order::class) ||
                                                         auth()->user()->can('updateOrder', App\Models\Order::class) ||
@@ -465,39 +454,34 @@
 
                                                 <thead>
                                                     <tr role="row">
-                                                        <th class="sorting {{ $os_style_sort_direction }}"
+                                                        <th class="sorting {{ $style_sort_direction }}"
                                                             wire:click="os_sortBy('id')" tabindex="0"
                                                             rowspan="1"colspan="1">رقم الطلب </th>
                                                         <th class="sorting" tabindex="0" rowspan="1"
-                                                            colspan="1">
-                                                            التاريخ
-                                                        </th>
-                                                        <th class="sorting {{ $os_style_sort_direction }}"
-                                                            wire:click="os_sortBy('property_type_id')" tabindex="0"
-                                                            rowspan="1" colspan="1">نوع العقار</th>
-                                                        <th class="sorting {{ $os_style_sort_direction }}"
-                                                            wire:click="os_sortBy('city_id')" tabindex="0"
-                                                            rowspan="1" colspan="1">المدينة </th>
-                                                        <th class="sorting {{ $os_style_sort_direction }}"
-                                                            wire:click="os_sortBy('customer_id')" tabindex="0"
-                                                            rowspan="1" colspan="1">اسم العميل</th>
+                                                            colspan="1">التاريخ</th>
                                                         <th class="sorting" tabindex="0" rowspan="1"
-                                                            colspan="1">
-                                                            الميزانية</th>
+                                                            colspan="1">نوع العقار</th>
                                                         <th class="sorting" tabindex="0" rowspan="1"
-                                                            colspan="1">
-                                                            الحالة
-                                                        </th>
-                                                        <th class="sorting {{ $os_style_sort_direction }}"
-                                                            wire:click="os_sortBy('branch_id')" tabindex="0"
-                                                            rowspan="1" colspan="1">الفرع</th>
+                                                            colspan="1">المدينة</th>
+                                                        <th class="sorting" tabindex="0" rowspan="1"
+                                                            colspan="1">اسم العميل</th>
+                                                        <th class="sorting" tabindex="0" rowspan="1"
+                                                            colspan="1">الميزانية</th>
+                                                        <th class="sorting" tabindex="0" rowspan="1"
+                                                            colspan="1">الحالة</th>
+                                                        <th class="sorting" tabindex="0" rowspan="1"
+                                                            colspan="1">الفرع</th>
 
-                                                        @if (auth()->user()->permissions->can_show_orders == 1 || auth()->user()->permissions->can_edit_orders == 1)
-                                                            <th class="sorting" tabindex="0" rowspan="1"
-                                                                colspan="1">
-                                                                تحكم
-                                                            </th>
-                                                        @endif
+                                                        @auth
+                                                            @if (auth()->user()->can('showOrder', App\Models\Order::class) ||
+                                                                auth()->user()->can('updateOrder', App\Models\Order::class))
+                                                                <th class="sorting" tabindex="0" rowspan="1"
+                                                                    colspan="1">
+                                                                    تحكم
+                                                                </th>
+                                                            @endif
+                                                        @endauth
+
                                                     </tr>
                                                 </thead>
 
@@ -602,14 +586,14 @@
                                                             <td>
                                                                 <div class="d-inline-flex">
 
-
-                                                                    @if (auth()->user()->permissions->can_show_orders == 1)
-                                                                        <a href="{{ route('panel.order', $market_order->id) }}"
-                                                                            class="item-view">
-                                                                            <i class="fas fa-eye"></i>
-                                                                        </a>
-                                                                    @endif
-
+                                                                    @auth
+                                                                        @can('showOrder', App\Models\Order::class)
+                                                                            <a href="{{ route('panel.order', $market_order->id) }}"
+                                                                                class="item-view">
+                                                                                <i class="fas fa-eye"></i>
+                                                                            </a>
+                                                                        @endcan
+                                                                    @endauth
                                                                     {{-- @if (auth()->user()->permissions->can_edit_orders == 1)
                                                                 <a class="item-edit" data-bs-target="#editOrderForms"
                                                                     data-bs-toggle="modal"
