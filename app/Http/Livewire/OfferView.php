@@ -49,10 +49,12 @@ class OfferView extends Component
 
     public function reservationData()
     {
-        $this->customer_id = $this->offer->reservation->customer->id;
-        $this->price = $this->offer->reservation->price;
-        $this->date = $this->offer->reservation->date_from . ' to ' . $this->offer->reservation->date_to;
-        $this->reservation_notes = $this->offer->reservation->note;
+        if ($this->offer->reservation) {
+            $this->customer_id = $this->offer->reservation->customer->id;
+            $this->price = $this->offer->reservation->price;
+            $this->date = $this->offer->reservation->date_from . ' to ' . $this->offer->reservation->date_to;
+            $this->reservation_notes = $this->offer->reservation->note;
+        }
     }
 
     public function getLastUpateTime()

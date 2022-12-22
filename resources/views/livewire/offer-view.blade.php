@@ -894,9 +894,7 @@
                         @endif
                     @endauth
 
-
                 </div>
-
             </section>
 
         </div>
