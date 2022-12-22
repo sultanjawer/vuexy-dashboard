@@ -166,7 +166,7 @@ class OfferService extends Controller
             'branch_id' => $data['branch_id'],
             'real_estate_type' => 'condominium',
             'floors_number' => $data['floors_number'],
-            'flats_number' => $data['flats_number'],
+            'flats_numbers' => $data['flats_number'],
             'stores_number' => $data['stores_number'],
             'flat_rooms_number' => $data['flat_rooms_number'],
             'annual_income' => $data['annual_income'],
