@@ -23,21 +23,35 @@ class CitiesExport implements WithColumnFormatting, FromQuery, WithMapping, Shou
 
     use Exportable;
 
+    public $filters = [];
+    public $sort_field = 'id';
+    public $sort_direction = 'desc';
+    public $rows_number = 10;
+    public $paginate_ids = [];
+
+    public function __construct($filters, $sort_field, $sort_direction, $rows_number, $paginate_ids)
+    {
+        $this->filters = $filters;
+        $this->sort_field = $sort_field;
+        $this->sort_direction = $sort_direction;
+        $this->rows_number = $rows_number;
+        $this->paginate_ids = $paginate_ids;
+    }
+
     public function query()
     {
-        return City::query();
+        return City::query()->filters($this->filters)->whereIn('id', $this->paginate_ids)->reorder($this->sort_field, $this->sort_direction);
     }
 
     public function headings(): array
     {
         return [
-            'ID',
-            'Name',
-            'Status',
-            'Code',
-            'Created At',
+            'رقم المدينة',
+            'اسم المدينة',
+            'حالة المدينة',
+            'كود المدينة',
+            'تاريخ تسجيل المدينة',
             // 'Updated At',
-
 
         ];
     }
@@ -47,7 +61,7 @@ class CitiesExport implements WithColumnFormatting, FromQuery, WithMapping, Shou
         return [
             $city->id,
             $city->name,
-            $city->status,
+            $city->status == 1 ? 'نشط' : 'غير نشط',
             $city->code,
             Date::dateTimeToExcel($city->created_at),
             // Date::dateTimeToExcel($branch->updated_at ?? 0), # should not be null
@@ -57,7 +71,7 @@ class CitiesExport implements WithColumnFormatting, FromQuery, WithMapping, Shou
     public function columnFormats(): array
     {
         return [
-            'H' => NumberFormat::FORMAT_DATE_DDMMYYYY,
+            'E' => NumberFormat::FORMAT_DATE_DDMMYYYY,
         ];
     }
 

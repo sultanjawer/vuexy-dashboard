@@ -23,26 +23,41 @@ class ReservationsExport implements WithColumnFormatting, FromQuery, WithMapping
 
     use Exportable;
 
+    public $filters = [];
+    public $sort_field = 'id';
+    public $sort_direction = 'desc';
+    public $rows_number = 10;
+    public $paginate_ids = [];
+
+    public function __construct($filters, $sort_field, $sort_direction, $rows_number, $paginate_ids)
+    {
+        $this->filters = $filters;
+        $this->sort_field = $sort_field;
+        $this->sort_direction = $sort_direction;
+        $this->rows_number = $rows_number;
+        $this->paginate_ids = $paginate_ids;
+    }
+
     public function query()
     {
-        return Reservation::query();
+        return Reservation::query()->filters($this->filters)->whereIn('id', $this->paginate_ids)->reorder($this->sort_field, $this->sort_direction);
     }
 
     public function headings(): array
     {
         return [
-            'ID',
-            'User Owner',
-            'Customer ID',
-            'Offer ID',
-            'offer_code',
-            'Customer Name',
-            'Price',
-            'Status',
-            'Date From',
-            'Date To',
-            'Note',
-            'Created At',
+            'رقم الحجز',
+            'المستخدم المضيف للحجز',
+            'رقم العميل',
+            'رقم العرض',
+            'كود العرض',
+            'اسم العميل',
+            'سعر الحجز',
+            'حالة الحجز',
+            'تاريخ بداية الفترة',
+            'تاريخ نهاية الفترة',
+            'ملاحظات',
+            'تاريخ تسجيل الحجز',
             // 'Updated At',
         ];
     }
@@ -57,7 +72,7 @@ class ReservationsExport implements WithColumnFormatting, FromQuery, WithMapping
             $reservation->offer->offer_code,
             $reservation->price,
             $reservation->customer->name,
-            $reservation->status,
+            $reservation->status == 1 ? 'نشط' : 'غير نشط',
             $reservation->date_from,
             $reservation->date_to,
             $reservation->note,
@@ -69,7 +84,9 @@ class ReservationsExport implements WithColumnFormatting, FromQuery, WithMapping
     public function columnFormats(): array
     {
         return [
-            'H' => NumberFormat::FORMAT_DATE_DDMMYYYY,
+            'I' => NumberFormat::FORMAT_DATE_DDMMYYYY,
+            'G' => NumberFormat::FORMAT_DATE_DDMMYYYY,
+            'L' => NumberFormat::FORMAT_DATE_DDMMYYYY,
         ];
     }
 

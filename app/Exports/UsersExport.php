@@ -24,22 +24,38 @@ class UsersExport implements WithColumnFormatting, FromQuery, WithMapping, Shoul
 
     use Exportable;
 
+    public $filters = [];
+    public $sort_field = 'id';
+    public $sort_direction = 'desc';
+    public $rows_number = 10;
+    public $paginate_ids = [];
+
+    public function __construct($filters, $sort_field, $sort_direction, $rows_number, $paginate_ids)
+    {
+        $this->filters = $filters;
+        $this->sort_field = $sort_field;
+        $this->sort_direction = $sort_direction;
+        $this->rows_number = $rows_number;
+        $this->paginate_ids = $paginate_ids;
+    }
+
     public function query()
     {
-        return User::query();
+        return User::query()->filters($this->filters)->whereIn('id', $this->paginate_ids)->reorder($this->sort_field, $this->sort_direction);
     }
 
     public function headings(): array
     {
         return [
-            'ID',
-            'Name',
-            'Phone Number',
-            'Email',
-            'User Type',
-            'User Status',
-            'Advertiser Number',
-            'Created At',
+            'رقم المستخدم',
+            'اسم المستخدم',
+            'رقم هاتف المستخدم',
+            'رقم هاتف المستخدم',
+            'ايميل المستخدم',
+            'نوع المستخدم',
+            'حالة المستخدم',
+            'الرقم الإضافي',
+            'تاريخ تسجيل المستخدم',
             // 'Updated At',
         ];
     }
@@ -52,7 +68,7 @@ class UsersExport implements WithColumnFormatting, FromQuery, WithMapping, Shoul
             $user->phone,
             $user->email,
             $user->user_type,
-            $user->user_status,
+            $user->user_status == 'active' ? 'نشط' : 'غير نشط',
             $user->advertiser_number,
             Date::dateTimeToExcel($user->created_at),
             // Date::dateTimeToExcel($user->updated_at ?? 0), # should not be null

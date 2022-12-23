@@ -17,14 +17,18 @@ class Branch extends Component
     protected $paginationTheme = 'bootstrap';
     public $rows_number = 10;
     public $search = '';
+
+    public $sort_field = 'id';
+    public $sort_direction = 'asc';
+    public $style_sort_direction = 'sorting_asc';
     public $status = null;
     public $filters = [];
+    public $paginate_ids = [];
 
     public function updateBranches()
     {
         $this->reset();
     }
-
 
     public function getBranches()
     {
@@ -33,7 +37,35 @@ class Branch extends Component
         $this->filters['status'] = $this->status;
         $this->filters['search'] = $this->search;
 
-        return ModelsBranch::data()->filters($this->filters)->paginate($this->rows_number);
+        $models = ModelsBranch::data()->filters($this->filters)->reorder($this->sort_field, $this->sort_direction);
+
+        if ($this->rows_number == 'all') {
+            $this->rows_number = $models->count();
+        }
+
+        $data = $models->paginate($this->rows_number);
+
+        $this->paginate_ids = $data->pluck('id')->toArray();
+
+        return $data;
+    }
+
+    public function sortBy($field)
+    {
+        if ($this->sort_field == $field) {
+            if ($this->sort_direction === 'asc') {
+                $this->sort_direction = 'desc';
+                $this->style_sort_direction = 'sorting_desc';
+            } else {
+                $this->sort_direction = 'asc';
+                $this->style_sort_direction = 'sorting_asc';
+            }
+        } else {
+            $this->sort_direction = 'asc';
+            $this->style_sort_direction = 'sorting_asc';
+        }
+
+        $this->sort_field = $field;
     }
 
     public function render()
@@ -65,7 +97,7 @@ class Branch extends Component
     public function export($type)
     {
         if ($type == 'excel') {
-            $excel = Excel::download(new BranchesExport, 'branches.xlsx');
+            $excel = Excel::download(new BranchesExport($this->filters, $this->sort_field, $this->sort_direction, $this->rows_number, $this->paginate_ids), 'branches.xlsx');
 
             $this->alert('success', '', [
                 'toast' => true,

@@ -45,7 +45,8 @@
                                 <label>أظهر
                                     <select aria-controls="DataTables_Table_0" wire:model='rows_number'
                                         class="form-select">
-                                        <option value="10">10</option>
+                                        <option value="all">الكل</option>
+                                        <option value="10" selected>10</option>
                                         <option value="25">25</option>
                                         <option value="50">50</option>
                                         <option value="100">100</option>
@@ -88,7 +89,7 @@
                     aria-describedby="DataTables_Table_0_info" wire:ignore.self>
                     <thead>
                         <tr>
-                            <th>رقم الحجز</th>
+                            <th class="sorting {{ $style_sort_direction }}" wire:click="sortBy('id')">رقم الحجز</th>
                             <th>التاريخ</th>
                             <th>اسم العميل</th>
                             <th>السعر</th>

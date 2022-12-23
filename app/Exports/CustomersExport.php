@@ -23,38 +23,50 @@ class CustomersExport implements WithColumnFormatting, FromQuery, WithMapping, S
 
     use Exportable;
 
+    public $filters = [];
+    public $sort_field = 'id';
+    public $sort_direction = 'desc';
+    public $rows_number = 10;
+    public $paginate_ids = [];
+
+    public function __construct($filters, $sort_field, $sort_direction, $rows_number, $paginate_ids)
+    {
+        $this->filters = $filters;
+        $this->sort_field = $sort_field;
+        $this->sort_direction = $sort_direction;
+        $this->rows_number = $rows_number;
+        $this->paginate_ids = $paginate_ids;
+    }
+
     public function query()
     {
-        return Customer::query();
+        return Customer::query()->filters($this->filters)->whereIn('id', $this->paginate_ids)->reorder($this->sort_field, $this->sort_direction);
     }
 
     public function headings(): array
     {
         return [
-
-            'ID',
-            'User Owner',
-            'Name',
-            'Phone Number',
-            'Email',
-            'Employer ID',
-            'Employer Name',
-            'Nationality ID',
+            'رقم العميل',
+            'المستخدم المضيف للعميل',
+            'اسم العميل',
+            'رقم هاتف العميل',
+            'ايميل العميل',
+            'جهة العمل',
+            'اسم الموظيف',
+            'نوع التوظيف',
+            'رقم هوية العميل',
             // 'NID',
-            'City',
-            'Building Number',
-            'Street Name',
-            'Neighborhood Name',
-            'Zip Code',
-            'Addtional Number',
-            'Unit Number',
-            'Support Eskan',
-            'Employee Type',
-            'Status',
-            'Is Buy',
-            'Who Add',
-            'Who Edit',
-            'Created At',
+            'المدينة',
+            'الحي',
+            'رقم بالمبنى',
+            'رقم الشارع',
+            'الرمز البريدي',
+            'الرقم الإضافي',
+            'رقم الوحدة',
+            'هل مدعوم من الإسكان',
+            'حالة العميل',
+            'هل اشترى ؟',
+            'تاريخ تسجيل العميل',
             // 'Updated At',
 
 
@@ -71,20 +83,18 @@ class CustomersExport implements WithColumnFormatting, FromQuery, WithMapping, S
             $customer->email,
             $customer->employer_id,
             $customer->employer_name,
+            $customer->employee_type == 'public' ? 'عام' : 'خاص',
             $customer->nationality_id,
             $customer->city->name,
+            $customer->neighborhood_name,
             $customer->building_number,
             $customer->street_name,
-            $customer->neighborhood_name,
             $customer->zip_code,
             $customer->addtional_number,
             $customer->unit_number,
-            $customer->support_eskan,
-            $customer->employee_type,
-            $customer->status,
-            $customer->is_buy,
-            getUserName($customer->who_add),
-            getUserName($customer->who_edit),
+            $customer->support_eskan == 1 ? 'نعم' : 'لا',
+            $customer->status == 1 ? 'نشط' : 'غير نشط',
+            $customer->is_buy == 1 ? 'نعم' : 'لا',
             Date::dateTimeToExcel($customer->created_at),
             // Date::dateTimeToExcel($branch->updated_at ?? 0), # should not be null
         ];
@@ -93,7 +103,7 @@ class CustomersExport implements WithColumnFormatting, FromQuery, WithMapping, S
     public function columnFormats(): array
     {
         return [
-            'H' => NumberFormat::FORMAT_DATE_DDMMYYYY,
+            'T' => NumberFormat::FORMAT_DATE_DDMMYYYY,
         ];
     }
 

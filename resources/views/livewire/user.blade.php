@@ -62,6 +62,7 @@
                                 <label>أظهر
                                     <select aria-controls="DataTables_Table_0" wire:model='rows_number'
                                         class="form-select">
+                                        <option value="all">الكل</option>
                                         <option value="10">10</option>
                                         <option value="25">25</option>
                                         <option value="50">50</option>
@@ -116,24 +117,14 @@
                 <table class="table dataTable no-footer text-center" role="grid">
                     <thead>
                         <tr role="row">
-                            <th class="sorting sorting_asc" tabindex="0" rowspan="1" colspan="1"
-                                aria-sort="ascending">الترتيب</th>
-                            <th class="sorting sorting_asc" tabindex="0" rowspan="1" colspan="1">الاسم</th>
-                            <th class="sorting" tabindex="0" rowspan="1" colspan="1">رقم
-                                الجوال
-                            </th>
-                            <th class="sorting" tabindex="0" rowspan="1" colspan="1">نوع
-                                المستخدم
-                            </th>
-                            <th class="sorting" tabindex="0" rowspan="1" colspan="1">
-                                الفروع
-                            </th>
-                            <th class="sorting" tabindex="0" rowspan="1" colspan="1">
-                                الحالة
-                            </th>
-                            <th class="sorting" tabindex="0" rowspan="1" colspan="1">
-                                تحكم
-                            </th>
+                            <th class="sorting {{ $style_sort_direction }}" wire:click="sortBy('id')" tabindex="0"
+                                rowspan="1" colspan="1" aria-sort="ascending">الترتيب</th>
+                            <th tabindex="0" rowspan="1" colspan="1">الاسم</th>
+                            <th tabindex="0" rowspan="1" colspan="1">رقم الجوال</th>
+                            <th tabindex="0" rowspan="1" colspan="1">نوع المستخدم</th>
+                            <th tabindex="0" rowspan="1" colspan="1">الفروع</th>
+                            <th tabindex="0" rowspan="1" colspan="1">الحالة</th>
+                            <th tabindex="0" rowspan="1" colspan="1">تحكم</th>
                         </tr>
                     </thead>
                     <tbody>

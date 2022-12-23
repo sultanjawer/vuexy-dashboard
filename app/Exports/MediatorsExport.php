@@ -23,22 +23,36 @@ class MediatorsExport implements WithColumnFormatting, FromQuery, WithMapping, S
 
     use Exportable;
 
+    public $filters = [];
+    public $sort_field = 'id';
+    public $sort_direction = 'desc';
+    public $rows_number = 10;
+    public $paginate_ids = [];
+
+    public function __construct($filters, $sort_field, $sort_direction, $rows_number, $paginate_ids)
+    {
+        $this->filters = $filters;
+        $this->sort_field = $sort_field;
+        $this->sort_direction = $sort_direction;
+        $this->rows_number = $rows_number;
+        $this->paginate_ids = $paginate_ids;
+    }
+
     public function query()
     {
-        return Mediator::query();
+        return Mediator::query()->filters($this->filters)->whereIn('id', $this->paginate_ids)->reorder($this->sort_field, $this->sort_direction);
     }
 
     public function headings(): array
     {
         return [
-
-            'ID',
-            'User Owner',
-            'Name',
-            'Phone Number',
-            'Type',
-            'Status',
-            'Created At',
+            'رقم الوسيط',
+            'المستخدم المضيف',
+            'اسم الوسيط',
+            'رقم هاتف الوسيط',
+            'نوع الوسيط',
+            'حالة الوسيط',
+            'تاريخ تسجيل الوسيط',
             // 'Updated At',
 
 
@@ -52,8 +66,8 @@ class MediatorsExport implements WithColumnFormatting, FromQuery, WithMapping, S
             $mediator->user->name,
             $mediator->name,
             $mediator->phone_number,
-            $mediator->type,
-            $mediator->status,
+            $mediator->type == 'office' ? 'مكتب' : 'فرد',
+            $mediator->status == 1 ? 'نشط' : 'غير نشط',
             Date::dateTimeToExcel($mediator->created_at),
             // Date::dateTimeToExcel($branch->updated_at ?? 0), # should not be null
         ];
@@ -62,7 +76,7 @@ class MediatorsExport implements WithColumnFormatting, FromQuery, WithMapping, S
     public function columnFormats(): array
     {
         return [
-            'H' => NumberFormat::FORMAT_DATE_DDMMYYYY,
+            'G' => NumberFormat::FORMAT_DATE_DDMMYYYY,
         ];
     }
 

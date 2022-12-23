@@ -7,8 +7,8 @@
                 <div class="card-header border-bottom p-1">
                     <div class="head-label"></div>
                     <div class="btn-group">
-                        <button class="btn btn-gradient-warning dropdown-toggle" type="button"
-                            id="dropdownMenuButton303" data-bs-toggle="dropdown" aria-expanded="false">
+                        <button class="btn btn-gradient-warning dropdown-toggle" type="button" id="dropdownMenuButton303"
+                            data-bs-toggle="dropdown" aria-expanded="false">
                             تصدير
                         </button>
                         <div class="dropdown-menu text-center export p-0" aria-labelledby="dropdownMenuButton303"
@@ -39,8 +39,9 @@
                             <div class="dataTables_length" id="DataTables_Table_0_length">
                                 <label>أظهر
                                     <select wire:model='rows_number' class="form-select">
+                                        <option value="all">الكل</option>
                                         <option value="5">5</option>
-                                        <option value="10">10</option>
+                                        <option value="10" selected>10</option>
                                         <option value="25">25</option>
                                         <option value="50">50</option>
                                         <option value="100">100</option>
@@ -68,20 +69,21 @@
                 <table class="table dataTable no-footer text-center">
                     <thead>
                         <tr role="row">
-                            <th class="sorting sorting_asc" tabindex="0" rowspan="1" colspan="1"
+                            <th class="sorting {{ $style_sort_direction }}" wire:click="sortBy('id')" tabindex="0" rowspan="1" colspan="1"
                                 aria-sort="ascending">الترتيب</th>
-                            <th class="sorting sorting_asc" tabindex="0" rowspan="1" colspan="1">الاسم
+                            <th  tabindex="0"
+                                rowspan="1" colspan="1">الاسم
                             </th>
 
-                            <th class="sorting" tabindex="0" rowspan="1" colspan="1">نوع
+                            <th tabindex="0" rowspan="1" colspan="1">نوع
                                 كود المدينة
                             </th>
 
-                            <th class="sorting" tabindex="0" rowspan="1" colspan="1">
+                            <th tabindex="0" rowspan="1" colspan="1">
                                 الحالة
                             </th>
 
-                            <th class="sorting" tabindex="0" rowspan="1" colspan="1">
+                            <th tabindex="0" rowspan="1" colspan="1">
                                 تحكم
                             </th>
                         </tr>

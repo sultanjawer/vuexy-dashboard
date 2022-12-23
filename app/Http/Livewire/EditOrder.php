@@ -187,6 +187,14 @@ class EditOrder extends Component
         $price_from = (int)str_replace(',', '', $this->price_from);
         $price_to = (int)str_replace(',', '', $this->price_to);
 
+        if ($propertyName == 'is_assignable') {
+            $users = getUserMarketers();
+
+            if ($users->count() == 1) {
+                $this->assign_to = $users->first()->id;
+            }
+        }
+
         if ($price_to < $price_from) {
             $this->messages = 'السعر يجب ان يكون اكبر من سعر الافتتاح';
         } else {
@@ -231,6 +239,7 @@ class EditOrder extends Component
 
         $validatedData = $this->validate();
         $old_assign_to = $this->order->assign_to;
+
         $updated_order = $orderService->update($this->order, $validatedData);
 
         if ($updated_order->assign_to != $old_assign_to) {

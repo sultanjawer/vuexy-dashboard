@@ -11,7 +11,6 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class Offer extends Component
 {
-
     use WithPagination;
     use LivewireAlert;
 
@@ -19,9 +18,21 @@ class Offer extends Component
     public $rows_number = 10;
     public $in_rows_number = 10;
     public $search = '';
+
+    public $sort_field = 'id';
+    public $sort_direction = 'asc';
+    public $style_sort_direction = 'sorting_asc';
+
+    public $in_sort_field = 'id';
+    public $in_sort_direction = 'asc';
+    public $in_style_sort_direction = 'sorting_asc';
+
     public $in_search = '';
     public $filters = [];
     public $in_filters = [];
+    public $paginate_ids = [];
+    public $in_paginate_ids = [];
+
 
 
     public function mount()
@@ -31,22 +42,38 @@ class Offer extends Component
 
     public function getDirectOffers()
     {
-
         $this->filters['search'] = $this->search;
 
         $user = auth()->user();
 
         if ($user->user_type == "office") {
-            return ModelsOffer::data()->filters($this->filters)->where('offer_type_id', 2)->paginate($this->rows_number);
+            $collection = ModelsOffer::data()->filters($this->filters)->where('offer_type_id', 2)->reorder($this->sort_field, $this->sort_direction);
+
+            if ($this->rows_number == 'all') {
+                $this->rows_number = $collection->count();
+            }
+
+            $data = $collection->paginate($this->rows_number);
+
+            $this->paginate_ids = $data->pluck('id')->toArray();
+
+            return $data;
         }
 
-        if ($user->user_type == "superadmin") {
-            $offers = ModelsOffer::data()->filters($this->filters)->where('offer_type_id', 1)->paginate($this->rows_number);
-        } else {
-            $offers = ModelsOffer::data()->filters($this->filters)->where('offer_type_id', 1)->where('user_id', auth()->id())->paginate($this->rows_number);
+        $types = ['office', 'admin', 'superadmin', 'marketer'];
+
+        if (in_array($user->user_type, $types)) {
+            $collection = ModelsOffer::data()->filters($this->filters)->where('offer_type_id', 1)->reorder($this->sort_field, $this->sort_direction);
+            if ($this->rows_number == 'all') {
+                $this->rows_number = $collection->count();
+            }
         }
 
-        return  $offers;
+        $data = $collection->paginate($this->rows_number);
+
+        $this->paginate_ids = $data->pluck('id')->toArray();
+
+        return $data;
     }
 
     public function getInDirectOffers()
@@ -55,13 +82,58 @@ class Offer extends Component
 
         $user = auth()->user();
 
-        if ($user->user_type == "superadmin") {
-            $offers = ModelsOffer::data()->filters($this->in_filters)->where('offer_type_id', 2)->paginate($this->in_rows_number);
-        } else {
-            $offers = ModelsOffer::data()->filters($this->in_filters)->where('offer_type_id', 2)->where('user_id', auth()->id())->paginate($this->in_rows_number);
+        $types = ['office', 'admin', 'superadmin', 'marketer'];
+
+        if (in_array($user->user_type, $types)) {
+            $collection = ModelsOffer::data()->filters($this->in_filters)->where('offer_type_id', 2)->reorder($this->in_sort_field, $this->in_sort_direction);
+            if ($this->in_rows_number == 'all') {
+                $this->in_rows_number = $collection->count();
+            }
         }
 
-        return  $offers;
+        $data = $collection->paginate($this->in_rows_number);
+
+        $this->in_paginate_ids = $data->pluck('id')->toArray();
+
+        return $data;
+    }
+
+
+    public function sortBy($field)
+    {
+        if ($this->sort_field == $field) {
+            if ($this->sort_direction === 'asc') {
+                $this->sort_direction = 'desc';
+                $this->style_sort_direction = 'sorting_desc';
+            } else {
+                $this->sort_direction = 'asc';
+                $this->style_sort_direction = 'sorting_asc';
+            }
+        } else {
+            $this->sort_direction = 'asc';
+            $this->style_sort_direction = 'sorting_asc';
+        }
+
+        $this->sort_field = $field;
+    }
+
+
+    public function inSortBy($field)
+    {
+        if ($this->in_sort_field == $field) {
+            if ($this->in_sort_direction === 'asc') {
+                $this->in_sort_direction = 'desc';
+                $this->in_style_sort_direction = 'sorting_desc';
+            } else {
+                $this->in_sort_direction = 'asc';
+                $this->in_style_sort_direction = 'sorting_asc';
+            }
+        } else {
+            $this->in_sort_direction = 'asc';
+            $this->in_style_sort_direction = 'sorting_asc';
+        }
+
+        $this->in_sort_field = $field;
     }
 
     public function render()
@@ -69,16 +141,35 @@ class Offer extends Component
         $direct_offers =  $this->getDirectOffers();
         $in_direct_offers =  $this->getInDirectOffers();
 
+        $this->paginate_ids = $direct_offers->pluck('id')->toArray();
+        $this->in_paginate_ids = $in_direct_offers->pluck('id')->toArray();
+
         return view('livewire.offer', [
             'direct_offers' => $direct_offers,
             'in_direct_offers' => $in_direct_offers
         ]);
     }
 
-    public function export($type)
+    public function export($type, $offer_type_id)
     {
+        if ($offer_type_id == 1) {
+            $offers_export = new OffersExport($this->filters, $this->sort_field, $this->sort_direction, $this->rows_number, $this->paginate_ids, $offer_type_id);
+        } elseif ($offer_type_id == 2) {
+            $offers_export = new OffersExport($this->in_filters, $this->in_sort_field, $this->in_sort_direction, $this->in_rows_number, $this->in_paginate_ids, $offer_type_id);
+        } else {
+            $this->alert('danger', '', [
+                'toast' => true,
+                'position' => 'center',
+                'timer' => 6000,
+                'text' => 'حدث خطا ما في عملية التصدير يرجى مراجعة المبرمج المنشأ للتطبيق',
+                'timerProgressBar' => true,
+            ]);
+
+            return false;
+        }
+
         if ($type == 'excel') {
-            $excel = Excel::download(new OffersExport, 'offers.xlsx');
+            $excel = Excel::download($offers_export, 'offers.xlsx');
 
             $this->alert('success', '', [
                 'toast' => true,

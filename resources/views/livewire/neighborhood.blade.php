@@ -36,8 +36,9 @@
                             <div class="dataTables_length" id="DataTables_Table_0_length">
                                 <label>أظهر
                                     <select wire:model='rows_number' class="form-select">
+                                        <option value="all">الكل</option>
                                         <option value="5">5</option>
-                                        <option value="10">10</option>
+                                        <option value="10" selected>10</option>
                                         <option value="25">25</option>
                                         <option value="50">50</option>
                                         <option value="100">100</option>
@@ -74,24 +75,18 @@
 
 
                 <table class="table dataTable no-footer text-center">
+
                     <thead>
                         <tr role="row">
-                            <th class="sorting sorting_asc" tabindex="0" rowspan="1" colspan="1"
-                                aria-sort="ascending">الترتيب</th>
-                            <th class="sorting sorting_asc" tabindex="0" rowspan="1" colspan="1">الاسم
-                            </th>
-
-                            <th class="sorting" tabindex="0" rowspan="1" colspan="1">المدينة</th>
-
-                            <th class="sorting" tabindex="0" rowspan="1" colspan="1">
-                                الحالة
-                            </th>
-
-                            <th class="sorting" tabindex="0" rowspan="1" colspan="1">
-                                تحكم
-                            </th>
+                            <th class="sorting {{ $style_sort_direction }}" wire:click="sortBy('id')" tabindex="0"
+                                rowspan="1" colspan="1" aria-sort="ascending">الترتيب</th>
+                            <th tabindex="0" rowspan="1" colspan="1">الاسم</th>
+                            <th tabindex="0" rowspan="1" colspan="1">المدينة</th>
+                            <th tabindex="0" rowspan="1" colspan="1">الحالة</th>
+                            <th tabindex="0" rowspan="1" colspan="1">تحكم</th>
                         </tr>
                     </thead>
+
                     <tbody>
                         @foreach ($neighborhoods as $neighborhood)
                             <tr class="odd">

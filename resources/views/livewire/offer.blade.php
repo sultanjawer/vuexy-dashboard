@@ -53,8 +53,9 @@
                                                 <div class="dropdown-menu text-center export p-0"
                                                     aria-labelledby="dropdownMenuButton303" style="">
 
-                                                    <button class="btn export" tabindex="0" wire:click="export('excel')"
-                                                        aria-controls="DataTables_Table_0" type="button">
+                                                    <button class="btn export" tabindex="0"
+                                                        wire:click="export('excel', 1)" aria-controls="DataTables_Table_0"
+                                                        type="button">
                                                         <span>
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                                 height="24" viewBox="0 0 24 24" fill="none"
@@ -83,7 +84,8 @@
                                                     <div class="dataTables_length">
                                                         <label>أظهر
                                                             <select wire:model='rows_number' class="form-select">
-                                                                <option value="10">10</option>
+                                                                <option value="all">الكل</option>
+                                                                <option value="10" selected>10</option>
                                                                 <option value="25">25</option>
                                                                 <option value="50">50</option>
                                                                 <option value="100">100</option>
@@ -106,10 +108,12 @@
 
                                         </div>
 
-                                        <table class="datatables-basic table" wire:ignore.self>
+                                        <table class="table dataTable no-footer text-center">
                                             <thead>
-                                                <tr>
-                                                    <th>كود العرض</th>
+                                                <tr role="row">
+                                                    <th class="sorting {{ $style_sort_direction }}"
+                                                        wire:click="sortBy('id')" tabindex="0" rowspan="1"
+                                                        colspan="1" aria-sort="ascending">كود العرض</th>
                                                     <th>نوع العقار</th>
                                                     <th>بيان العقار</th>
                                                     <th>المدينة</th>
@@ -250,15 +254,48 @@
                                         aria-labelledby="home2-tab-fill" wire:ignore.self>
 
                                         <div class="dataTables_wrapper dt-bootstrap5 no-footer">
+
+                                            <div class="card-header border-bottom p-1">
+                                                <div class="head-label"></div>
+                                                <div class="btn-group">
+                                                    <button class="btn btn-gradient-warning dropdown-toggle"
+                                                        type="button" id="dropdownMenuButton303"
+                                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                                        تصدير
+                                                    </button>
+                                                    <div class="dropdown-menu text-center export p-0"
+                                                        aria-labelledby="dropdownMenuButton303" style="">
+
+                                                        <button class="btn export" tabindex="0"
+                                                            wire:click="export('excel', 2)"
+                                                            aria-controls="DataTables_Table_0" type="button">
+                                                            <span>
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                    height="24" viewBox="0 0 24 24" fill="none"
+                                                                    stroke="currentColor" stroke-width="2"
+                                                                    stroke-linecap="round" stroke-linejoin="round"
+                                                                    class="feather feather-file font-small-4 me-50">
+                                                                    <path
+                                                                        d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z">
+                                                                    </path>
+                                                                    <polyline points="13 2 13 9 20 9"></polyline>
+                                                                </svg>Excel
+                                                            </span>
+                                                        </button>
+
+                                                        {{-- <a class="dropdown-item" href="#">Excel</a> --}}
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                             <div class="d-flex justify-content-between align-items-center mx-0 row">
-
-
                                                 <div class="col-sm-12 col-md-3">
                                                     <div class="col-sm-12 col-md-6">
                                                         <div class="dataTables_length">
                                                             <label>أظهر
                                                                 <select class="form-select" wire:model='in_rows_number'>
-                                                                    <option value="10">10</option>
+                                                                    <option value="all">الكل</option>
+                                                                    <option value="10" selected>10</option>
                                                                     <option value="25">25</option>
                                                                     <option value="50">50</option>
                                                                     <option value="100">100</option>
@@ -272,9 +309,6 @@
                                                 {{-- Search Sections --}}
                                                 <div class="col-sm-12 col-md-9">
                                                     <div class="dataTables_filter">
-
-
-
                                                         <label>ابحث:<input type="search" wire:model='in_search'
                                                                 class="form-control" placeholder="كود العرض"></label>
 
@@ -282,10 +316,12 @@
                                                 </div>
                                             </div>
 
-                                            <table class="datatables-basic table" wire:ignore.self>
+                                            <table class="table dataTable no-footer text-center" wire:ignore.self>
                                                 <thead>
-                                                    <tr>
-                                                        <th>كود العرض</th>
+                                                    <tr role="row">
+                                                        <th class="sorting {{ $in_style_sort_direction }}"
+                                                            wire:click="inSortBy('id')" tabindex="0" rowspan="1"
+                                                            colspan="1" aria-sort="ascending">كود العرض</th>
                                                         <th>نوع العقار</th>
                                                         <th>بيان العقار</th>
                                                         <th>المدينة</th>

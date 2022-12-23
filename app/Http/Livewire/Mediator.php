@@ -18,9 +18,15 @@ class Mediator extends Component
 
     public $rows_number = 10;
     public $search;
+
+    public $sort_field = 'id';
+    public $sort_direction = 'asc';
+    public $style_sort_direction = 'sorting_asc';
+
     public $mediator_status = null;
     public $mediator_type = null;
     public $filters = [];
+    public $paginate_ids = [];
 
 
     public function updateMediators()
@@ -37,7 +43,35 @@ class Mediator extends Component
         $this->filters['mediator_status'] = $this->mediator_status;
         $this->filters['mediator_type'] = $this->mediator_type;
 
-        return ModelsMediator::data()->filters($this->filters)->paginate($this->rows_number);
+        $models = ModelsMediator::data()->filters($this->filters)->reorder($this->sort_field, $this->sort_direction);
+
+        if ($this->rows_number == 'all') {
+            $this->rows_number = $models->count();
+        }
+
+        $data = $models->paginate($this->rows_number);
+
+        $this->paginate_ids = $data->pluck('id')->toArray();
+
+        return $data;
+    }
+
+    public function sortBy($field)
+    {
+        if ($this->sort_field == $field) {
+            if ($this->sort_direction === 'asc') {
+                $this->sort_direction = 'desc';
+                $this->style_sort_direction = 'sorting_desc';
+            } else {
+                $this->sort_direction = 'asc';
+                $this->style_sort_direction = 'sorting_asc';
+            }
+        } else {
+            $this->sort_direction = 'asc';
+            $this->style_sort_direction = 'sorting_asc';
+        }
+
+        $this->sort_field = $field;
     }
 
     public function changeMediatorStatus($mediator_id)
@@ -80,7 +114,7 @@ class Mediator extends Component
     public function export($type)
     {
         if ($type == 'excel') {
-            $excel = Excel::download(new MediatorsExport, 'mediators.xlsx');
+            $excel = Excel::download(new MediatorsExport($this->filters, $this->sort_field, $this->sort_direction, $this->rows_number, $this->paginate_ids), 'mediators.xlsx');
 
             $this->alert('success', '', [
                 'toast' => true,

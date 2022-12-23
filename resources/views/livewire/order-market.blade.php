@@ -42,8 +42,8 @@
                                                 aria-labelledby="dropdownMenuButton303" style="">
 
                                                 <button class="btn export" tabindex="0"
-                                                    wire:click="export('excel', 1)" aria-controls="DataTables_Table_0"
-                                                    type="button">
+                                                    wire:click="export('excel', 'MarketOrders')"
+                                                    aria-controls="DataTables_Table_0" type="button">
                                                     <span>
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                             height="24" viewBox="0 0 24 24" fill="none"
@@ -74,7 +74,8 @@
                                                 <div class="dataTables_length">
                                                     <label>أظهر
                                                         <select wire:model='oo_rows_number' class="form-select">
-                                                            <option value="10">10</option>
+                                                            <option value="all">الكل</option>
+                                                            <option value="10" selected>10</option>
                                                             <option value="25">25</option>
                                                             <option value="50">50</option>
                                                             <option value="100">100</option>
@@ -373,8 +374,8 @@
                                                 aria-labelledby="dropdownMenuButton303" style="">
 
                                                 <button class="btn export" tabindex="0"
-                                                    wire:click="export('excel', 0)" aria-controls="DataTables_Table_0"
-                                                    type="button">
+                                                    wire:click="export('excel', 'AssignMarketOrders')"
+                                                    aria-controls="DataTables_Table_0" type="button">
                                                     <span>
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                             height="24" viewBox="0 0 24 24" fill="none"
@@ -405,7 +406,8 @@
                                                 <div class="dataTables_length">
                                                     <label>أظهر
                                                         <select class="form-select" wire:model='os_rows_number'>
-                                                            <option value="10">10</option>
+                                                            <option value="all">الكل</option>
+                                                            <option value="10" selected>10</option>
                                                             <option value="25">25</option>
                                                             <option value="50">50</option>
                                                             <option value="100">100</option>

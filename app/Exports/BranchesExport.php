@@ -24,20 +24,36 @@ class BranchesExport implements WithColumnFormatting, FromQuery, WithMapping, Sh
 
     use Exportable;
 
+
+    public $filters = [];
+    public $sort_field = 'id';
+    public $sort_direction = 'desc';
+    public $rows_number = 10;
+    public $paginate_ids = [];
+
+    public function __construct($filters, $sort_field, $sort_direction, $rows_number, $paginate_ids)
+    {
+        $this->filters = $filters;
+        $this->sort_field = $sort_field;
+        $this->sort_direction = $sort_direction;
+        $this->rows_number = $rows_number;
+        $this->paginate_ids = $paginate_ids;
+    }
+
     public function query()
     {
-        return Branch::query();
+        return Branch::query()->filters($this->filters)->whereIn('id', $this->paginate_ids)->reorder($this->sort_field, $this->sort_direction);
     }
 
     public function headings(): array
     {
         return [
-            'ID',
-            'Name',
-            'Code',
-            'Status',
-            'City',
-            'Created At',
+            'رقم الفرع',
+            'اسم الفرع',
+            'كود الفرع',
+            'حالة الفرع',
+            'المدينة',
+            'تاريخ تسجيل الفرع',
             // 'Updated At',
 
 
@@ -50,7 +66,7 @@ class BranchesExport implements WithColumnFormatting, FromQuery, WithMapping, Sh
             $branch->id,
             $branch->name,
             $branch->code,
-            $branch->status,
+            $branch->status == 1 ? 'نشط' : 'غير نشط',
             $branch->city->name,
             Date::dateTimeToExcel($branch->created_at),
             // Date::dateTimeToExcel($branch->updated_at ?? 0), # should not be null
@@ -60,7 +76,7 @@ class BranchesExport implements WithColumnFormatting, FromQuery, WithMapping, Sh
     public function columnFormats(): array
     {
         return [
-            'H' => NumberFormat::FORMAT_DATE_DDMMYYYY,
+            'F' => NumberFormat::FORMAT_DATE_DDMMYYYY,
         ];
     }
 

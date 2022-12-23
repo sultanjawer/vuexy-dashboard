@@ -31,6 +31,7 @@ class OrderMarket extends Component
     public $os_date_from = null;
     public $os_date_to = null;
     public $os_filters = [];
+    public $os_paginate_ids = [];
 
     public $oo_rows_number = 10;
     public $oo_search = '';
@@ -45,6 +46,7 @@ class OrderMarket extends Component
     public $oo_date_from = null;
     public $oo_date_to = null;
     public $oo_filters = [];
+    public $oo_paginate_ids = [];
 
 
     public function updateOrderMarketer()
@@ -81,7 +83,16 @@ class OrderMarket extends Component
         $this->oo_filters['branch_type_id'] = $this->oo_branch_type_id;
         $this->oo_filters['search'] = $this->oo_search;
 
-        $data = Order::data()->filters($this->oo_filters)->orderBy($this->oo_sort_field, $this->oo_sort_direction)->where('user_id', auth()->id())->paginate($this->oo_rows_number);
+        $models = Order::data()->filters($this->oo_filters)->reorder($this->oo_sort_field, $this->oo_sort_direction)->where('user_id', auth()->id());
+
+        if ($this->oo_rows_number == 'all') {
+            $this->oo_rows_number = $models->count();
+        }
+
+        $data = $models->paginate($this->oo_rows_number);
+
+        $this->oo_paginate_ids = $data->pluck('id')->toArray();
+
         return $data;
     }
 
@@ -98,7 +109,16 @@ class OrderMarket extends Component
         $this->os_filters['branch_type_id'] = $this->os_branch_type_id;
         $this->os_filters['search'] = $this->os_search;
 
-        $data = Order::data()->filters($this->os_filters)->orderBy($this->os_sort_field, $this->os_sort_direction)->where('assign_to', auth()->id())->paginate($this->os_rows_number);
+        $models = Order::data()->filters($this->os_filters)->reorder($this->os_sort_field, $this->os_sort_direction)->where('assign_to', auth()->id());
+
+        if ($this->os_rows_number == 'all') {
+            $this->os_rows_number = $models->count();
+        }
+
+        $data = $models->paginate($this->os_rows_number);
+
+        $this->os_paginate_ids = $data->pluck('id')->toArray();
+
         return $data;
     }
 
@@ -241,8 +261,26 @@ class OrderMarket extends Component
 
     public function export($type, $check)
     {
-        if ($type == 'excel' && $check) {
-            $excel = Excel::download(new OrdersExport, 'orders.xlsx');
+        if ($check == 'MarketOrders') {
+            $user_field = 'user_id';
+            $order_export = new OrdersExport($this->oo_filters, $this->oo_sort_field, $this->oo_sort_direction, $this->oo_rows_number, $this->oo_paginate_ids, $user_field);
+        } elseif ($check == 'AssignMarketOrders') {
+            $user_field = 'assign_to';
+            $order_export = new OrdersExport($this->os_filters, $this->os_sort_field, $this->os_sort_direction, $this->os_rows_number, $this->os_paginate_ids, $user_field);
+        } else {
+            $this->alert('danger', '', [
+                'toast' => true,
+                'position' => 'center',
+                'timer' => 6000,
+                'text' => 'حدث خطا ما في عملية التصدير يرجى مراجعة المبرمج المنشأ للتطبيق',
+                'timerProgressBar' => true,
+            ]);
+
+            return false;
+        }
+
+        if ($type == 'excel') {
+            $excel = Excel::download($order_export, 'orders.xlsx');
 
             $this->alert('success', '', [
                 'toast' => true,
@@ -255,6 +293,4 @@ class OrderMarket extends Component
             return $excel;
         }
     }
-
-
 }

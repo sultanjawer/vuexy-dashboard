@@ -17,10 +17,15 @@ class User extends Component
 
     public $rows_number = 10;
     public $search;
+    public $sort_field = 'id';
+    public $sort_direction = 'asc';
+    public $style_sort_direction = 'sorting_asc';
+
     public $branch_id = null;
     public $user_status = null;
     public $user_type = null;
     public $filters = [];
+    public $paginate_ids = [];
 
     public function getUsers()
     {
@@ -33,7 +38,35 @@ class User extends Component
         $this->filters['user_status'] = $this->user_status;
         $this->filters['branch_id'] = $this->branch_id;
 
-        return ModelsUser::data()->filters($this->filters)->whereNot('user_type', 'superadmin')->whereNot('id', auth()->id())->paginate($this->rows_number);
+        $models = ModelsUser::data()->filters($this->filters)->whereNot('user_type', 'superadmin')->whereNot('id', auth()->id())->reorder($this->sort_field, $this->sort_direction);
+
+        if ($this->rows_number == 'all') {
+            $this->rows_number = $models->count();
+        }
+
+        $data = $models->paginate($this->rows_number);
+
+        $this->paginate_ids = $data->pluck('id')->toArray();
+
+        return $data;
+    }
+
+    public function sortBy($field)
+    {
+        if ($this->sort_field == $field) {
+            if ($this->sort_direction === 'asc') {
+                $this->sort_direction = 'desc';
+                $this->style_sort_direction = 'sorting_desc';
+            } else {
+                $this->sort_direction = 'asc';
+                $this->style_sort_direction = 'sorting_asc';
+            }
+        } else {
+            $this->sort_direction = 'asc';
+            $this->style_sort_direction = 'sorting_asc';
+        }
+
+        $this->sort_field = $field;
     }
 
     public function changeUserStatus($user_id)
@@ -90,7 +123,7 @@ class User extends Component
     public function export($type)
     {
         if ($type == 'excel') {
-            $excel = Excel::download(new UsersExport, 'users.xlsx');
+            $excel = Excel::download(new UsersExport($this->filters, $this->sort_field, $this->sort_direction, $this->rows_number, $this->paginate_ids), 'users.xlsx');
 
             $this->alert('success', '', [
                 'toast' => true,

@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Exports\OrdersExport;
 use App\Models\Order as ModelsOrder;
 use App\Models\OrderEditor;
+use App\Models\User;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -30,6 +31,7 @@ class Order extends Component
     public $date_from = null;
     public $date_to = null;
     public $filters = [];
+    public $paginate_ids = [];
 
     public function updateOrders()
     {
@@ -64,10 +66,20 @@ class Order extends Component
         $user = auth()->user();
 
         if ($user->user_type == 'superadmin') {
-            $data = ModelsOrder::data()->filters($this->filters)->orderBy($this->sort_field, $this->sort_direction)->paginate($this->rows_number);
+            $collection = ModelsOrder::data()->filters($this->filters)->reorder($this->sort_field, $this->sort_direction);
+            if ($this->rows_number == 'all') {
+                $this->rows_number = $collection->count();
+            }
         } else {
-            $data = ModelsOrder::data()->filters($this->filters)->orderBy($this->sort_field, $this->sort_direction)->where('user_id', $user->id)->paginate($this->rows_number);
+            $collection = ModelsOrder::data()->filters($this->filters)->reorder($this->sort_field, $this->sort_direction)->where('user_id', $user->id);
+            if ($this->rows_number == 'all') {
+                $this->rows_number = $collection->count();
+            }
         }
+
+        $data = $collection->paginate($this->rows_number);
+
+        $this->paginate_ids = $data->pluck('id')->toArray();
 
         return $data;
     }
@@ -108,8 +120,6 @@ class Order extends Component
     {
         $this->filters['date_to'] = $this->date_to;
     }
-
-
 
     public function callOrderModal($order_id)
     {
@@ -176,7 +186,7 @@ class Order extends Component
     public function export($type)
     {
         if ($type == 'excel') {
-            $excel = Excel::download(new OrdersExport, 'orders.xlsx');
+            $excel = Excel::download(new OrdersExport($this->filters, $this->sort_field, $this->sort_direction, $this->rows_number, $this->paginate_ids, auth()->user()->user_type), 'orders.xlsx');
 
             $this->alert('success', '', [
                 'toast' => true,

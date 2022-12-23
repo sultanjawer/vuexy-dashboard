@@ -17,8 +17,6 @@
                                     قبلي</a>
                             </li>
 
-
-
                             @auth
                                 @if (auth()->user()->user_type == 'marketer')
                                     <li class="nav-item">
@@ -41,21 +39,25 @@
                                     <div class="card-header border-bottom p-1">
                                         <div class="head-label"></div>
                                         <div class="btn-group">
-                                            <button class="btn btn-gradient-warning dropdown-toggle" type="button" id="dropdownMenuButton303"
-                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                            <button class="btn btn-gradient-warning dropdown-toggle" type="button"
+                                                id="dropdownMenuButton303" data-bs-toggle="dropdown"
+                                                aria-expanded="false">
                                                 تصدير
                                             </button>
-                                            <div class="dropdown-menu text-center export p-0" aria-labelledby="dropdownMenuButton303"
-                                                style="">
+                                            <div class="dropdown-menu text-center export p-0"
+                                                aria-labelledby="dropdownMenuButton303" style="">
 
                                                 <button class="btn export" tabindex="0" wire:click="export('excel')"
                                                     aria-controls="DataTables_Table_0" type="button">
                                                     <span>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                            height="24" viewBox="0 0 24 24" fill="none"
+                                                            stroke="currentColor" stroke-width="2"
                                                             stroke-linecap="round" stroke-linejoin="round"
                                                             class="feather feather-file font-small-4 me-50">
-                                                            <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                                                            <path
+                                                                d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z">
+                                                            </path>
                                                             <polyline points="13 2 13 9 20 9"></polyline>
                                                         </svg>Excel
                                                     </span>
@@ -76,7 +78,8 @@
                                                 <div class="dataTables_length">
                                                     <label>أظهر
                                                         <select wire:model='rows_number' class="form-select">
-                                                            <option value="10">10</option>
+                                                            <option value="all">الكل</option>
+                                                            <option value="10" selected>10</option>
                                                             <option value="25">25</option>
                                                             <option value="50">50</option>
                                                             <option value="100">100</option>
@@ -155,25 +158,19 @@
                                     <table class="table dataTable no-footer center text-center" role="grid">
                                         <thead>
                                             <tr role="row">
+                                                {{-- <th>ID</th> --}}
                                                 <th class="sorting {{ $style_sort_direction }}"
                                                     wire:click="sortBy('id')" tabindex="0"
                                                     rowspan="1"colspan="1">كود الطلب </th>
-                                                <th class="sorting" tabindex="0" rowspan="1" colspan="1">التاريخ
-                                                </th>
-                                                <th class="sorting" tabindex="0" rowspan="1" colspan="1">نوع
-                                                    العقار</th>
-                                                <th class="sorting" tabindex="0" rowspan="1" colspan="1">المدينة
-                                                </th>
-                                                <th class="sorting" tabindex="0" rowspan="1" colspan="1">اسم
-                                                    العميل</th>
-                                                <th class="sorting" tabindex="0" rowspan="1" colspan="1">
-                                                    الميزانية</th>
-                                                <th class="sorting" tabindex="0" rowspan="1" colspan="1">
-                                                    الحالة</th>
-                                                <th class="sorting" tabindex="0" rowspan="1" colspan="1">
-                                                    الطلب مسند ل</th>
-                                                <th class="sorting" tabindex="0" rowspan="1" colspan="1">
-                                                    الفرع</th>
+                                                <th rowspan="1" colspan="1">التاريخ</th>
+                                                <th rowspan="1" colspan="1">نوع العقار</th>
+                                                <th rowspan="1" colspan="1">المدينة</th>
+                                                <th rowspan="1" colspan="1">اسم العميل</th>
+                                                <th rowspan="1" colspan="1">الميزانية</th>
+                                                <th rowspan="1" colspan="1">الحالة</th>
+                                                <th rowspan="1" colspan="1">الطلب مسند ل</th>
+                                                <th rowspan="1" colspan="1">الفرع</th>
+
                                                 @auth
                                                     @if (auth()->user()->can('showOrder', App\Models\Order::class) ||
                                                         auth()->user()->can('updateOrder', App\Models\Order::class) ||
@@ -191,7 +188,7 @@
 
                                             @foreach ($orders as $order)
                                                 <tr class="odd">
-
+                                                    {{-- <td class="sorting_1">{{ $order->id }}</td> --}}
                                                     <td class="sorting_1">{{ $order->order_code }}</td>
                                                     <td> {{ $order->created_at->format('Y-m-d') }} </td>
 

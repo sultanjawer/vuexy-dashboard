@@ -19,6 +19,12 @@ class Reservation extends Component
 
     public $rows_number = 10;
     public $search = '';
+
+    public $sort_field = 'id';
+    public $sort_direction = 'asc';
+    public $style_sort_direction = 'sorting_asc';
+    public $paginate_ids = [];
+
     public $reservation_status = null;
     public $filters = [];
     public $website_mode = false;
@@ -63,6 +69,24 @@ class Reservation extends Component
         }
     }
 
+    public function sortBy($field)
+    {
+        if ($this->sort_field == $field) {
+            if ($this->sort_direction === 'asc') {
+                $this->sort_direction = 'desc';
+                $this->style_sort_direction = 'sorting_desc';
+            } else {
+                $this->sort_direction = 'asc';
+                $this->style_sort_direction = 'sorting_asc';
+            }
+        } else {
+            $this->sort_direction = 'asc';
+            $this->style_sort_direction = 'sorting_asc';
+        }
+
+        $this->sort_field = $field;
+    }
+
     public function updated($propertyName)
     {
 
@@ -78,7 +102,18 @@ class Reservation extends Component
         $this->filters['search'] = $this->search;
         $this->filters['reservation_status'] = $this->reservation_status;
 
-        return ModelsReservation::data()->filters($this->filters)->paginate($this->rows_number);
+        $models = ModelsReservation::data()->filters($this->filters)->reorder($this->sort_field, $this->sort_direction);
+
+        if ($this->rows_number == 'all') {
+            $this->rows_number = $models->count();
+        }
+
+        $data = $models->paginate($this->rows_number);
+
+        $this->paginate_ids = $data->pluck('id')->toArray();
+
+        return $data;
+
     }
 
     public function dateFrom()
@@ -132,7 +167,7 @@ class Reservation extends Component
     public function export($type)
     {
         if ($type == 'excel') {
-            $excel = Excel::download(new ReservationsExport, 'reservations.xlsx');
+            $excel = Excel::download(new ReservationsExport($this->filters, $this->sort_field, $this->sort_direction, $this->rows_number, $this->paginate_ids), 'reservations.xlsx');
 
             $this->alert('success', '', [
                 'toast' => true,

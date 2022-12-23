@@ -42,7 +42,8 @@
                                 <label>أظهر
                                     <select aria-controls="DataTables_Table_0" wire:model='rows_number'
                                         class="form-select">
-                                        <option value="10">10</option>
+                                        <option value="all">الكل</option>
+                                        <option value="10" selected>10</option>
                                         <option value="25">25</option>
                                         <option value="50">50</option>
                                         <option value="100">100</option>
@@ -85,7 +86,7 @@
                     aria-describedby="DataTables_Table_0_info" wire:ignore.self>
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th class="sorting {{ $style_sort_direction }}" wire:click="sortBy('id')">ID</th>
                             <th>اسم الوسيط</th>
                             <th>رقم الجوال</th>
                             {{-- <th>كود الوسيط</th> --}}
@@ -98,7 +99,8 @@
 
                         @foreach ($mediators as $mediator)
                             <tr>
-                                <td>{{ $mediator->id }}</td>
+                                <td >
+                                    {{ $mediator->id }}</td>
                                 <td>{{ $mediator->name }}</td>
                                 <td>{{ $mediator->phone_number }}</td>
 

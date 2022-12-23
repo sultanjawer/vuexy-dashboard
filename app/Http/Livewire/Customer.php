@@ -18,11 +18,16 @@ class Customer extends Component
 
     public $rows_number = 10;
     public $search;
+    public $sort_field = 'id';
+    public $sort_direction = 'asc';
+    public $style_sort_direction = 'sorting_asc';
+
     public $customer_status = null;
     public $customer_city_id;
     public $customer_sector;
     public $is_buy;
     public $filters = [];
+    public $paginate_ids = [];
 
     public function updateCustomers()
     {
@@ -42,7 +47,35 @@ class Customer extends Component
         $this->filters['employee_type'] = $this->customer_sector;
         $this->filters['is_buy'] = $this->is_buy;
 
-        return ModelsCustomer::data()->filters($this->filters)->paginate($this->rows_number);
+        $models = ModelsCustomer::data()->filters($this->filters)->reorder($this->sort_field, $this->sort_direction);
+
+        if ($this->rows_number == 'all') {
+            $this->rows_number = $models->count();
+        }
+
+        $data = $models->paginate($this->rows_number);
+
+        $this->paginate_ids = $data->pluck('id')->toArray();
+
+        return $data;
+    }
+
+    public function sortBy($field)
+    {
+        if ($this->sort_field == $field) {
+            if ($this->sort_direction === 'asc') {
+                $this->sort_direction = 'desc';
+                $this->style_sort_direction = 'sorting_desc';
+            } else {
+                $this->sort_direction = 'asc';
+                $this->style_sort_direction = 'sorting_asc';
+            }
+        } else {
+            $this->sort_direction = 'asc';
+            $this->style_sort_direction = 'sorting_asc';
+        }
+
+        $this->sort_field = $field;
     }
 
     public function changeCustomerStatus($customer_id)
@@ -85,7 +118,7 @@ class Customer extends Component
     public function export($type)
     {
         if ($type == 'excel') {
-            $excel = Excel::download(new CustomersExport, 'customers.xlsx');
+            $excel = Excel::download(new CustomersExport($this->filters, $this->sort_field, $this->sort_direction, $this->rows_number, $this->paginate_ids), 'customers.xlsx');
 
             $this->alert('success', '', [
                 'toast' => true,
