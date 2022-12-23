@@ -13,7 +13,7 @@
                             <h2 class="content-header-title float-start mb-0">الصفحة الرئيسية</h2>
                             <div class="breadcrumb-wrapper">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="index.html">لوحة التحكم</a>
+                                    <li class="breadcrumb-item"><a href="#">لوحة التحكم</a>
                                     </li>
                                     <li class="breadcrumb-item active">الاحصائيات
                                     </li>
@@ -167,78 +167,151 @@
 
                     </div>
 
-                    <div class="row match-height">
-                        <!-- Line Chart - Profit -->
-                        <div class="col-lg-2 col-6">
-                            <div class="card text-center">
-                                <div class="card-body">
-                                    <div class="avatar bg-light-info p-50 mb-1">
-                                        <div class="avatar-content">
-                                            <i data-feather='shopping-bag' class="font-medium-5"></i>
+                    @auth
+                        @if (auth()->user()->user_type == 'admin' ||
+                            auth()->user()->user_type == 'superadmin' ||
+                            auth()->user()->user_type == 'marketer')
+                            <div class="row match-height">
+                                <!-- Line Chart - Profit -->
+                                <div class="col-lg-2 col-6">
+                                    <div class="card text-center">
+                                        <div class="card-body">
+                                            <div class="avatar bg-light-info p-50 mb-1">
+                                                <div class="avatar-content">
+                                                    <i data-feather='shopping-bag' class="font-medium-5"></i>
+                                                </div>
+                                            </div>
+                                            <h2 class="fw-bolder">{{ getOrdersCount() }}</h2>
+                                            <p class="card-text">عدد الطلبات</p>
                                         </div>
                                     </div>
-                                    <h2 class="fw-bolder">{{ getOrdersCount() }}</h2>
-                                    <p class="card-text">عدد الطلبات</p>
                                 </div>
-                            </div>
-                        </div>
 
-
-
-                        <!-- Line Chart - Profit -->
-                        <div class="col-lg-2 col-6">
-                            <div class="card text-center">
-                                <div class="card-body">
-                                    <div class="avatar bg-light-warning p-50 mb-1">
-                                        <div class="avatar-content">
-                                            <i data-feather='shopping-bag' class="font-medium-5"></i>
+                                <!-- Line Chart - Profit -->
+                                <div class="col-lg-2 col-6">
+                                    <div class="card text-center">
+                                        <div class="card-body">
+                                            <div class="avatar bg-light-warning p-50 mb-1">
+                                                <div class="avatar-content">
+                                                    <i data-feather='shopping-bag' class="font-medium-5"></i>
+                                                </div>
+                                            </div>
+                                            <h2 class="fw-bolder">{{ getOpenOrdersCount() }}</h2>
+                                            <p class="card-text">عدد الطلبات المفتوحة</p>
                                         </div>
                                     </div>
-                                    <h2 class="fw-bolder">{{ getOpenOrdersCount() }}</h2>
-                                    <p class="card-text">عدد الطلبات المفتوحة</p>
                                 </div>
-                            </div>
-                        </div>
 
-
-
-
-                        <!-- Line Chart - Profit -->
-                        <div class="col-lg-2 col-6">
-                            <div class="card text-center">
-                                <div class="card-body">
-                                    <div class="avatar bg-light-danger p-50 mb-1">
-                                        <div class="avatar-content">
-                                            <i data-feather='shopping-bag' class="font-medium-5"></i>
+                                <!-- Line Chart - Profit -->
+                                <div class="col-lg-2 col-6">
+                                    <div class="card text-center">
+                                        <div class="card-body">
+                                            <div class="avatar bg-light-danger p-50 mb-1">
+                                                <div class="avatar-content">
+                                                    <i data-feather='shopping-bag' class="font-medium-5"></i>
+                                                </div>
+                                            </div>
+                                            <h2 class="fw-bolder">{{ getClosedOrdersCount() }}</h2>
+                                            <p class="card-text">عدد الطلبات المغلقة</p>
                                         </div>
                                     </div>
-                                    <h2 class="fw-bolder">{{ getClosedOrdersCount() }}</h2>
-                                    <p class="card-text">عدد الطلبات المغلقة</p>
                                 </div>
-                            </div>
-                        </div>
 
-
-
-
-
-                        <!-- Line Chart - Profit -->
-                        <div class="col-lg-2 col-6">
-                            <div class="card text-center">
-                                <div class="card-body">
-                                    <div class="avatar bg-light-success p-50 mb-1">
-                                        <div class="avatar-content">
-                                            <i data-feather='shopping-bag' class="font-medium-5"></i>
+                                <!-- Line Chart - Profit -->
+                                <div class="col-lg-2 col-6">
+                                    <div class="card text-center">
+                                        <div class="card-body">
+                                            <div class="avatar bg-light-success p-50 mb-1">
+                                                <div class="avatar-content">
+                                                    <i data-feather='shopping-bag' class="font-medium-5"></i>
+                                                </div>
+                                            </div>
+                                            <h2 class="fw-bolder">{{ getCompleteOrdersCount() }}</h2>
+                                            <p class="card-text">عدد الطلبات المكتملة</p>
                                         </div>
                                     </div>
-                                    <h2 class="fw-bolder">{{ getCompleteOrdersCount() }}</h2>
-                                    <p class="card-text">عدد الطلبات المكتملة</p>
                                 </div>
+
+
                             </div>
-                        </div>
+                        @endif
+
+                        @if (auth()->user()->user_type == 'office' ||
+                            auth()->user()->user_type == 'admin' ||
+                            auth()->user()->user_type == 'superadmin' ||
+                            auth()->user()->user_type == 'marketer')
+                            <div class="row match-height">
+
+                                <!-- Line Chart - Profit -->
+                                <div class="col-lg-2 col-6">
+                                    <div class="card text-center">
+                                        <div class="card-body">
+                                            <div class="avatar bg-light-info p-50 mb-1">
+                                                <div class="avatar-content">
+                                                    <i data-feather='shopping-bag' class="font-medium-5"></i>
+                                                </div>
+                                            </div>
+                                            <h2 class="fw-bolder">{{ getOffersCount() }}</h2>
+                                            <p class="card-text">عدد العروض</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Line Chart - Profit -->
+                                {{-- <div class="col-lg-2 col-6">
+                                    <div class="card text-center">
+                                        <div class="card-body">
+                                            <div class="avatar bg-light-warning p-50 mb-1">
+                                                <div class="avatar-content">
+                                                    <i data-feather='shopping-bag' class="font-medium-5"></i>
+                                                </div>
+                                            </div>
+                                            <h2 class="fw-bolder">{{ getOpenOrdersCount() }}</h2>
+                                            <p class="card-text">عدد العروض المفتوحة</p>
+                                        </div>
+                                    </div>
+                                </div> --}}
+
+                                <!-- Line Chart - Profit -->
+                                {{-- <div class="col-lg-2 col-6">
+                                    <div class="card text-center">
+                                        <div class="card-body">
+                                            <div class="avatar bg-light-danger p-50 mb-1">
+                                                <div class="avatar-content">
+                                                    <i data-feather='shopping-bag' class="font-medium-5"></i>
+                                                </div>
+                                            </div>
+                                            <h2 class="fw-bolder">{{ getClosedOrdersCount() }}</h2>
+                                            <p class="card-text">عدد الطلبات المغلقة</p>
+                                        </div>
+                                    </div>
+                                </div> --}}
+
+                                <!-- Line Chart - Profit -->
+                                {{-- <div class="col-lg-2 col-6">
+                                    <div class="card text-center">
+                                        <div class="card-body">
+                                            <div class="avatar bg-light-success p-50 mb-1">
+                                                <div class="avatar-content">
+                                                    <i data-feather='shopping-bag' class="font-medium-5"></i>
+                                                </div>
+                                            </div>
+                                            <h2 class="fw-bolder">{{ getCompleteOrdersCount() }}</h2>
+                                            <p class="card-text">عدد الطلبات المكتملة</p>
+                                        </div>
+                                    </div>
+                                </div> --}}
+
+                            </div>
+                        @endif
 
 
-                    </div>
+
+
+
+
+                    @endauth
+
 
                     <div class="row match-height">
                         @auth
@@ -260,6 +333,10 @@
                             @endif
                         @endauth
                     </div>
+
+
+
+
             </div>
             </section>
 

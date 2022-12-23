@@ -264,12 +264,17 @@ class EditOffer extends Component
             }
 
             if ($field == "land_number") {
-                $validation[$field] = ['unique:real_estates,land_number,' . $this->offer->id, 'required'];
+                $validation[$field] = ['unique:real_estates,land_number,' . $this->offer->id, 'nullable'];
                 continue;
             }
 
             if ($field == "block_number") {
-                $validation[$field] = ['unique:real_estates,block_number,' . $this->offer->id, 'required'];
+                $validation[$field] = ['unique:real_estates,block_number,' . $this->offer->id, 'nullable'];
+                continue;
+            }
+
+            if ($field == "real_estate_statement") {
+                $validation[$field] = ['unique:real_estates,block_number', 'nullable'];
                 continue;
             }
 

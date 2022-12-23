@@ -564,6 +564,13 @@ if (!function_exists('getUsersMarketersBranch')) {
 }
 
 
+if (!function_exists('getOffersCount')) {
+    function getOffersCount()
+    {
+        return Offer::all()->count();
+    }
+}
+
 
 if (!function_exists('getBranchesUser')) {
     function getBranchesUser()

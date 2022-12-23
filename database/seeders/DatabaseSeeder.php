@@ -42,7 +42,6 @@ class DatabaseSeeder extends Seeder
             LandTypeSeeder::class,
             BranchSeeder::class,
             MediatorSeeder::class,
-            // ReservationSeeder::class,
             DesireToBuySeeder::class,
             PurchaseMethodSeeder::class,
             CustomerSeeder::class,
@@ -58,6 +57,7 @@ class DatabaseSeeder extends Seeder
             StreetWidthSeeder::class,
             RealEstateSeeder::class,
             OfferSeeder::class,
+            ReservationSeeder::class,
 
         ]);
     }

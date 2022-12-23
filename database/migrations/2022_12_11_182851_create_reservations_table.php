@@ -16,9 +16,9 @@ return new class extends Migration
         Schema::create('reservations', function (Blueprint $table) {
             $table->id()->startingValue(100);
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->string('customer_id')->constrained('customers')->cascadeOnDelete();
-            $table->string('offer_id')->unique()->constrained('offers')->cascadeOnDelete();
-            $table->string('offer_code')->unique()->constrained('offers')->cascadeOnDelete();
+            $table->foreignId('customer_id')->constrained('customers')->cascadeOnDelete();
+            $table->foreignId('offer_id')->constrained('offers')->cascadeOnDelete();
+            $table->string('offer_code');
             $table->string('customer_name');
             $table->double('price')->default(0.0);
             $table->enum('status', [1, 2]);

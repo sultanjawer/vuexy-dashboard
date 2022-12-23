@@ -24,36 +24,55 @@ class OfferView extends Component
     public $price;
     public $date;
     public $reservation_notes;
+    public $is_booked = false;
+    public $user_id;
 
     public function mount($offer_id)
     {
         $this->offer_id = $offer_id;
         $this->offer = Offer::find($offer_id);
         $this->real_estate = $this->offer->realEstate;
+        $this->isBookedOffer();
+    }
+
+    public function isBookedOffer()
+    {
+        $active_reservation = $this->offer->reservations->where('status', 1)->first();
+        if ($active_reservation) {
+            $this->user_id = $active_reservation->user_id;
+            $this->is_booked = true;
+        } else {
+            $this->is_booked = false;
+        }
     }
 
     public function render()
     {
         $this->getLastUpateTime();
+        $this->isBookedOffer();
         return view('livewire.offer-view');
     }
 
     public function hydrate()
     {
         $check = false;
-        if ($this->offer->reservation) {
+
+        if ($this->is_booked) {
             $check = true;
         }
+
         $this->emit('select2', $check);
     }
 
     public function reservationData()
     {
-        if ($this->offer->reservation) {
-            $this->customer_id = $this->offer->reservation->customer->id;
-            $this->price = $this->offer->reservation->price;
-            $this->date = $this->offer->reservation->date_from . ' to ' . $this->offer->reservation->date_to;
-            $this->reservation_notes = $this->offer->reservation->note;
+        $active_reservation = $this->offer->reservations->where('status', 1)->first();
+
+        if ($active_reservation) {
+            $this->customer_id = $active_reservation->customer->id;
+            $this->price = $active_reservation->price;
+            $this->date = $active_reservation->date_from . ' to ' . $active_reservation->date_to;
+            $this->reservation_notes = $active_reservation->note;
         }
     }
 
@@ -164,6 +183,7 @@ class OfferView extends Component
 
         return $validation;
     }
+
     public function storeReservation(ReservationService $reservationService)
     {
         $data = $this->validate();
@@ -181,5 +201,33 @@ class OfferView extends Component
 
         $this->emit('refreshComponent');
         $this->emit('submitReservation');
+    }
+
+    public function cancelReservation(ReservationService $reservationService)
+    {
+        $result = $reservationService->cancel($this->offer->id);
+
+        if ($result) {
+            $this->alert('success', '', [
+                'toast' => true,
+                'position' => 'center',
+                'timer' => 3000,
+                'text' => '👍 تم إلغاء الحجز بنجاح',
+                'timerProgressBar' => true,
+            ]);
+
+            $this->emit('refreshComponent');
+            return true;
+        }
+
+        $this->alert('danger', '', [
+            'toast' => true,
+            'position' => 'center',
+            'timer' => 3000,
+            'text' => '👍 حدث خطأ ما، يرجى المتابعة مع المبرمج',
+            'timerProgressBar' => true,
+        ]);
+
+        return true;
     }
 }

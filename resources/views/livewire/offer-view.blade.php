@@ -40,14 +40,23 @@
                                             class="btn bg-light-success mt-2 waves-effect waves-float waves-light"
                                             data-bs-target="#addReservation" wire:click='reservationData'
                                             data-bs-toggle="modal">
-                                            @if (!$offer->reservation)
+                                            @if (!$is_booked)
                                                 حجز
                                             @endif
 
-                                            @if ($offer->reservation)
+                                            @if ($is_booked)
                                                 تفاصيل الحجز
                                             @endif
                                         </a>
+
+                                        @auth
+                                            @if (($is_booked && auth()->id() == $user_id) || ($is_booked && auth()->user()->user_type == 'superadmin'))
+                                                <a href="javascript:;" wire:click="cancelReservation"
+                                                    class="btn bg-light-danger mt-1 waves-effect waves-float waves-light">
+                                                    إلغاء الحجز
+                                                </a>
+                                            @endif
+                                        @endauth
 
                                         <a href="javascript:;"
                                             class="btn bg-light-primary mt-1 waves-effect waves-float waves-light"
@@ -237,9 +246,13 @@
                                     <div class="my-auto col-sm-3">
                                         <h4 class="card-title mb-25">معلومات العقار</h4>
                                         <p class="card-text mb-0">
-                                            <a class="btn btn-sm bg-light-danger waves-effect waves-float waves-light"
-                                                href="{{ route('panel.update.offer', $offer->id) }}"> تعديل هذا
-                                                العقار</a>
+
+                                            @can('updateOffer', $offer)
+                                                <a class="btn btn-sm bg-light-danger waves-effect waves-float waves-light"
+                                                    href="{{ route('panel.update.offer', $offer->id) }}"> تعديل هذا
+                                                    العقار</a>
+                                            @endcan
+
                                         </p>
                                     </div>
 
@@ -876,6 +889,11 @@
                                                             class="timeline-point timeline-point-warning timeline-point-indicator"></span>
                                                     @endif
 
+                                                    @if ($offer_edit->action == 'cancel')
+                                                        <span
+                                                            class="timeline-point timeline-point-danger timeline-point-indicator"></span>
+                                                    @endif
+
                                                     <div class="timeline-event">
                                                         <div
                                                             class="d-flex justify-content-between flex-sm-row flex-column mb-sm-0 mb-1">
@@ -983,7 +1001,7 @@
                         <div class="col-12 col-md-6 customer-name" wire:ignore>
                             <label class="form-label">اسم العميل</label>
                             <select class="js-select2-customer-name select2 form-select" wire:model='customer_id'
-                                @if ($offer->reservation) disabled @endif wire:ignore.self>
+                                @if ($is_booked) disabled @endif wire:ignore.self>
                                 @foreach (getCustomers() as $customer)
                                     <option value="{{ $customer->id }}" selected>
                                         {{ $customer->name }}</option>
@@ -1000,7 +1018,7 @@
                                 <label class="form-label" for="price">السعر</label>
                                 <div class="input-group input-group-merge">
                                     <input type="text" class="form-control" wire:model='price'
-                                        placeholder="السعر" @if ($offer->reservation) disabled @endif>
+                                        placeholder="السعر" @if ($is_booked) disabled @endif>
                                     <span class="input-group-text">ريال</span>
                                 </div>
                                 @error('price')
@@ -1014,7 +1032,7 @@
                             <label class="form-label" for="fp-range">التاريخ</label>
                             <input type="text" dir="ltr" wire:model='date'
                                 class="form-control flatpickr-range" placeholder="YYYY-MM-DD to YYYY-MM-DD"
-                                @if ($offer->reservation) disabled @endif />
+                                @if ($is_booked) disabled @endif />
                             @error('date')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -1024,14 +1042,14 @@
                         <div class="col-12 col-md-6">
                             <label class="form-label" for="modalEditUserEmail">ملاحظات:</label>
                             <textarea class="form-control" wire:model='reservation_notes' rows="3" placeholder="ملاحظات"
-                                @if ($offer->reservation) disabled @endif></textarea>
+                                @if ($is_booked) disabled @endif></textarea>
                             @error('reservation_notes')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
                         <div class="col-12 text-center mt-2 pt-50">
-                            @if (!$offer->reservation)
+                            @if (!$is_booked)
                                 <button type="submit" class="btn btn-primary btn-submit me-1"
                                     wire:click='storeReservation'>حفظ</button>
                             @endif

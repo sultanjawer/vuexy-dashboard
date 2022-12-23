@@ -84,7 +84,7 @@ class RealEstateSeeder extends Seeder
                 // 'direction_id' => random_int($min_direction_id, $max_direction_id),
                 'land_type_id' => random_int($min_land_type_id, $max_land_type_id),
                 'property_type_id' => $property_type_id,
-                'property_status_id' => random_int($min_property_status_id, $max_property_status_id),
+                'property_status_id' => 1,
                 'interface_length_id' => random_int($min_interface_length_id, $max_interface_length_id),
                 'licensed_id' => random_int($min_licensed_id, $max_licensed_id),
                 'owner_ship_type_id' => random_int($min_owner_ship_type_id, $max_owner_ship_type_id),

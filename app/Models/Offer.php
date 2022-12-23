@@ -37,9 +37,9 @@ class Offer extends Model
         return $this->hasMany(OfferEditors::class, 'offer_id', 'id');
     }
 
-    public function reservation()
+    public function reservations()
     {
-        return $this->hasOne(Reservation::class, 'offer_id', 'id');
+        return $this->hasMany(Reservation::class, 'offer_id', 'id');
     }
 
     public function offerType()

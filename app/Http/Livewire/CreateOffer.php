@@ -237,12 +237,17 @@ class CreateOffer extends Component
             }
 
             if ($field == "land_number") {
-                $validation[$field] = ['unique:real_estates,land_number', 'required'];
+                $validation[$field] = ['unique:real_estates,land_number', 'nullable'];
                 continue;
             }
 
             if ($field == "block_number") {
-                $validation[$field] = ['unique:real_estates,block_number', 'required'];
+                $validation[$field] = ['unique:real_estates,block_number', 'nullable'];
+                continue;
+            }
+
+            if ($field == "real_estate_statement") {
+                $validation[$field] = ['unique:real_estates,block_number', 'nullable'];
                 continue;
             }
 
