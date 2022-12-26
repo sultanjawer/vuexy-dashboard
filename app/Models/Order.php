@@ -83,6 +83,16 @@ class Order extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
+    public function offer()
+    {
+        return $this->hasOne(Offer::class, 'order_id', 'id');
+    }
+
+    public function sale()
+    {
+        return $this->hasOne(Sale::class, 'order_id', 'id');
+    }
+
     public function orderEdits()
     {
         return $this->hasMany(OrderEditor::class, 'order_id', 'id');

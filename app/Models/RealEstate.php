@@ -76,6 +76,11 @@ class RealEstate extends Model
         return $this->hasOne(InterfaceLength::class, 'id', 'interface_length_id',);
     }
 
+    public function sale()
+    {
+        return $this->hasOne(Sale::class, 'real_estate_id', 'id');
+    }
+
     public function licensed()
     {
         return $this->hasOne(Licensed::class, 'id', 'licensed_id',);

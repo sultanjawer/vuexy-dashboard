@@ -144,6 +144,15 @@
                         </li>
                     @endcan
 
+                    @can('sales', App\Models\Sale::class)
+                        <li class=" nav-item">
+                            <a class="d-flex align-items-center" href="{{ route('panel.sales') }}">
+                                <i data-feather="dollar-sign"></i>
+                                <span class="menu-title text-truncate" data-i18n="Kanban">المبيعات</span>
+                            </a>
+                        </li>
+                    @endcan
+
                     @can('mediators', App\Models\Mediator::class)
                         <li class="nav-item">
                             <a class="d-flex align-items-center" href="{{ route('panel.mediators') }}">
@@ -206,11 +215,6 @@
                     @endcan
                 @endif
             @endauth
-
-            {{-- <li class=" nav-item"><a class="d-flex align-items-center" href="{{ route('panel.selles') }}"><i
-                        data-feather="dollar-sign"></i><span class="menu-title text-truncate"
-                        data-i18n="Kanban">المبيعات</span></a>
-            </li> --}}
 
         </ul>
     </div>

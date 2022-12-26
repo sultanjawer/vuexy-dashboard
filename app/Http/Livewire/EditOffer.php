@@ -322,6 +322,7 @@ class EditOffer extends Component
         $this->price_by_meter = (int)str_replace(',', '', $this->price_by_meter);
         $this->total_price = (int)str_replace(',', '', $this->total_price);
         $this->price = (int)str_replace(',', '', $this->price);
+        $this->space = (int)str_replace(',', '', $this->space);
         $this->floor_number = (int)str_replace(',', '', $this->floor_number);
         $this->floors_number = (int)str_replace(',', '', $this->floors_number);
         $this->flats_number = (int)str_replace(',', '', $this->flats_number);
@@ -336,6 +337,30 @@ class EditOffer extends Component
                     'position' => 'center',
                     'timer' => 6000,
                     'text' => 'هذا العرض غير مباشر يرجى اختيار وسيط واحد على الاقل 😌',
+                    'timerProgressBar' => true,
+                ]);
+                return false;
+            }
+        }
+
+        if (in_array($this->property_type_id, [1, 2, 5])) {
+            if (!$this->direction_ids) {
+                $this->alert('warning', '', [
+                    'toast' => true,
+                    'position' => 'center',
+                    'timer' => 6000,
+                    'text' => 'يرجى اختيار اتجاه واحد على الأقل 😌',
+                    'timerProgressBar' => true,
+                ]);
+                return false;
+            }
+
+            if (!$this->street_width_ids) {
+                $this->alert('warning', '', [
+                    'toast' => true,
+                    'position' => 'center',
+                    'timer' => 6000,
+                    'text' => 'يرجى اختيار عرض شارع واحد على الأقل 😌',
                     'timerProgressBar' => true,
                 ]);
                 return false;

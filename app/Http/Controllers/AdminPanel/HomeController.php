@@ -15,6 +15,7 @@ use App\Models\Neighborhood;
 use App\Models\Offer;
 use App\Models\Order;
 use App\Models\PropertyType;
+use App\Models\Sale;
 use App\Models\Street;
 use App\Models\User;
 use Illuminate\Support\Facades\Gate;
@@ -203,9 +204,28 @@ class HomeController extends Controller
         return view('admin-panel.offer.update-offer', ['offer' => $offer]);
     }
 
-
     public function offer(Offer $offer)
     {
         return view('admin-panel.offer.offer-view', ['offer' => $offer]);
+    }
+
+    public function sales()
+    {
+        return view('admin-panel.sales.sales');
+    }
+
+    public function sale(Sale $sale)
+    {
+        return view('admin-panel.sales.sale-view', ['sale' => $sale]);
+    }
+
+    public function createSale(Offer $offer)
+    {
+        return view('admin-panel.sales.create-sale', ['offer' => $offer]);
+    }
+
+    public function updateSale(Sale $sale)
+    {
+        return view('admin-panel.sales.update-sale', ['sale' => $sale]);
     }
 }

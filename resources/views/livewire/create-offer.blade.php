@@ -684,7 +684,6 @@
         <script>
             $(document).ready(function() {
 
-
                 // Hide All
                 $(".price-by-meter").hide();
                 $(".total-price").hide();

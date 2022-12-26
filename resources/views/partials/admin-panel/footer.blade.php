@@ -21,7 +21,9 @@
 @include('partials.scripts.vendorjs')
 @stack('order-create')
 @stack('order-update')
+@stack('sale-update')
 @stack('test')
+
 </body>
 
 </html>

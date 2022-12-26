@@ -12,6 +12,7 @@ use App\Models\InterfaceLength;
 use App\Models\LandType;
 use App\Models\Licensed;
 use App\Models\Mediator;
+use App\Models\Nationality;
 use App\Models\Neighborhood;
 use App\Models\Offer;
 use App\Models\OfferType;
@@ -555,6 +556,14 @@ if (!function_exists('getUserId')) {
         }
     }
 }
+
+if (!function_exists('getNationalities')) {
+    function getNationalities()
+    {
+        return Nationality::data()->get();
+    }
+}
+
 
 if (!function_exists('getUsersMarketersBranch')) {
     function getUsersMarketersBranch($branch_id)

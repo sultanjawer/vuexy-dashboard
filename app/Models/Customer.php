@@ -18,6 +18,7 @@ class Customer extends Model
         'employer_id',
         'employer_name',
         'nationality_id',
+        'nationality_country',
         'NID',
         'city_id',
         'building_number',
@@ -41,7 +42,17 @@ class Customer extends Model
 
     public function reservations()
     {
-        return $this->hasMany(Reservation::class, 'reservation_id', 'id');
+        return $this->hasMany(Reservation::class, 'customer_id', 'id');
+    }
+
+    public function nationality()
+    {
+        return $this->belongsTo(Nationality::class, 'nationality_country', 'id');
+    }
+
+    public function sales()
+    {
+        return $this->hasMany(Sale::class, 'customer_id', 'id');
     }
 
     public function city()
@@ -59,10 +70,12 @@ class Customer extends Model
             'is_buy' => null,
         ], $filters);
 
+
         $builder->when($filters['search'] != '', function ($query) use ($filters) {
             $query
                 ->where('name', 'like', '%' . $filters['search'] . '%')
-                ->orWhere('phone', 'like', '%' . $filters['search'] . '%');
+                ->orWhere('phone', 'like', '%' . $filters['search'] . '%')
+                ->orWhere('nationality_id', 'like', '%' . $filters['search'] . '%');
         });
 
         $builder->when($filters['search'] == '' && $filters['customer_status'] != null, function ($query) use ($filters) {

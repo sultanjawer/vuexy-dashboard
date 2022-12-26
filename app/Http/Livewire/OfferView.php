@@ -70,7 +70,7 @@ class OfferView extends Component
 
         if ($active_reservation) {
             $this->customer_id = $active_reservation->customer->id;
-            $this->price = $active_reservation->price;
+            $this->price = number_format($active_reservation->price);
             $this->date = $active_reservation->date_from . ' to ' . $active_reservation->date_to;
             $this->reservation_notes = $active_reservation->note;
         }

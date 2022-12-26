@@ -168,7 +168,6 @@ class CreateOffer extends Component
             $this->emit('neighborhoods', $neighborhoods_json);
         }
 
-
         if ($propertyName == 'yes') {
             $this->yes = 'option1';
             $this->no = '';
@@ -183,8 +182,6 @@ class CreateOffer extends Component
             $this->is_direct = false;
             $this->emit('mediators-show', $this->is_direct);
         }
-
-
 
         if ($propertyName == "space" || $propertyName == 'price_by_meter' || $propertyName == "price" || $propertyName == "annual_income") {
             $this->is_numeric($propertyName, $value);
@@ -291,6 +288,7 @@ class CreateOffer extends Component
         $this->price_by_meter = (int)str_replace(',', '', $this->price_by_meter);
         $this->total_price = (int)str_replace(',', '', $this->total_price);
         $this->price = (int)str_replace(',', '', $this->price);
+        $this->space = (int)str_replace(',', '', $this->space);
         $this->floor_number = (int)str_replace(',', '', $this->floor_number);
         $this->floors_number = (int)str_replace(',', '', $this->floors_number);
         $this->flats_number = (int)str_replace(',', '', $this->flats_number);

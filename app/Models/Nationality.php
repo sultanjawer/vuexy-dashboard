@@ -5,17 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PurchaseMethod extends Model
+class Nationality extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'name'
-    ];
+    protected $fillable = ['name'];
 
-    public function sale()
+    public function customer()
     {
-        return $this->belongsTo(Sale::class, 'purch_method_id', 'id');
+        return $this->belongsTo(Customer::class, 'nationality_country', 'id');
     }
 
     public function scopeData($query)

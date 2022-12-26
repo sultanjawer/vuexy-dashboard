@@ -259,6 +259,43 @@
                                         </td>
                                     </tr>
 
+
+                                    <tr>
+                                        <td class="text-nowrap fw-bolder">المبيعات</td>
+                                        <td>
+                                            <div class="d-flex">
+                                                <div class="form-check me-3 me-lg-5">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        wire:model='can_show_sale'>
+                                                    <label class="form-check-label"> رؤية </label>
+                                                </div>
+
+                                                <div class="form-check me-3 me-lg-5">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        wire:model='can_create_sale'>
+                                                    <label class="form-check-label" for="canAdd"> اضافة </label>
+                                                </div>
+
+                                                <div class="form-check me-3 me-lg-5">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        wire:model='can_edit_sale'>
+                                                    <label class="form-check-label" for="canEdit"> تعديل
+                                                    </label>
+                                                </div>
+
+                                                <div class="form-check me-3 me-lg-5">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        wire:model='can_change_sale_status'>
+                                                    <label class="form-check-label" for="canCancel">إلغاء</label>
+                                                </div>
+
+                                            </div>
+                                        </td>
+                                    </tr>
+
+
+
+
                                     <tr>
                                         <td class="text-nowrap fw-bolder">الحالة</td>
                                         <td>

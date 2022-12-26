@@ -58,9 +58,8 @@
                                             @endif
                                         @endauth
 
-                                        <a href="javascript:;"
-                                            class="btn bg-light-primary mt-1 waves-effect waves-float waves-light"
-                                            data-bs-target="#" data-bs-toggle="modal">
+                                        <a href="{{ route('panel.create.sale', $offer->id) }}"
+                                            class="btn bg-light-primary mt-1 waves-effect waves-float waves-light">
                                             بيع
                                         </a>
 
@@ -239,6 +238,7 @@
                             <div class="card-body">
                                 <div class="meetup-header d-flex align-items-center">
                                     <div class="meetup-day">
+                                        <h3 class="mb-0">{{ $offer->created_at->format('Y') }}</h3>
                                         <h6 class="mb-0">{{ strtoupper($offer->created_at->format('D')) }}</h6>
                                         <h3 class="mb-0">{{ $offer->created_at->format('d') }}</h3>
                                     </div>
@@ -339,7 +339,7 @@
                                         </div>
                                         <div class="more-info">
                                             <h6 class="mb-0">مساحة العقار</h6>
-                                            <span>{{ $offer->realEstate->space }}</span>
+                                            <span>{{ number_format($offer->realEstate->space) }}</span>
                                         </div>
                                     </div>
 
@@ -362,7 +362,7 @@
                                             </div>
                                             <div class="more-info">
                                                 <h6 class="mb-0">سعر المتر</h6>
-                                                <span>{{ $offer->realEstate->price_by_meter }}</span>
+                                                <span>{{ number_format($offer->realEstate->price_by_meter) }}</span>
                                             </div>
                                         </div>
                                     @endif
@@ -382,7 +382,7 @@
                                         </div>
                                         <div class="more-info">
                                             <h6 class="mb-0">السعر بالكامل</h6>
-                                            <span>{{ $offer->realEstate->total_price }}</span>
+                                            <span>{{ number_format($offer->realEstate->total_price) }}</span>
                                         </div>
                                     </div>
 

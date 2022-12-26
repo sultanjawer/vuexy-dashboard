@@ -57,6 +57,7 @@ class Reservation extends Component
             }
         }
     }
+
     public function changeWebsiteMode()
     {
         $user = User::find(auth()->id());

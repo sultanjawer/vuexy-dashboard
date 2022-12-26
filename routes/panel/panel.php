@@ -9,7 +9,9 @@ use App\Models\Neighborhood;
 use App\Models\Offer;
 use App\Models\Order;
 use App\Models\Reservation;
+use App\Models\Sale;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(HomeController::class)
@@ -44,5 +46,10 @@ Route::controller(HomeController::class)
             Route::get('/offer/{offer}', 'offer')->name('offer')->can('showOffer', Offer::class);
             Route::get('/create-offer', 'createOffer')->name('create.offer')->can('createOffer', Offer::class);
             Route::get('/update-offer/{offer}', 'updateOffer')->name('update.offer')->can('updateOffer', Offer::class);
+
+            Route::get('/sales', 'sales')->name('sales')->can('sales', Sale::class);
+            Route::get('/sale/{sale}', 'sale')->name('sale')->can('showSale', Sale::class);
+            Route::get('/create-sale/{offer}', 'createSale')->name('create.sale')->can('createSale', sale::class);
+            Route::get('/update-sale/{sale}', 'updateSale')->name('update.sale')->can('updateSale', sale::class);
         }
     );

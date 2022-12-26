@@ -12,6 +12,7 @@ class Offer extends Model
 
     protected $fillable = [
         'offer_code',
+        'order_id',
         'real_estate_id',
         'offer_type_id',
         'user_id',
@@ -37,9 +38,19 @@ class Offer extends Model
         return $this->hasMany(OfferEditors::class, 'offer_id', 'id');
     }
 
+    public function order()
+    {
+        return $this->belongsTo(Order::class, 'order_id', 'id');
+    }
+
     public function reservations()
     {
         return $this->hasMany(Reservation::class, 'offer_id', 'id');
+    }
+
+    public function sale()
+    {
+        return $this->hasOne(Sale::class, 'offer_id', 'id');
     }
 
     public function offerType()
@@ -67,6 +78,7 @@ class Offer extends Model
         return $query->select([
             'id',
             'offer_code',
+            'order_id',
             'real_estate_id',
             'offer_type_id',
             'user_id',

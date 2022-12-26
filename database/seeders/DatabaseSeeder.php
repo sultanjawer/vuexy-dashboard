@@ -36,6 +36,8 @@ class DatabaseSeeder extends Seeder
             PropertyStatusSeeder::class,
             PriceTypeSeeder::class,
             StreetSeeder::class,
+            PaymentMethodSeeder::class,
+            NationalitySeeder::class,
             DirectionSeeder::class,
             LicensedSeeder::class,
             LandSeeder::class,
@@ -58,7 +60,6 @@ class DatabaseSeeder extends Seeder
             RealEstateSeeder::class,
             OfferSeeder::class,
             ReservationSeeder::class,
-
         ]);
     }
 }
