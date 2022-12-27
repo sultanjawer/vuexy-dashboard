@@ -111,7 +111,10 @@ Route::controller(HomeController::class)
 
                 $pdf = new Pdf($original_pdf);
 
-                $result = $pdf->fillForm($data)->needAppearances()->saveAs(public_path() . '/reservation-contract.pdf');
+                $result = $pdf->fillForm($data)
+                    ->replacementFont($font)
+                    ->needAppearances()
+                    ->saveAs(public_path() . '/reservation-contract.pdf');
 
                 $error = '';
 
