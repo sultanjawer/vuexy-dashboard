@@ -109,7 +109,10 @@ Route::controller(HomeController::class)
 
                 $pdf = new Pdf($original_pdf);
 
-                $result = $pdf->fillForm($data)->needAppearances()
+                $font = public_path('/pdfs/fonts/times_new_roman_bold.ttf');
+
+                $result = $pdf->fillForm($data)
+                    ->replacementFont($font)
                     ->saveAs(public_path() . '/reservation-contract-v3.pdf');
 
                 $error = '';
