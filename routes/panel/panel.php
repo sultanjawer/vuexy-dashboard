@@ -109,7 +109,12 @@ Route::controller(HomeController::class)
 
                 $font = public_path('/pdfs/fonts/arial.ttf');
 
-                $pdf = new Pdf($original_pdf);
+                $pdf = new Pdf($original_pdf, [
+                    'locale' => 'ar_SA.utf8',
+                    'procEnv' => [
+                        'LANG' => 'ar_SA.utf-8',
+                    ],
+                ]);
 
                 $result = $pdf->fillForm($data)
                     ->replacementFont($font)
