@@ -102,7 +102,7 @@ Route::controller(HomeController::class)
                     'customer_seller_name' => 'amrakram',
                 ];
 
-                $original_pdf = public_path() . '/pdfs/formstest.pdf';
+                $original_pdf = public_path() . '/pdfs/lasttest.pdf';
 
                 $pdf = new Pdf(
                     $original_pdf,
@@ -115,7 +115,7 @@ Route::controller(HomeController::class)
                 );
 
                 $result = $pdf->fillForm($data)->needAppearances()
-                    ->saveAs(public_path() . '/NoWay.pdf');
+                    ->saveAs(public_path() . '/ready.pdf');
 
                 $error = '';
 
@@ -123,7 +123,7 @@ Route::controller(HomeController::class)
                     $error = $pdf->getError();
                 }
 
-                return Response::download(public_path('NoWay.pdf'), 'NoWay.pdf', ['Content-Type: application/pdf']);
+                return Response::download(public_path('ready.pdf'), 'ready.pdf', ['Content-Type: application/pdf']);
             });
         }
     );
