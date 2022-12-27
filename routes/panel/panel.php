@@ -105,12 +105,12 @@ Route::controller(HomeController::class)
                     'customer_seller_name' => 'مع تحياتي المبرمج عمرو اكرم  من فلسطين',
                 ];
 
-                $original_pdf = public_path() . '/pdfs/reservation-contract.pdf';
+                $original_pdf = public_path() . '/pdfs/reservation-contract-v2.pdf';
 
                 $pdf = new Pdf($original_pdf);
 
                 $result = $pdf->fillForm($data)->needAppearances()
-                    ->saveAs(public_path() . '/reservation-contract.pdf');
+                    ->saveAs(public_path() . '/reservation-contract-v2.pdf');
 
                 $error = '';
 
@@ -118,7 +118,7 @@ Route::controller(HomeController::class)
                     $error = $pdf->getError();
                 }
 
-                return Response::download(public_path('reservation-contract.pdf'), 'reservation-contract.pdf', ['Content-Type: application/pdf']);
+                return Response::download(public_path('reservation-contract-v2.pdf'), 'reservation-contract-v2.pdf', ['Content-Type: application/pdf']);
             });
         }
     );
