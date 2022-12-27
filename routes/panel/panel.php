@@ -107,9 +107,9 @@ Route::controller(HomeController::class)
                 $pdf = new Pdf(
                     $original_pdf,
                     [
-                        'locale' => 'ar.utf8',
+                        'locale' => 'ar_SA.utf8',
                         'procEnv' => [
-                            'LANG' => 'ar.utf-8',
+                            'LANG' => 'ar_SA.utf-8',
                         ],
                     ]
                 );
