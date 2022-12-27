@@ -121,7 +121,6 @@ Route::controller(HomeController::class)
 
                 $result = $pdf->fillForm($data)
                     ->needAppearances()
-                    ->replacementFont($font)
                     ->saveAs(public_path() . '/reservarion-v1.pdf');
 
                 $error = '';
