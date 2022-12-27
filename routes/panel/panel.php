@@ -109,6 +109,21 @@ Route::controller(HomeController::class)
                 $result = $pdf->fillForm([
                     'sale_code' => 'QTF-1-USR1',
                     'customer_name' => 'عمرو اكرم',
+                    'sale_create_at' => '01-02-2022',
+                    'city_name' => 'غزة',
+
+                    #First Customer
+                    'customer_buyer_adj' => 'عمرو المشتري',
+                    'customer_buyer_name' => 'اسم عمرو المشتري',
+                    'customer_buyer_id_type' => 'عمل خاص',
+                    'customer_buyer_nationality' => 'فلسطيني',
+                    'customer_buyer_phone' => '0599916672',
+                    'customer_buyer_city_name' => 'غزة',
+                    'customer_buyer_building_number' => '2139539',
+                    'customer_buyer_street_name' => 'شارع جمال عبد الناصر',
+                    'customer_buyer_additional_number' => '2124567',
+                    'customer_buyer_zip_code' => '23456yo',
+                    'customer_buyer_email' => 'amro@gmail.com',
                 ])->needAppearances()
                     ->saveAs(public_path() . '/madar-reservarion-contract.pdf');
 
