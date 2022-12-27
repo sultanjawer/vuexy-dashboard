@@ -116,6 +116,7 @@ Route::controller(HomeController::class)
                     'customer_buyer_adj' => 'عمرو المشتري',
                     'customer_buyer_name' => 'اسم عمرو المشتري',
                     'customer_buyer_id_type' => 'عمل خاص',
+                    'customer_buyer_id_number' => 405235530,
                     'customer_buyer_nationality' => 'فلسطيني',
                     'customer_buyer_phone' => '0599916672',
                     'customer_buyer_city_name' => 'غزة',
@@ -124,6 +125,34 @@ Route::controller(HomeController::class)
                     'customer_buyer_additional_number' => '2124567',
                     'customer_buyer_zip_code' => '23456yo',
                     'customer_buyer_email' => 'amro@gmail.com',
+
+                    #Second Customer
+                    'customer_seller_adj' => 'عمرو البائع',
+                    'customer_seller_name' => 'اسم عمرو البائع',
+                    'customer_seller_id_type' => 'عمر خاص',
+                    'customer_seller_id_number' => 405235530,
+                    'customer_seller_nationality' => 'فلسطيني',
+                    'customer_seller_phone' => '0599916672',
+                    'customer_seller_city_name' => 'غزة',
+                    'customer_seller_building_number' => '2139539',
+                    'customer_seller_street_name' => 'شارع جمال عبد الناصر',
+                    'customer_seller_additional_number' => '2124567',
+                    'customer_seller_zip_code' => '23456',
+                    'customer_seller_email' => 'amro@gmail.com',
+
+                    #Real Estate Information
+                    'real_estate_statement' => 'تمام تمت العملية بنجاح',
+                    'real_estate_space' => '2345',
+                    'real_estate_location' => 'فلسطين / غزة',
+                    'total_price' => '345',
+                    'total_price_text' => 'الف واربعة مئة دولار امريكي',
+                    'paid_amount' => '45678',
+                    'date_expire' => '01-02-2022',
+                    'amount_due' => '87654',
+                    'days' => '365',
+                    'customer_buyer_name' => 'المبرمج عمرو اكرم',
+                    'customer_seller_name' => 'مع تحياتي المبرمج عمرو اكرم  من فلسطين',
+
                 ])->needAppearances()
                     ->saveAs(public_path() . '/madar-reservarion-contract.pdf');
 
