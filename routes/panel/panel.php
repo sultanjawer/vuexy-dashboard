@@ -11,6 +11,7 @@ use App\Models\Order;
 use App\Models\Reservation;
 use App\Models\Sale;
 use App\Models\User;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
 use mikehaertl\pdftk\Pdf;
 
@@ -116,7 +117,7 @@ Route::controller(HomeController::class)
                     $error = $pdf->getError();
                 }
 
-                dd($error, $result);
+                return Response::download(public_path(), 'filled.pdf', ['Content-Type: application/pdf']);
             });
         }
     );
