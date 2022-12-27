@@ -107,7 +107,7 @@ Route::controller(HomeController::class)
                 $pdf = new Pdf($original_pdf);
 
                 $result = $pdf->fillForm([
-                    'testthis' => 'لا بأس يا صديقي لقد تم إصلاح الامر بنجاح',
+                    'testthis' => 'Sorry, Arabic Language is not supported in this case',
                 ])->flatten()
                     ->saveAs(public_path() . '/filled.pdf');
 
