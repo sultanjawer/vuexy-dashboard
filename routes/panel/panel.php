@@ -105,13 +105,13 @@ Route::controller(HomeController::class)
                     'customer_seller_name' => 'مع تحياتي المبرمج عمرو اكرم  من فلسطين',
                 ];
 
-                $original_pdf = public_path() . '/pdfs/reservarion-v1.pdf';
+                $original_pdf = public_path() . '/pdfs/reservation-contract.pdf';
 
                 $font = public_path('/pdfs/fonts/arial.ttf');
 
                 $pdf = new Pdf($original_pdf);
 
-                $result = $pdf->fillForm($data)->needAppearances()->saveAs(public_path() . '/reservarion-v1.pdf');
+                $result = $pdf->fillForm($data)->needAppearances()->saveAs(public_path() . '/reservation-contract.pdf');
 
                 $error = '';
 
@@ -119,7 +119,7 @@ Route::controller(HomeController::class)
                     $error = $pdf->getError();
                 }
 
-                return Response::download(public_path('reservarion-v1.pdf'), 'reservarion-v1.pdf', ['Content-Type: application/pdf']);
+                return Response::download(public_path('reservation-contract.pdf'), 'reservation-contract.pdf', ['Content-Type: application/pdf']);
             });
         }
     );
