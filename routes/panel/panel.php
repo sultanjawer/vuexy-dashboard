@@ -116,7 +116,7 @@ Route::controller(HomeController::class)
 
                 $result = $pdf->fillForm([
                     'testthis' => 'اللغة العربية الان مدعومة',
-                ])->needAppearances()
+                ])->flatten()
                     ->saveAs(public_path() . '/NoWay.xfdf');
 
                 $error = '';
