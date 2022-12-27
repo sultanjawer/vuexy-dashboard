@@ -104,7 +104,15 @@ Route::controller(HomeController::class)
 
                 $original_pdf = public_path() . '/pdfs/testing.pdf';
 
-                $pdf = new Pdf($original_pdf);
+                $pdf = new Pdf(
+                    $original_pdf,
+                    [
+                        'locale' => 'en_US.utf8',
+                        'procEnv' => [
+                            'LANG' => 'en_US.utf-8',
+                        ],
+                    ]
+                );
 
                 $result = $pdf->fillForm([
                     'testthis' => 'Sorry, Arabic Language is not supported in this case',
