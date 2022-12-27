@@ -102,22 +102,15 @@ Route::controller(HomeController::class)
                     'customer_seller_name' => 'amrakram',
                 ];
 
-                $original_pdf = public_path() . '/pdfs/lasttest.pdf';
+                $original_pdf = public_path() . '/pdfs/madar.pdf';
 
-                $pdf = new Pdf(
-                    $original_pdf,
-                    [
-                        'locale' => 'ar_SA.utf8',
-                        'procEnv' => [
-                            'LANG' => 'ar_SA.UTF-8',
-                        ],
-                    ]
-                );
+                $pdf = new Pdf($original_pdf);
 
                 $result = $pdf->fillForm([
-                    'test' => 'اوك واخيرا اشتغل'
+                    'sale_code' => 'QTF-1-USR1',
+                    'customer_name' => 'عمرو اكرم',
                 ])->needAppearances()
-                    ->saveAs(public_path() . '/ready.pdf');
+                    ->saveAs(public_path() . '/madar.pdf');
 
                 $error = '';
 
@@ -125,7 +118,7 @@ Route::controller(HomeController::class)
                     $error = $pdf->getError();
                 }
 
-                return Response::download(public_path('ready.pdf'), 'ready.pdf', ['Content-Type: application/pdf']);
+                return Response::download(public_path('madar.pdf'), 'madar.pdf', ['Content-Type: application/pdf']);
             });
         }
     );
