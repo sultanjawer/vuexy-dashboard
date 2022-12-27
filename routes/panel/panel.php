@@ -111,10 +111,7 @@ Route::controller(HomeController::class)
 
                 $pdf = new Pdf($original_pdf);
 
-                $result = $pdf->fillForm($data)
-                    ->needAppearances()
-                    ->replacementFont($font)
-                    ->saveAs(public_path() . '/reservarion-v1.pdf');
+                $result = $pdf->fillForm($data)->needAppearances()->saveAs(public_path() . '/reservarion-v1.pdf');
 
                 $error = '';
 
