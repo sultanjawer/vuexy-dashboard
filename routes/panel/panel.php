@@ -114,7 +114,9 @@ Route::controller(HomeController::class)
                     ]
                 );
 
-                $result = $pdf->fillForm($data)->needAppearances()
+                $result = $pdf->fillForm([
+                    'test' => 'اوك واخيرا اشتغل'
+                ])->needAppearances()
                     ->saveAs(public_path() . '/ready.pdf');
 
                 $error = '';
