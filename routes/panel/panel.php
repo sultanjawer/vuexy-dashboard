@@ -11,8 +11,8 @@ use App\Models\Order;
 use App\Models\Reservation;
 use App\Models\Sale;
 use App\Models\User;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Route;
+use mikehaertl\pdftk\Pdf;
 
 Route::controller(HomeController::class)
     ->prefix('panel')
@@ -51,5 +51,72 @@ Route::controller(HomeController::class)
             Route::get('/sale/{sale}', 'sale')->name('sale')->can('showSale', Sale::class);
             Route::get('/create-sale/{offer}', 'createSale')->name('create.sale')->can('createSale', sale::class);
             Route::get('/update-sale/{sale}', 'updateSale')->name('update.sale')->can('updateSale', sale::class);
+
+
+            Route::get('pdf', function () {
+
+                // $data = [
+                //     'sale_code' => 'QTF-1-USR1',
+                //     'customer_name' => 'amrakram',
+                //     'sale_create_at' => '01-02-2022',
+                //     'city_name' => 'gaza',
+
+                //     #First Customer
+                //     'customer_buyer_adj' => 'buyer',
+                //     'customer_buyer_name' => 'amrakram',
+                //     'customer_buyer_id_type' => 'private',
+                //     'customer_buyer_nationality' => 'palestinian',
+                //     'customer_buyer_phone' => '0599916672',
+                //     'customer_buyer_city_name' => 'gaza',
+                //     'customer_buyer_building_number' => '2139539',
+                //     'customer_buyer_street_name' => 'jamal abd al nasser',
+                //     'customer_buyer_additional_number' => '2124567',
+                //     'customer_buyer_zip_code' => '23456',
+                //     'customer_buyer_email' => 'amro@gmail.com',
+
+                //     #Second Customer
+                //     'customer_seller_adj' => 'seller',
+                //     'customer_seller_name' => 'amrakram',
+                //     'customer_seller_id_type' => 'private',
+                //     'customer_seller_nationality' => 'palestinian',
+                //     'customer_seller_phone' => '0599916672',
+                //     'customer_seller_city_name' => 'gaza',
+                //     'customer_seller_building_number' => '2139539',
+                //     'customer_seller_street_name' => 'jamal abd al nasser',
+                //     'customer_seller_additional_number' => '2124567',
+                //     'customer_seller_zip_code' => '23456',
+                //     'customer_seller_email' => 'amro@gmail.com',
+
+                //     #Real Estate Information
+                //     'real_estate_statement' => 'ok good way',
+                //     'real_estate_space' => '2345',
+                //     'real_estate_location' => 'palestine/ gaza',
+                //     'total_price' => '345',
+                //     'total_price_text' => 'الف واربعة مئة دولار امريكي',
+                //     'paid_amount' => '45678',
+                //     'date_expire' => '01-02-2022',
+                //     'amount_due' => '87654',
+                //     'days' => '365',
+                //     'customer_buyer_name' => 'proamrakram',
+                //     'customer_seller_name' => 'amrakram',
+                // ];
+
+                $original_pdf = public_path() . '/pdfs/testing.pdf';
+
+                $pdf = new Pdf($original_pdf);
+
+                $result = $pdf->fillForm([
+                    'testthis' => 'rdcfvghbnjkmjhgfdfcghjkjhgfghjkjhgvj',
+                ])->flatten()
+                    ->saveAs(public_path() . '/filled.pdf');
+
+                $error = '';
+
+                if ($result === false) {
+                    $error = $pdf->getError();
+                }
+
+                dd($error, $result);
+            });
         }
     );
