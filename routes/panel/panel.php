@@ -57,56 +57,6 @@ Route::controller(HomeController::class)
             Route::get('pdf', function () {
 
                 $data = [
-                    'sale_code' => 'QTF-1-USR1',
-                    'customer_name' => 'amrakram',
-                    'sale_create_at' => '01-02-2022',
-                    'city_name' => 'gaza',
-
-                    #First Customer
-                    'customer_buyer_adj' => 'buyer',
-                    'customer_buyer_name' => 'amrakram',
-                    'customer_buyer_id_type' => 'private',
-                    'customer_buyer_nationality' => 'palestinian',
-                    'customer_buyer_phone' => '0599916672',
-                    'customer_buyer_city_name' => 'gaza',
-                    'customer_buyer_building_number' => '2139539',
-                    'customer_buyer_street_name' => 'jamal abd al nasser',
-                    'customer_buyer_additional_number' => '2124567',
-                    'customer_buyer_zip_code' => '23456',
-                    'customer_buyer_email' => 'amro@gmail.com',
-
-                    #Second Customer
-                    'customer_seller_adj' => 'seller',
-                    'customer_seller_name' => 'amrakram',
-                    'customer_seller_id_type' => 'private',
-                    'customer_seller_nationality' => 'palestinian',
-                    'customer_seller_phone' => '0599916672',
-                    'customer_seller_city_name' => 'gaza',
-                    'customer_seller_building_number' => '2139539',
-                    'customer_seller_street_name' => 'jamal abd al nasser',
-                    'customer_seller_additional_number' => '2124567',
-                    'customer_seller_zip_code' => '23456',
-                    'customer_seller_email' => 'amro@gmail.com',
-
-                    #Real Estate Information
-                    'real_estate_statement' => 'ok good way',
-                    'real_estate_space' => '2345',
-                    'real_estate_location' => 'palestine/ gaza',
-                    'total_price' => '345',
-                    'total_price_text' => 'الف واربعة مئة دولار امريكي',
-                    'paid_amount' => '45678',
-                    'date_expire' => '01-02-2022',
-                    'amount_due' => '87654',
-                    'days' => '365',
-                    'customer_buyer_name' => 'proamrakram',
-                    'customer_seller_name' => 'amrakram',
-                ];
-
-                $original_pdf = public_path() . '/pdfs/madar-reservarion-contract.pdf';
-
-                $pdf = new Pdf($original_pdf);
-
-                $result = $pdf->fillForm([
                     'sale_created_at' => '01-01-2023',
                     'sale_code' => 'QTF-1-USR1',
                     'customer_name' => 'عمرو اكرم',
@@ -153,8 +103,13 @@ Route::controller(HomeController::class)
                     'days' => '365',
                     'customer_buyer_name' => 'المبرمج عمرو اكرم',
                     'customer_seller_name' => 'مع تحياتي المبرمج عمرو اكرم  من فلسطين',
+                ];
 
-                ])->needAppearances()
+                $original_pdf = public_path() . '/pdfs/madar-reservarion-contract.pdf';
+
+                $pdf = new Pdf($original_pdf);
+
+                $result = $pdf->fillForm($data)->needAppearances()
                     ->saveAs(public_path() . '/madar-reservarion-contract.pdf');
 
                 $error = '';
