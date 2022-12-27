@@ -107,6 +107,7 @@ Route::controller(HomeController::class)
                 $pdf = new Pdf($original_pdf);
 
                 $result = $pdf->fillForm([
+                    'sale_created_at' => '01-01-2023',
                     'sale_code' => 'QTF-1-USR1',
                     'customer_name' => 'عمرو اكرم',
                     'sale_create_at' => '01-02-2022',
