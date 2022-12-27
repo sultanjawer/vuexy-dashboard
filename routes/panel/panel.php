@@ -109,18 +109,11 @@ Route::controller(HomeController::class)
 
                 $font = public_path('/pdfs/fonts/arial.ttf');
 
-                $pdf = new Pdf(
-                    $original_pdf,
-                    [
-                        'locale' => 'ar_SA.utf8',
-                        'procEnv' => [
-                            'LANG' => 'ar_SA.UTF-8',
-                        ],
-                    ]
-                );
+                $pdf = new Pdf($original_pdf);
 
                 $result = $pdf->fillForm($data)
                     ->needAppearances()
+                    ->replacementFont($font)
                     ->saveAs(public_path() . '/reservarion-v1.pdf');
 
                 $error = '';
