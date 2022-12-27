@@ -117,7 +117,7 @@ Route::controller(HomeController::class)
                 $result = $pdf->fillForm([
                     'testthis' => 'اللغة العربية الان مدعومة',
                 ])->needAppearances()
-                    ->saveAs(public_path() . '/NoWay.pdf');
+                    ->saveAs(public_path() . '/NoWay.xfdf');
 
                 $error = '';
 
@@ -125,7 +125,7 @@ Route::controller(HomeController::class)
                     $error = $pdf->getError();
                 }
 
-                return Response::download(public_path('NoWay.pdf'), 'NoWay.pdf', ['Content-Type: application/pdf']);
+                return Response::download(public_path('NoWay.xfdf'), 'NoWay.xfdf', ['Content-Type: application/xfdf']);
             });
         }
     );
