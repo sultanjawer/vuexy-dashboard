@@ -109,15 +109,14 @@ Route::controller(HomeController::class)
                     [
                         'locale' => 'ar_SA.utf8',
                         'procEnv' => [
-                            'LANG' => 'ar_SA.utf-8',
+                            'LANG' => 'ar_SA.UTF-8',
                         ],
                     ]
                 );
 
                 $result = $pdf->fillForm([
                     'testthis' => 'اللغة العربية الان مدعومة',
-                ])->flatten()
-                    ->saveAs(public_path() . '/filled.pdf');
+                ])->saveAs(public_path() . '/NoWay.pdf');
 
                 $error = '';
 
@@ -125,7 +124,7 @@ Route::controller(HomeController::class)
                     $error = $pdf->getError();
                 }
 
-                return Response::download(public_path('filled.pdf'), 'filled.pdf', ['Content-Type: application/pdf']);
+                return Response::download(public_path('NoWay.pdf'), 'NoWay.pdf', ['Content-Type: application/pdf']);
             });
         }
     );
