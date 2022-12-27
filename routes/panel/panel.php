@@ -105,14 +105,24 @@ Route::controller(HomeController::class)
                     'customer_seller_name' => 'مع تحياتي المبرمج عمرو اكرم  من فلسطين',
                 ];
 
-                $original_pdf = public_path() . '/pdfs/reservation-contract-v3.pdf';
+                $original_pdf = public_path() . '/pdfs/reservarion-v1.pdf';
 
-                $pdf = new Pdf($original_pdf);
+                $font = public_path('/pdfs/fonts/arial.ttf');
 
-                $font = public_path('/pdfs/fonts/times_new_roman_bold.ttf');
+                $pdf = new Pdf(
+                    $original_pdf,
+                    [
+                        'locale' => 'ar_SA.utf8',
+                        'procEnv' => [
+                            'LANG' => 'ar_SA.UTF-8',
+                        ],
+                        'replacement_font', $font,
+                    ]
+                );
 
                 $result = $pdf->fillForm($data)
-                    ->saveAs(public_path() . '/reservation-contract-v3.pdf');
+                    ->needAppearances()
+                    ->saveAs(public_path() . '/reservarion-v1.pdf');
 
                 $error = '';
 
@@ -120,7 +130,7 @@ Route::controller(HomeController::class)
                     $error = $pdf->getError();
                 }
 
-                return Response::download(public_path('reservation-contract-v3.pdf'), 'reservation-contract-v3.pdf', ['Content-Type: application/pdf']);
+                return Response::download(public_path('reservarion-v1.pdf'), 'reservarion-v1.pdf', ['Content-Type: application/pdf']);
             });
         }
     );
