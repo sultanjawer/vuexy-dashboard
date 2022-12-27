@@ -116,12 +116,12 @@ Route::controller(HomeController::class)
                         'procEnv' => [
                             'LANG' => 'ar_SA.UTF-8',
                         ],
-                        'replacement_font', $font,
                     ]
                 );
 
                 $result = $pdf->fillForm($data)
                     ->needAppearances()
+                    ->replacementFont($font)
                     ->saveAs(public_path() . '/reservarion-v1.pdf');
 
                 $error = '';
