@@ -102,7 +102,7 @@ Route::controller(HomeController::class)
                     'customer_seller_name' => 'amrakram',
                 ];
 
-                $original_pdf = public_path() . '/pdfs/madar.pdf';
+                $original_pdf = public_path() . '/pdfs/madar-reservarion-contract.pdf';
 
                 $pdf = new Pdf($original_pdf);
 
@@ -110,7 +110,7 @@ Route::controller(HomeController::class)
                     'sale_code' => 'QTF-1-USR1',
                     'customer_name' => 'عمرو اكرم',
                 ])->needAppearances()
-                    ->saveAs(public_path() . '/madar.pdf');
+                    ->saveAs(public_path() . '/madar-reservarion-contract.pdf');
 
                 $error = '';
 
@@ -118,7 +118,7 @@ Route::controller(HomeController::class)
                     $error = $pdf->getError();
                 }
 
-                return Response::download(public_path('madar.pdf'), 'madar.pdf', ['Content-Type: application/pdf']);
+                return Response::download(public_path('madar-reservarion-contract.pdf'), 'madar-reservarion-contract.pdf', ['Content-Type: application/pdf']);
             });
         }
     );
