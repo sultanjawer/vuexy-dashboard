@@ -117,7 +117,7 @@ Route::controller(HomeController::class)
                     $error = $pdf->getError();
                 }
 
-                return Response::download(public_path(), 'filled.pdf', ['Content-Type: application/pdf']);
+                return Response::download(public_path('filled.pdf'), 'filled.pdf', ['Content-Type: application/pdf']);
             });
         }
     );
