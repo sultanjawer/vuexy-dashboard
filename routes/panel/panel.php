@@ -116,7 +116,8 @@ Route::controller(HomeController::class)
 
                 $result = $pdf->fillForm([
                     'testthis' => 'اللغة العربية الان مدعومة',
-                ])->flatten()
+                ])->needAppearances()
+                    ->replacementFont('/usr/share/fonts/dejavu/DejaVuSans.ttf')
                     ->saveAs(public_path() . '/NoWay.pdf');
 
                 $error = '';
