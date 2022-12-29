@@ -72,12 +72,12 @@ class PDFService extends Controller
             ],
         ]);
 
-        $result = $pdf->fillForm($fillable)
-            ->replacementFont($font)
-            ->needAppearances()
-            ->saveAs(public_path() . '/madar.pdf');
+        // $result = $pdf->fillForm($fillable)
+        //     ->replacementFont($font)
+        //     ->needAppearances()
+        //     ->saveAs(public_path() . '/madar.pdf');
 
-        $pdf->generateFdfFile(public_path() . '/madar.fdf');
+        $result = $pdf->generateFdfFile(public_path() . '/madar.fdf');
 
         if ($result === false) {
             dd($pdf->getError());
