@@ -57,13 +57,13 @@ class PDFService extends Controller
         'customer_seller_name' => "",
     ];
 
+
     public function writePdf($data)
     {
         $fillable = array_merge($this->fillable, $data);
 
         $original_pdf = public_path() . '/pdfs/madar.pdf';
-        $file_name = '/madar_' . random_int(111111, 999999) . '.pdf';
-        $temp_path = public_path('temp') . $file_name;
+        $temp_path = public_path() . '/madar.pdf';
 
         $pdf = new Pdf($original_pdf, [
             'locale' => 'ar_SA.utf8',
@@ -79,8 +79,6 @@ class PDFService extends Controller
         if ($result === false) {
             dd($pdf->getError());
         }
-
-        return asset('pdfs/temp/' . $file_name);
     }
 
     public function exportPdf($path)
