@@ -74,7 +74,6 @@ class PDFService extends Controller
         $pdf->tempDir = public_path('temp');
 
         $result = $pdf->fillForm($fillable)
-            ->needAppearances()
             ->execute();
 
         if ($result === false) {
@@ -82,7 +81,7 @@ class PDFService extends Controller
         }
 
         $content = file_get_contents((string) $pdf->getTmpFile());
-
+        dd($content);
         // return Response::download(public_path('madar.pdf'), 'madar.pdf', ['Content-Type: application/pdf']);
         return Response::download(public_path('madar.pdf'), 'madarr.pdf', ['Content-Type: application/pdf']);
     }
