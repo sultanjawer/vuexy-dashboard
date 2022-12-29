@@ -503,8 +503,7 @@
                                 </div> --}}
 
                                 <div class="row avg-sessions pt-50">
-                                    <iframe src="{{ asset('assets/upload/madar.pdf') }}" width="100%"
-                                        height="570px">
+                                    <iframe src="{{ $pdf_path }}" width="100%" height="570px">
                                     </iframe>
                                 </div>
                             </div>

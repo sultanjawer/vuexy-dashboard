@@ -62,8 +62,9 @@ class PDFService extends Controller
         $fillable = array_merge($this->fillable, $data);
 
         $original_pdf = public_path() . '/pdfs/madar.pdf';
-        $temp_path = public_path('temp') . '/madar_' . random_int(111111, 999999) . '.pdf';
-        dd(asset('pdfs/temp'));
+        $file_name = '/madar_' . random_int(111111, 999999) . '.pdf';
+        $temp_path = public_path('temp') . $file_name;
+
         $pdf = new Pdf($original_pdf, [
             'locale' => 'ar_SA.utf8',
             'procEnv' => [
@@ -79,7 +80,7 @@ class PDFService extends Controller
             dd($pdf->getError());
         }
 
-        return $temp_path;
+        return asset('pdfs/temp/' . $file_name);
     }
 
     public function exportPdf($path)
