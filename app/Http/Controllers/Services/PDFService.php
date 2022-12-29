@@ -79,6 +79,8 @@ class PDFService extends Controller
         if ($result === false) {
             dd($pdf->getError());
         }
+
+        return $temp_path;
     }
 
     public function exportPdf($path)
