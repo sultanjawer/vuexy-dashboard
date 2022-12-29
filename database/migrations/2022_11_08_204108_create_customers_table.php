@@ -28,15 +28,14 @@ return new class extends Migration
             $table->unsignedBigInteger('building_number')->nullable();
             $table->string('street_name')->nullable();
             $table->string('neighborhood_name')->nullable();
-            $table->integer('zip_code')->nullable();
-            $table->integer('addtional_number')->nullable();
-            $table->integer('unit_number')->nullable();
+            $table->string('zip_code')->nullable();
+            $table->string('addtional_number')->nullable();
+            $table->string('unit_number')->nullable();
             $table->boolean('support_eskan')->nullable();
             $table->enum('employee_type', ['public', 'private'])->nullable();
 
             $table->enum('status', [1, 2])->nullable()->default(1);
             $table->enum('is_buy', [1, 2])->nullable()->default(1);
-
 
             $table->integer('who_add')->nullable();
             $table->integer('who_edit')->nullable();

@@ -25,6 +25,9 @@ return new class extends Migration
 
             #Pricing
             $table->integer('vat');
+            $table->integer('customer_buyer_id');
+            $table->integer('customer_seller_id');
+
             $table->double('saee_prc')->nullable();
             $table->double('saee_price')->nullable();
             $table->double('tatal_req_amount');

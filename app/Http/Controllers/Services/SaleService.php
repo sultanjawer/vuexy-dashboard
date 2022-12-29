@@ -12,22 +12,21 @@ use Illuminate\Http\Request;
 
 class SaleService extends Controller
 {
-
     public function createCustomer($data)
     {
         $user = auth()->user();
 
         return Customer::create([
             'user_id' => $user->id,
-            'name' => $data['customer_name'],
-            'phone' => $data['customer_phone'],
-            'email' => $data['customer_email'],
+            'name' => $data['name'],
+            'phone' => $data['phone'],
+            'email' => $data['email'],
             // 'employer_id' => $data['customer_email'],
-            'nationality_country' => $data['customer_nationality'],
+            'nationality_country' => $data['nationality_country'],
             'employer_name' => null,
-            'nationality_id' => $data['customer_id_number'],
+            'nationality_id' => $data['nationality_id'],
             // 'NID',
-            'city_id' => $data['customer_city_name'],
+            'city_id' => $data['city_id'],
             'building_number' => $data['building_number'],
             'street_name' => $data['street_name'],
             'neighborhood_name' => $data['neighborhood_name'],
@@ -45,17 +44,16 @@ class SaleService extends Controller
 
     public function updateCustomer($customer, $data)
     {
-
         $customer->update([
-            'name' => $data['customer_name'],
-            'phone' => $data['customer_phone'],
-            'email' => $data['customer_email'],
-            'nationality_country' => $data['customer_nationality'],
-            'nationality_id' => $data['customer_id_number'],
-            'city_id' => $data['customer_city_name'],
+            'name' => $data['name'],
+            'phone' => $data['phone'],
+            'email' => $data['email'],
+            'nationality_country' => $data['nationality_country'],
+            'nationality_id' => $data['nationality_id'],
+            'city_id' => $data['city_id'],
             'building_number' => $data['building_number'],
             'street_name' => $data['street_name'],
-            'neighborhood_name' => $data['neighborhood'],
+            'neighborhood_name' => $data['neighborhood_name'],
             'zip_code' => $data['zip_code'],
             'addtional_number' => $data['addtional_number'],
             'unit_number' => $data['unit_number'],
@@ -67,20 +65,66 @@ class SaleService extends Controller
         return Customer::find($customer->id);
     }
 
-    public function store($data)
+    public function setCustomer($data, $id, $phone, $type)
     {
-        $customer = Customer::find($data['customer_id']);
-        $customer_phone = Customer::where('phone', $data['customer_phone'])->first();
+        if ($type == 'buyer') {
+            $new_data = [
+                'name' => $data['customer_buyer_name'],
+                'phone' => $data['customer_buyer_phone'],
+                'email' => $data['customer_buyer_email'],
+                'nationality_country' => $data['customer_buyer_nationality'],
+                'nationality_id' => $data['customer_buyer_id_number'],
+                'city_id' => $data['customer_buyer_city_name'],
+                'building_number' => $data['customer_buyer_building_number'],
+                'street_name' => $data['customer_buyer_street_name'],
+                'neighborhood_name' => $data['customer_buyer_neighborhood'],
+                'zip_code' => $data['customer_buyer_zip_code'],
+                'addtional_number' => $data['customer_buyer_addtional_number'],
+                'unit_number' => $data['customer_buyer_unit_number'],
+                'support_eskan' => $data['customer_buyer_support_eskan'],
+                'employee_type' => $data['customer_buyer_employee_type'],
+            ];
+        }
+
+        if ($type == 'seller') {
+            $new_data = [
+                'name' => $data['customer_seller_name'],
+                'phone' => $data['customer_seller_phone'],
+                'email' => $data['customer_seller_email'],
+                'nationality_country' => $data['customer_seller_nationality'],
+                'nationality_id' => $data['customer_seller_id_number'],
+                'city_id' => $data['customer_seller_city_name'],
+                'building_number' => $data['customer_seller_building_number'],
+                'street_name' => $data['customer_seller_street_name'],
+                'neighborhood_name' => $data['customer_seller_neighborhood'],
+                'zip_code' => $data['customer_seller_zip_code'],
+                'addtional_number' => $data['customer_seller_addtional_number'],
+                'unit_number' => $data['customer_seller_unit_number'],
+                'support_eskan' => $data['customer_seller_support_eskan'],
+                'employee_type' => $data['customer_seller_employee_type'],
+            ];
+        }
+
+        $customer = Customer::find($id);
+        $customer_phone = Customer::where('phone', $phone)->first();
 
         if (!$customer) {
             if (!$customer_phone) {
-                $customer = $this->createCustomer($data);
+                $customer = $this->createCustomer($new_data);
             } else {
-                $customer = $this->updateCustomer($customer_phone, $data);
+                $customer = $this->updateCustomer($customer_phone, $new_data);
             }
         } else {
-            $customer = $this->updateCustomer($customer, $data);
+            $customer = $this->updateCustomer($customer, $new_data);
         }
+
+        return $customer;
+    }
+
+    public function store($data)
+    {
+        $customer_buyer = $this->setCustomer($data, $data['customer_buyer_id'], $data['customer_buyer_phone'], 'buyer');
+        $customer_seller = $this->setCustomer($data, $data['customer_seller_id'], $data['customer_seller_phone'], 'seller');
 
         $user = auth()->user();
         $offer = Offer::find($data['offer_id']);
@@ -91,7 +135,9 @@ class SaleService extends Controller
             'sale_code' =>  '',
             'user_id' => $user->id,
             'offer_id' => $offer->id,
-            'customer_id' => $customer->id,
+            'customer_id' => $customer_buyer->id,
+            'customer_buyer_id' => $customer_buyer->id,
+            'customer_seller_id' => $customer_seller->id,
             'real_estate_id' => $offer->realEstate->id,
             'order_id' => $offer->order ? $offer->order->id : null,
             'payment_method_id' => $payment_method->id,
@@ -114,37 +160,13 @@ class SaleService extends Controller
 
     public function update($sale_id, $data)
     {
-        $customer = Customer::find($data['customer_id']);
-        $customer_phone = Customer::where('phone', $data['customer_phone'])->first();
-
-        if (!$customer) {
-            if (!$customer_phone) {
-                $customer = $this->createCustomer($data);
-                $sale = Sale::with(['offer.realEstate.neighborhood', 'customer.nationality'])->find($sale_id);
-
-                $sale->update([
-                    'customer_id' => $customer->id,
-                    'payment_method_id' => $data['payment_method_id'],
-                    'vat' => $data['vat'],
-                    'saee_prc' => $data['saee_prc'],
-                    'saee_price' => $data['saee_price'],
-                    'tatal_req_amount' => $data['total_price'],
-                    'paid_amount' => $data['paid_amount'],
-                    'who_edit' => auth()->id(),
-                ]);
-
-                return true;
-            } else {
-                $customer = $customer_phone;
-            }
-        }
+        $customer_buyer = $this->setCustomer($data, $data['customer_buyer_id'], $data['customer_buyer_phone'], 'buyer');
+        $customer_seller = $this->setCustomer($data, $data['customer_seller_id'], $data['customer_seller_phone'], 'seller');
 
         $sale = Sale::with(['offer.realEstate.neighborhood', 'customer.nationality'])->find($sale_id);
 
-        $this->updateCustomer($customer, $data);
-
         $sale->update([
-            'customer_id' => $customer->id,
+            'customer_id' => $customer_buyer->id,
             'payment_method_id' => $data['payment_method_id'],
             'vat' => $data['vat'],
             'saee_prc' => $data['saee_prc'],

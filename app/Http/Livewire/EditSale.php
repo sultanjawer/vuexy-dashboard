@@ -13,64 +13,92 @@ class EditSale extends Component
     use LivewireAlert;
 
     protected $paginationTheme = 'bootstrap';
-    protected $listeners = ['setCustomers', 'refreshComponent' => '$refresh', 'openSaleModal'];
+    protected $listeners = ['setCustomers', 'refreshComponent' => '$refresh'];
 
-    #Form One
-    public $offer_code;
-    public $neighborhood_name;
-    public $land_number;
-    public $space;
-    public $price;
-    public $vat;
-    public $saee_type;
-    public $saee_prc;
-    public $saee_price;
-    public $total_price;
-    public $paid_amount;
+    public $offer_code = "";
+    public $neighborhood_name = "";
+    public $land_number = "";
+    public $space = 0;
+    public $saee_type = "saee_prc";
 
-    #Form Two
-    public $customer_id;
-    public $customer_name;
-    public $customer_phone;
-    public $customer_email;
-    public $customer_id_number;
-    public $customer_nationality;
-    public $customer_city_name;
-    public $employee_type;
-    public $customer_support_eskan;
-    public $public = '';
-    public $private = '';
+    public $price = 0;
+    public $vat = 0;
+    public $saee_prc = 0;
+    public $saee_price = 0;
+    public $total_price = 0;
+    public $paid_amount = 0;
+    public $price_sub = 0;
+    public $still_amount = 0;
 
-    #Form Three
-    public  $building_number;
-    public  $street_name;
-    public  $neighborhood;
-    public  $zip_code;
-    public  $addtional_number;
-    public  $unit_number;
+    public $message_vat = '';
+    public $success_message_vat = '';
+    public $message_paid_amount = '';
+    public $success_message_saee_prc = '';
+    public $error_message_saee_prc = '';
+
 
     #Recieved Offer
     public $offer;
     public $order;
-    public $customer;
     public $offer_id;
 
-    public $cash = '';
+    public $customer_seller = "";
+    public $customer_buyer = "";
+
+    public $cash = "";
     public $check = 'option2';
     public $bank = '';
 
-    public $yes = '';
-    public $no = '';
-
     public $customers = [];
-    public $customers_ids;
-    public $sale;
-    public $sale_code;
+    public $customers_ids = "";
 
+    // Buyer Customer
+    public $customer_buyer_id = "";
+    public $customer_buyer_name = "";
+    public $customer_buyer_phone = "";
+    public $customer_buyer_email = "";
+    public $customer_buyer_id_number = "";
+    public $customer_buyer_nationality = "";
+    public $customer_buyer_city_name = "";
+    public $customer_buyer_employee_type = "";
+    public $customer_buyer_support_eskan = "";
+    public $customer_buyer_public = "";
+    public $customer_buyer_private = "";
+    public $customer_buyer_yes = "";
+    public $customer_buyer_no = "";
 
+    #Form Three
+    public $customer_buyer_building_number = "";
+    public $customer_buyer_street_name = "";
+    public $customer_buyer_neighborhood = "";
+    public $customer_buyer_zip_code = "";
+    public $customer_buyer_addtional_number = "";
+    public $customer_buyer_unit_number = "";
+
+    // Seller Customer
+    public $customer_seller_id = "";
+    public $customer_seller_name = "";
+    public $customer_seller_phone = "";
+    public $customer_seller_email = "";
+    public $customer_seller_id_number = "";
+    public $customer_seller_nationality = "";
+    public $customer_seller_city_name = "";
+    public $customer_seller_employee_type = "";
+    public $customer_seller_support_eskan = "";
+    public $customer_seller_public = "";
+    public $customer_seller_private = "";
+    public $customer_seller_yes = "";
+    public $customer_seller_no = "";
+
+    #Form Three
+    public $customer_seller_building_number = "";
+    public $customer_seller_street_name = "";
+    public $customer_seller_neighborhood = "";
+    public $customer_seller_zip_code = "";
+    public $customer_seller_addtional_number = "";
+    public $customer_seller_unit_number = "";
 
     public $fields = [
-
         #Offer
         'offer_code',
         'neighborhood_name',
@@ -83,34 +111,40 @@ class EditSale extends Component
         'total_price',
         'paid_amount',
 
-        // 'cash',
-        // 'check',
-        // 'bank',
+        #Customer Buyer
+        'customer_buyer_name',
+        'customer_buyer_phone',
+        'customer_buyer_email',
+        'customer_buyer_id_number',
+        'customer_buyer_nationality',
+        'customer_buyer_city_name',
+        'customer_buyer_building_number',
+        'customer_buyer_street_name',
+        'customer_buyer_neighborhood',
+        'customer_buyer_zip_code',
+        'customer_buyer_addtional_number',
+        'customer_buyer_unit_number',
 
-        #Customer
-        'customer_name',
-        'customer_phone',
-        'customer_email',
-        'customer_id_number',
-        'customer_nationality',
-        'customer_city_name',
-        // 'employee_type',
-        // 'public',
-        // 'private',
-
-        'building_number',
-        'street_name',
-        'neighborhood',
-        'zip_code',
-        'addtional_number',
-        'unit_number',
+        #Customer Seller
+        'customer_seller_name',
+        'customer_seller_phone',
+        'customer_seller_email',
+        'customer_seller_id_number',
+        'customer_seller_nationality',
+        'customer_seller_city_name',
+        'customer_seller_building_number',
+        'customer_seller_street_name',
+        'customer_seller_neighborhood',
+        'customer_seller_zip_code',
+        'customer_seller_addtional_number',
+        'customer_seller_unit_number',
 
     ];
 
     public function mount($sale_id)
     {
         $this->setData($sale_id);
-        $this->setCustomersData();
+        $this->setCustomers();
     }
 
     public function render()
@@ -121,10 +155,11 @@ class EditSale extends Component
     public function setData($sale_id)
     {
         $this->sale = Sale::with(['offer.realEstate.neighborhood', 'customer.nationality'])->find($sale_id);
-
-        $customer = $this->sale->customer;
+        $customer_buyer = Customer::find($this->sale->customer_buyer_id);
+        $customer_seller = Customer::find($this->sale->customer_seller_id);
         $offer = $this->sale->offer;
-        $nationality = $customer->nationality;
+        $this->offer = $offer;
+        $this->order = $offer->order;
         $realEstate = $offer->realEstate;
 
         if ($this->sale) {
@@ -140,23 +175,109 @@ class EditSale extends Component
             $this->saee_price = number_format($this->sale->saee_price);
             $this->total_price = number_format($realEstate->total_price);
             $this->paid_amount = number_format($this->sale->paid_amount);
-            // $this->customer_id = $this->sale->customer->id;
-            $this->customer_name = $this->sale->customer->name;
-            $this->customer_phone = $this->sale->customer->phone;
-            $this->customer_email = $this->sale->customer->email;
-            $this->customer_id_number = $customer->nationality_id;
-            $this->customer_nationality = $nationality ? $nationality->id : null;
-            $this->customer_city_name = $customer->city->id;
-            $this->employee_type = $customer->employee_type;
-            $this->customer_support_eskan = $customer->support_eskan ? $this->yes = 'option1' : $this->no = 'option2';
-            $this->public = $this->employee_type == 'public' ? 'option1' : '';
-            $this->private = $this->employee_type == 'private' ? 'option2' : '';
-            $this->building_number = $customer->building_number;
-            $this->street_name = $customer->street_name;
-            $this->neighborhood = $customer->neighborhood_name;
-            $this->zip_code = $customer->zip_code;
-            $this->addtional_number = $customer->addtional_number;
-            $this->unit_number = $customer->unit_number;
+        }
+
+        if ($customer_buyer) {
+            $this->customer_buyer_name = $customer_buyer->name;
+            $this->customer_buyer_phone = $customer_buyer->phone;
+            $this->customer_buyer_email = $customer_buyer->email;
+            $this->customer_buyer_id_number = $customer_buyer->nationality_id;
+            $this->customer_buyer_nationality = $customer_buyer->nationality ? $customer_buyer->nationality->id : null;
+            $this->customer_buyer_city_name = $customer_buyer->city_id;
+            $this->customer_buyer_building_number = $customer_buyer->building_number;
+            $this->customer_buyer_street_name = $customer_buyer->street_name;
+            $this->customer_buyer_neighborhood = $customer_buyer->neighborhood_name;
+            $this->customer_buyer_zip_code = $customer_buyer->zip_code;
+            $this->customer_buyer_support_eskan = $customer_buyer->support_eskan;
+            $this->customer_buyer_addtional_number = $customer_buyer->addtional_number;
+            $this->customer_buyer_unit_number = $customer_buyer->unit_number;
+
+            if ($customer_buyer->employee_type == 'public') {
+                $this->customer_buyer_public = 'option1';
+                $this->customer_buyer_private = '';
+            } else {
+                $this->customer_buyer_public = '';
+                $this->customer_buyer_private = 'option2';
+            }
+
+            if ($customer_buyer->support_eskan) {
+                $this->customer_buyer_yes = 'option1';
+                $this->customer_buyer_no = '';
+            } else {
+                $this->customer_buyer_yes = '';
+                $this->customer_buyer_no = 'option2';
+            }
+        }
+
+        if ($customer_seller) {
+            $this->customer_seller_name = $customer_seller->name;
+            $this->customer_seller_phone = $customer_seller->phone;
+            $this->customer_seller_email = $customer_seller->email;
+            $this->customer_seller_id_number = $customer_seller->nationality_id;
+            $this->customer_seller_nationality = $customer_seller->nationality ? $customer_seller->nationality->id : null;
+            $this->customer_seller_city_name = $customer_seller->city_id;
+            $this->customer_seller_building_number = $customer_seller->building_number;
+            $this->customer_seller_street_name = $customer_seller->street_name;
+            $this->customer_seller_neighborhood = $customer_seller->neighborhood_name;
+            $this->customer_seller_zip_code = $customer_seller->zip_code;
+            $this->customer_seller_support_eskan = $customer_seller->support_eskan;
+            $this->customer_seller_addtional_number = $customer_seller->addtional_number;
+            $this->customer_seller_unit_number = $customer_seller->unit_number;
+
+            if ($customer_seller->employee_type == 'public') {
+                $this->customer_seller_public = 'option1';
+                $this->customer_seller_private = '';
+            } else {
+                $this->customer_seller_public = '';
+                $this->customer_seller_private = 'option2';
+            }
+
+            if ($customer_seller->support_eskan) {
+                $this->customer_seller_yes = 'option1';
+                $this->customer_seller_no = '';
+            } else {
+                $this->customer_seller_yes = '';
+                $this->customer_seller_no = 'option2';
+            }
+        }
+
+
+        if ($this->vat > 100) {
+            $this->vat = 0;
+            $this->message_vat = "نسبة الضريبة بين 0 - 100";
+            $this->success_message_vat = '';
+        } else {
+            $num = (($realEstate->total_price * (int)$this->vat) / 100);
+            $this->success_message_vat = "مبلغ الضريبة من سعر العقار: $num ريال سعودي";
+            $this->message_vat = '';
+        }
+
+        if ($this->saee_prc > 100) {
+            $this->saee_prc = 0;
+            $this->error_message_saee_prc = 'نسبة الضريبة بين 0 - 100';
+        } else {
+            $this->error_message_saee_prc = '';
+        }
+
+        if ($this->saee_prc && $this->saee_type == 'saee_prc') {
+            $saee_prc = (($realEstate->total_price * (int)$this->saee_prc) / 100);
+            $total_price = ((($realEstate->total_price * (int)$this->vat) / 100) + $realEstate->total_price)  + $saee_prc;
+            $this->total_price = number_format($total_price, 3);
+            $numb = number_format($saee_prc, 3);
+            $this->success_message_saee_prc = "مبلغ السعي من سعر العقار: $numb ريال سعودي";
+        }
+
+        if ($this->saee_price && $this->saee_type == 'saee_price') {
+            $total_price = ((($realEstate->total_price * (int)$this->vat) / 100) + $realEstate->total_price) + $this->sale->saee_price;
+            $this->total_price = number_format($total_price, 3);
+        }
+
+        if ($this->sale->paid_amount > $total_price) {
+            $this->message_paid_amount = "يجب ان يكون المبلغ أقل أو يساوي السعر الكلي للعرض";
+            $this->still_amount = 0;
+        } else {
+            $this->message_paid_amount = '';
+            $this->still_amount = number_format(($total_price - $this->sale->paid_amount), 3);
         }
     }
 
@@ -201,6 +322,160 @@ class EditSale extends Component
         return $validation;
     }
 
+    public function setCustomerBuyer()
+    {
+        $this->customer_buyer = Customer::find($this->customer_buyer_id);
+
+        if ($this->customer_buyer) {
+            $this->customer_buyer_name = $this->customer_buyer->name;
+            $this->customer_buyer_phone = $this->customer_buyer->phone;
+            $this->customer_buyer_email = $this->customer_buyer->email;
+            $this->customer_buyer_id_number = $this->customer_buyer->nationality_id;
+            $this->customer_buyer_nationality = $this->customer_buyer->nationality ? $this->customer_buyer->nationality->id : null;
+            $this->customer_buyer_city_name = $this->customer_buyer->city_id;
+            $this->customer_buyer_building_number = $this->customer_buyer->building_number;
+            $this->customer_buyer_street_name = $this->customer_buyer->street_name;
+            $this->customer_buyer_neighborhood = $this->customer_buyer->neighborhood_name;
+            $this->customer_buyer_zip_code = $this->customer_buyer->zip_code;
+            $this->customer_buyer_support_eskan = $this->customer_buyer->support_eskan;
+            $this->customer_buyer_addtional_number = $this->customer_buyer->addtional_number;
+            $this->customer_buyer_unit_number = $this->customer_buyer->unit_number;
+
+            if ($this->customer_buyer->employee_type == 'public') {
+                $this->customer_buyer_public = 'option1';
+                $this->customer_buyer_private = '';
+            } else {
+                $this->customer_buyer_public = '';
+                $this->customer_buyer_private = 'option2';
+            }
+
+            if ($this->customer_buyer->support_eskan) {
+                $this->customer_buyer_yes = 'option1';
+                $this->customer_buyer_no = '';
+            } else {
+                $this->customer_buyer_yes = '';
+                $this->customer_buyer_no = 'option2';
+            }
+
+            $this->emit('message_buyer', 'لقد تم جلب بيانات العميل بنجاح 👍✅', true);
+            $this->validate();
+        } else {
+            $this->customer_buyer_phone = $this->customer_buyer_id;
+            $this->emit('message_buyer', '‼️ بيانات العميل غير موجودة، ولكن سيتم إعتماد البيانات المدخلة للعميل، يرجى إدخال جميع الحقول ‼️', false);
+            $this->customer_buyer_private = '';
+            $this->customer_buyer_public = 'option1';
+            $this->validate();
+        }
+    }
+
+    public function setCustomerSeller()
+    {
+        $this->customer_seller = Customer::find($this->customer_seller_id);
+
+        if ($this->customer_seller) {
+            $this->customer_seller_name = $this->customer_seller->name;
+            $this->customer_seller_phone = $this->customer_seller->phone;
+            $this->customer_seller_email = $this->customer_seller->email;
+            $this->customer_seller_id_number = $this->customer_seller->nationality_id;
+            $this->customer_seller_nationality = $this->customer_seller->nationality ? $this->customer_seller->nationality->id : null;
+            $this->customer_seller_city_name = $this->customer_seller->city_id;
+            $this->customer_seller_building_number = $this->customer_seller->building_number;
+            $this->customer_seller_street_name = $this->customer_seller->street_name;
+            $this->customer_seller_neighborhood = $this->customer_seller->neighborhood_name;
+            $this->customer_seller_zip_code = $this->customer_seller->zip_code;
+            $this->customer_seller_support_eskan = $this->customer_seller->support_eskan;
+            $this->customer_seller_addtional_number = $this->customer_seller->addtional_number;
+            $this->customer_seller_unit_number = $this->customer_seller->unit_number;
+
+            if ($this->customer_seller->employee_type == 'public') {
+                $this->customer_seller_public = 'option1';
+                $this->customer_seller_private = '';
+            } else {
+                $this->customer_seller_public = '';
+                $this->customer_seller_private = 'option2';
+            }
+
+            if ($this->customer_seller->support_eskan) {
+                $this->customer_seller_yes = 'option1';
+                $this->customer_seller_no = '';
+            } else {
+                $this->customer_seller_yes = '';
+                $this->customer_seller_no = 'option2';
+            }
+
+            $this->emit('message_seller', 'لقد تم جلب بيانات العميل بنجاح 👍✅', true);
+            $this->validate();
+        } else {
+            $this->customer_buyer_phone = $this->customer_buyer_id;
+            $this->emit('message_seller', '‼️ بيانات العميل غير موجودة، ولكن سيتم إعتماد البيانات المدخلة للعميل، يرجى إدخال جميع الحقول ‼️', false);
+            $this->customer_buyer_private = '';
+            $this->customer_buyer_public = 'option1';
+            $this->validate();
+        }
+    }
+
+    public function is_numeric($name, $value)
+    {
+        $int_value = str_replace(',', '', $value);
+        if (is_numeric($int_value)) {
+            $this->fill([$name => number_format((int)str_replace(',', '', $value))]);
+        } else {
+            $this->validate([$name => 'numeric'], [$name . '.numeric' => "الحقل يقبل ارقام فقط"]);
+        }
+
+        return $int_value;
+    }
+
+    public function calculate($propertyName, $value)
+    {
+        $saee_price = (int)$this->is_numeric('saee_price', $this->saee_price);
+        $total_price = (int)$this->is_numeric('total_price', $this->total_price);
+        $paid_amount = (int)$this->is_numeric('paid_amount', $this->paid_amount);
+        $real_estate_price = $this->offer->realEstate->total_price;
+
+        if ($propertyName == 'vat') {
+            if ($this->vat > 100) {
+                $this->vat = 0;
+                $this->message_vat = "نسبة الضريبة بين 0 - 100";
+                $this->success_message_vat = '';
+            } else {
+                $num = (($real_estate_price * (int)$this->vat) / 100);
+                $this->success_message_vat = "مبلغ الضريبة من سعر العقار: $num ريال سعودي";
+                $this->message_vat = '';
+            }
+        }
+
+        if ($this->saee_prc && $this->saee_type = 'saee_prc' && $propertyName == 'saee_prc') {
+            if ($this->saee_prc > 100) {
+                $this->saee_prc = 0;
+                $this->error_message_saee_prc = 'نسبة الضريبة بين 0 - 100';
+            } else {
+                $this->error_message_saee_prc = '';
+            }
+        }
+
+        if ($this->saee_prc && $this->saee_type == 'saee_prc') {
+            $saee_prc = (($real_estate_price * (int)$this->saee_prc) / 100);
+            $total_price = ((($real_estate_price * (int)$this->vat) / 100) + $real_estate_price)  + $saee_prc;
+            $this->total_price = number_format($total_price, 3);
+            $numb = number_format($saee_prc, 3);
+            $this->success_message_saee_prc = "مبلغ السعي من سعر العقار: $numb ريال سعودي";
+        }
+
+        if ($this->saee_price && $this->saee_type == 'saee_price') {
+            $total_price = ((($real_estate_price * (int)$this->vat) / 100) + $real_estate_price) + $saee_price;
+            $this->total_price = number_format($total_price, 3);
+        }
+
+        if ($paid_amount > $total_price) {
+            $this->message_paid_amount = "يجب ان يكون المبلغ أقل أو يساوي السعر الكلي للعرض";
+            $this->still_amount = 0;
+        } else {
+            $this->message_paid_amount = '';
+            $this->still_amount = number_format(($total_price - $paid_amount), 3);
+        }
+    }
+
     public function setCustomerData()
     {
         $customer = Customer::find($this->customer_id);
@@ -241,29 +516,52 @@ class EditSale extends Component
 
     public function updated($propertyName, $value)
     {
-
-        if ($propertyName == 'customer_id') {
-            $this->setCustomerData();
+        if ($propertyName == 'customer_buyer_id') {
+            $this->setCustomerBuyer();
         }
 
-        if ($propertyName == 'yes') {
-            $this->yes = 'option1';
-            $this->no = '';
+        if ($propertyName == 'customer_seller_id') {
+            $this->setCustomerSeller();
         }
 
-        if ($propertyName == 'no') {
-            $this->yes = '';
-            $this->no = 'option2';
+        if ($propertyName == 'customer_buyer_yes') {
+            $this->customer_buyer_yes = 'option1';
+            $this->customer_buyer_no = '';
         }
 
-        if ($propertyName == 'public') {
-            $this->private = '';
-            $this->public = 'option1';
+        if ($propertyName == 'customer_buyer_no') {
+            $this->customer_buyer_yes = '';
+            $this->customer_buyer_no = 'option2';
         }
 
-        if ($propertyName == 'private') {
-            $this->public = '';
-            $this->private = 'option2';
+        if ($propertyName == 'customer_seller_yes') {
+            $this->customer_seller_yes = 'option1';
+            $this->customer_seller_no = '';
+        }
+
+        if ($propertyName == 'customer_seller_no') {
+            $this->customer_seller_yes = '';
+            $this->customer_seller_no = 'option2';
+        }
+
+        if ($propertyName == 'customer_buyer_public') {
+            $this->customer_buyer_private = '';
+            $this->customer_buyer_public = 'option1';
+        }
+
+        if ($propertyName == 'customer_buyer_private') {
+            $this->customer_buyer_public = '';
+            $this->customer_buyer_private = 'option2';
+        }
+
+        if ($propertyName == 'customer_seller_public') {
+            $this->customer_seller_private = '';
+            $this->customer_seller_public = 'option1';
+        }
+
+        if ($propertyName == 'customer_seller_private') {
+            $this->customer_seller_public = '';
+            $this->customer_seller_private = 'option2';
         }
 
         if ($propertyName == 'cash') {
@@ -285,14 +583,27 @@ class EditSale extends Component
         }
 
         if ($propertyName == 'saee_type') {
+
+            $this->price_sub = 0;
+            $this->paid_amount = 0;
+            $this->saee_price = 0;
+            $this->total_price = 0;
+            $this->saee_prc = 0;
+
             $this->saee_type = $value;
             $this->emit('setSaee', $value);
         }
 
+        if ($propertyName == "paid_amount" || $propertyName == 'saee_price' || $propertyName == 'price' || $propertyName == 'vat') {
+            $this->is_numeric($propertyName, $value);
+        }
+
+        $this->calculate($propertyName, $value);
+
         $this->validate();
     }
 
-    public function setCustomersData()
+    public function setCustomers()
     {
         $customers = Customer::get(['id', 'phone', 'name', 'nationality_id']);
         $this->customers = $customers;
@@ -300,7 +611,6 @@ class EditSale extends Component
 
     public function update(SaleService $saleService)
     {
-
         $this->paid_amount = (int)str_replace(',', '', $this->paid_amount);
         $this->saee_price = (int)str_replace(',', '', $this->saee_price);
         $this->price = (int)str_replace(',', '', $this->price);
@@ -309,7 +619,8 @@ class EditSale extends Component
         $data = $this->validate();
 
         $data['offer_id'] = $this->offer_id;
-        $data['customer_id'] = $this->customer_id;
+        $data['customer_buyer_id'] = $this->customer_buyer_id;
+        $data['customer_seller_id'] = $this->customer_seller_id;
 
         if ($this->cash) {
             $data['payment_method_id'] = 1;
@@ -323,20 +634,36 @@ class EditSale extends Component
             $data['payment_method_id'] = 3;
         }
 
-        if ($this->public) {
-            $data['employee_type'] = 'public';
+        if ($this->customer_buyer_public) {
+            $data['customer_buyer_employee_type'] = 'public';
         }
 
-        if ($this->private) {
-            $data['employee_type'] = 'private';
+        if ($this->customer_buyer_private) {
+            $data['customer_buyer_employee_type'] = 'private';
         }
 
-        if ($this->yes) {
-            $data['support_eskan'] = 1;
+        if ($this->customer_seller_public) {
+            $data['customer_seller_employee_type'] = 'public';
         }
 
-        if ($this->no) {
-            $data['support_eskan'] = 0;
+        if ($this->customer_seller_private) {
+            $data['customer_seller_employee_type'] = 'private';
+        }
+
+        if ($this->customer_seller_yes) {
+            $data['customer_seller_support_eskan'] = 1;
+        }
+
+        if ($this->customer_seller_no) {
+            $data['customer_seller_support_eskan'] = 0;
+        }
+
+        if ($this->customer_buyer_yes) {
+            $data['customer_buyer_support_eskan'] = 1;
+        }
+
+        if ($this->customer_buyer_no) {
+            $data['customer_buyer_support_eskan'] = 0;
         }
 
         $result = $saleService->update($this->sale->id, $data);

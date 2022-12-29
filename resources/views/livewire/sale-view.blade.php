@@ -214,7 +214,14 @@
                                     <div class="col-4 mb-2">
                                         <div class="avatar float-start bg-light-danger rounded me-1">
                                             <div class="avatar-content">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-phone"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="feather feather-phone">
+                                                    <path
+                                                        d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                                                    </path>
+                                                </svg>
                                             </div>
                                         </div>
 
@@ -270,7 +277,14 @@
                                     <div class="col-4 mb-2">
                                         <div class="avatar float-start bg-light-success rounded me-1">
                                             <div class="avatar-content">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-briefcase"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="feather feather-briefcase">
+                                                    <rect x="2" y="7" width="20"
+                                                        height="14" rx="2" ry="2"></rect>
+                                                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                                                </svg>
                                             </div>
                                         </div>
                                         <div class="more-info">
@@ -431,7 +445,8 @@
 
                                         </div>
                                         <button type="button"
-                                            class="btn btn-primary waves-effect waves-float waves-light">تحميل صفقة
+                                            class="btn btn-primary waves-effect waves-float waves-light"
+                                            wire:click="download">تحميل صفقة
                                             البيع</button>
                                     </div>
 
@@ -488,8 +503,9 @@
                                 </div> --}}
 
                                 <div class="row avg-sessions pt-50">
-                                    <iframe src="{{ asset('assets/upload/QTF-SELL1011-USR9.pdf') }}" width="100%"
-                                        height="570px"></iframe>
+                                    <iframe src="{{ asset('assets/upload/madar.pdf') }}" width="100%"
+                                        height="570px">
+                                    </iframe>
                                 </div>
                             </div>
                         </div>

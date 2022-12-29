@@ -17,6 +17,8 @@ class Sale extends Model
         'order_id',
         'offer_id',
         'customer_id',
+        'customer_buyer_id',
+        'customer_seller_id',
         'real_estate_id',
         'payment_method_id',
 

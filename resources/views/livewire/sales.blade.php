@@ -160,7 +160,7 @@
                                                 <th rowspan="1" colspan="1">رقم الأرض</th>
                                                 <th rowspan="1" colspan="1">مساحة</th>
                                                 <th rowspan="1" colspan="1">سعر العقار</th>
-                                                <th rowspan="1" colspan="1">نوع العملاء</th>
+                                                <th rowspan="1" colspan="1">نوع التوظيف للعميل المشتري</th>
                                                 <th rowspan="1" colspan="1">الفرع</th>
                                                 <th rowspan="1" colspan="1">الحالة</th>
                                                 @auth
@@ -222,7 +222,19 @@
                                                     <td> {{ number_format($sale->offer->realEstate->space) }} </td>
                                                     <td> {{ number_format($sale->offer->realEstate->total_price) }}
                                                     </td>
-                                                    <td> {{ 'Customers' }} </td>
+
+                                                    @if ($sale->customer->employee_type == 'public')
+                                                        <td>
+                                                            <span class="badge bg-success">{{ 'عام' }}</span>
+                                                        </td>
+                                                    @endif
+
+                                                    @if ($sale->customer->employee_type == 'private')
+                                                        <td>
+                                                            <span class="badge bg-success">{{ 'خاص' }}</span>
+                                                        </td>
+                                                    @endif
+
                                                     <td> {{ $sale->offer->realEstate->branch->name }} </td>
 
                                                     <td>

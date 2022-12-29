@@ -33,7 +33,6 @@ class RealEstate extends Model
         'stores_number',
         'real_estate_statement',
         'price_by_meter',
-        // 'price',
         'total_price',
         'annual_income',
         'space',

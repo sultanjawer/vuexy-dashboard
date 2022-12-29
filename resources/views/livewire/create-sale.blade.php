@@ -1,17 +1,5 @@
 <div class="col-lg-9 d-flex align-items-center auth-bg px-2 px-sm-3 px-lg-5 pt-3" wire:ignore.self>
 
-    {{-- <div>
-        @if ($errors->count())
-            @foreach ($errors->all() as $error)
-                <div>
-                    <small>{{ $error }}</small>
-                </div>
-            @endforeach
-
-        @endif
-
-    </div> --}}
-
     <div class="width-700 mx-auto" wire:ignore.self>
 
 
@@ -39,7 +27,7 @@
                             <i data-feather="user" class="font-medium-3"></i>
                         </span>
                         <span class="bs-stepper-label">
-                            <span class="bs-stepper-title">بيانات العميل</span>
+                            <span class="bs-stepper-title">بيانات العميل المشتري</span>
                         </span>
                     </button>
                 </div>
@@ -54,7 +42,7 @@
                             <i data-feather="home" class="font-medium-3"></i>
                         </span>
                         <span class="bs-stepper-label">
-                            <span class="bs-stepper-title">العنوان الوطني</span>
+                            <span class="bs-stepper-title">بيانات العميل البائع</span>
                         </span>
                     </button>
                 </div>
@@ -128,12 +116,22 @@
                         <div class="col-md-6 mb-1">
                             <label class="form-label">الضريبة</label>
                             <div class="input-group input-group-merge" wire:ignore.self>
-                                <input type="number" class="form-control" wire:model='vat' placeholder="الضريبة">
+                                <input type="number" class="form-control" wire:model='vat' min="0"
+                                    max="100" placeholder="الضريبة">
                                 <span class="input-group-text">%</span>
                             </div>
                             @error('vat')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
+
+                            @if ($message_vat)
+                                <small class="text-danger">{{ $message_vat }}</small>
+                            @endif
+
+                            @if ($success_message_vat)
+                                <small class="text-success">{{ $success_message_vat }}</small>
+                            @endif
+
                         </div>
 
                     </div>
@@ -150,13 +148,22 @@
                         <div class="col-md-6 mb-1 saee_prc" style="display: block;" wire:ignore.self>
                             <label class="form-label">نسبة السعي</label>
                             <div class="input-group input-group-merge">
-                                <input type="number" class="form-control" wire:model='saee_prc'
-                                    placeholder="السعي">
+                                <input type="number" class="form-control" min="0" max="100"
+                                    wire:model='saee_prc' placeholder="السعي">
                                 <span class="input-group-text">%</span>
                             </div>
+
                             @error('saee_prc')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
+
+                            @if ($success_message_saee_prc)
+                                <small class="text-success">{{ $success_message_saee_prc }}</small>
+                            @endif
+
+                            @if ($error_message_saee_prc)
+                                <small class="text-danger">{{ $error_message_saee_prc }}</small>
+                            @endif
                         </div>
 
                         <div class="col-md-6 mb-1 saee_price" style="display: none;" wire:ignore.self>
@@ -179,10 +186,16 @@
                                 <input type="text" class="form-control " placeholder="السعر الكلى" disabled
                                     wire:model='total_price' />
                                 <span class="input-group-text" wire:ignore.self>ريال</span>
-                                @error('total_price')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
                             </div>
+
+                            @error('total_price')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+
+                            @if ($paid_amount)
+                                <small class="text-success">مقدار المبلغ المتبقي:
+                                    {{ $still_amount }} ريال سعودي</small>
+                            @endif
                         </div>
 
 
@@ -195,6 +208,10 @@
                             @error('paid_amount')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
+                            @if ($message_paid_amount)
+                                <small class="text-danger">{{ $message_paid_amount }}</small>
+                            @endif
+
                         </div>
                     </div>
 
@@ -210,13 +227,13 @@
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" wire:model='check' id="inlineRadio2"
                                     value="option2">
-                                <label class="form-check-label" for="inlineRadio4">تحويل</label>
+                                <label class="form-check-label" for="inlineRadio4">شيك</label>
                             </div>
 
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" wire:model='bank' id="inlineRadio2"
                                     value="option3">
-                                <label class="form-check-label" for="inlineRadio4">تحويل</label>
+                                <label class="form-check-label" for="inlineRadio4">تحويل بنكي</label>
                             </div>
                             @error('bank')
                                 <small class="text-danger">{{ $message }}</small>
@@ -245,10 +262,10 @@
                 </div>
 
                 <div class="account-details" style="display: none;" wire:ignore.self>
-                    <div class="content-header mb-2">
-                        <h2 class="fw-bolder mb-75">بيانات العميل</h2>
-                    </div>
 
+                    <div class="content-header mb-2">
+                        <h2 class="fw-bolder mb-75">بيانات العميل المشتري</h2>
+                    </div>
 
                     <div class="row" wire:ignore>
 
@@ -256,39 +273,32 @@
                             <label class="form-label" for="search">رقم الجوال /
                                 الهوية</label>
 
-                            <select wire:model='customer_id' class="select2 search-customer form-select">
+                            <select wire:model='customer_buyer_id' class="select2 search-customer-buyer form-select">
                                 @foreach ($customers as $customer)
                                     <option value="{{ $customer->id }}">
                                         {{ $customer->name . ' :: ' . $customer->phone . ' :: ' . $customer->nationality_id }}
                                     </option>
                                 @endforeach
                             </select>
-                            <small class="text-danger text-select"></small>
+                            <small class="text-danger text-select-buyer"></small>
                         </div>
-
-                        {{-- <div class="col-md-6 mb-1">
-                                <button class="btn btn-primary " style="margin-top: 20px">
-                                    <i data-feather="search" class="align-middle me-sm-25 me-0"></i>
-                                    <span class="align-middle d-sm-inline-block d-none">بحث</span>
-                                </button>
-                            </div> --}}
                     </div>
 
                     <div class="row">
                         <div class="col-md-6 mb-1">
                             <label class="form-label">الاسم</label>
-                            <input type="text" class="form-control " wire:model='customer_name'
+                            <input type="text" class="form-control " wire:model='customer_buyer_name'
                                 placeholder="الاسم" />
-                            @error('customer_name')
+                            @error('customer_buyer_name')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
                         <div class="col-md-6 mb-1">
                             <label class="form-label">رقم الجوال</label>
-                            <input type="text" class="form-control " wire:model='customer_phone'
+                            <input type="text" class="form-control " wire:model='customer_buyer_phone'
                                 placeholder="رقم الجوال" />
-                            @error('customer_phone')
+                            @error('customer_buyer_phone')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
@@ -297,18 +307,18 @@
                     <div class="row">
                         <div class="col-md-6 mb-1">
                             <label class="form-label">البريد الالكترونى</label>
-                            <input type="email" class="form-control " wire:model='customer_email'
+                            <input type="email" class="form-control " wire:model='customer_buyer_email'
                                 placeholder="البريد الالكترونى" />
-                            @error('customer_email')
+                            @error('customer_buyer_email')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
                         <div class="col-md-6 mb-1">
                             <label class="form-label">رقم الهوية</label>
-                            <input type="text" class="form-control " wire:model='customer_id_number'
+                            <input type="text" class="form-control " wire:model='customer_buyer_id_number'
                                 placeholder="رقم الهوية" />
-                            @error('customer_id_number')
+                            @error('customer_buyer_id_number')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
@@ -317,24 +327,24 @@
                     <div class="row">
                         <div class="col-md-6 mb-1">
                             <label class="form-label">الجنسية</label>
-                            <select class="form-control" wire:model='customer_nationality'>
+                            <select class="form-control" wire:model='customer_buyer_nationality'>
                                 @foreach (getNationalities() as $nationality)
                                     <option value="{{ $nationality->id }}">{{ $nationality->name }}</option>
                                 @endforeach
                             </select>
-                            @error('customer_nationality')
+                            @error('customer_buyer_nationality')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
                         <div class="col-md-6 mb-1">
                             <label class="form-label">المنطقة</label>
-                            <select class="form-control" wire:model='customer_city_name'>
+                            <select class="form-control" wire:model='customer_buyer_city_name'>
                                 @foreach (getCities() as $city)
                                     <option value="{{ $city->id }}" selected>{{ $city->name }}</option>
                                 @endforeach
                             </select>
-                            @error('customer_city_name')
+                            @error('customer_buyer_city_name')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
@@ -344,14 +354,14 @@
                         <div class="col-md-6 mb-1">
                             <label class="form-label">موظف</label>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" wire:model='public' id="inlineRadio1"
-                                    value="option1">
+                                <input class="form-check-input" type="radio" wire:model='customer_buyer_public'
+                                    id="inlineRadio1" value="option1">
                                 <label class="form-check-label" for="inlineRadio1">قطاع
                                     عام</label>
                             </div>
 
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" wire:model='private'
+                                <input class="form-check-input" type="radio" wire:model='customer_buyer_private'
                                     id="inlineRadio2" value="option2">
                                 <label class="form-check-label" for="inlineRadio2">خاص</label>
                             </div>
@@ -360,19 +370,84 @@
                         <div class="col-md-6 mb-1">
                             <label class="form-label">هل مدعوم من الإسكان </label>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" wire:model='yes' id="inlineRadio1"
-                                    value="option1">
+                                <input class="form-check-input" type="radio" wire:model='customer_buyer_yes'
+                                    id="inlineRadio1" value="option1">
                                 <label class="form-check-label" for="inlineRadio1">نعم</label>
                             </div>
 
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" wire:model='no' id="inlineRadio2"
-                                    value="option2">
+                                <input class="form-check-input" type="radio" wire:model='customer_buyer_no'
+                                    id="inlineRadio2" value="option2">
                                 <label class="form-check-label" for="inlineRadio2">لا</label>
                             </div>
                         </div>
 
                     </div>
+
+                    <div class="content-header mb-2">
+                        <h2 class="fw-bolder mb-75">العنوان الوطني</h2>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-1">
+                            <label class="form-label">رقم المبنى</label>
+                            <input type="number" class="form-control " wire:model='customer_buyer_building_number'
+                                placeholder="رقم المبنى" />
+                            @error('customer_buyer_building_number')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-6 mb-1">
+                            <label class="form-label">اسم الشارع</label>
+                            <input type="text" class="form-control " wire:model='customer_buyer_street_name'
+                                placeholder="اسم الشارع" />
+                            @error('customer_buyer_street_name')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-1">
+                            <label class="form-label">اسم الحي</label>
+                            <input type="text" class="form-control " wire:model='customer_buyer_neighborhood'
+                                placeholder="اسم الحي" />
+                            @error('customer_buyer_neighborhood')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-6 mb-1">
+                            <label class="form-label">الرمز البريدي</label>
+                            <input type="text" class="form-control " wire:model='customer_buyer_zip_code'
+                                placeholder="الرمز البريدي" />
+                            @error('customer_buyer_zip_code')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-1">
+                            <label class="form-label">الرقم الاضافي</label>
+                            <input type="number" class="form-control " wire:model='customer_buyer_addtional_number'
+                                placeholder="الرقم الاضافي" />
+                            @error('customer_buyer_addtional_number')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-6 mb-1">
+                            <label class="form-label">رقم الوحدة</label>
+                            <input type="text" class="form-control " wire:model='customer_buyer_unit_number'
+                                placeholder="رقم الوحدة" />
+                            @error('customer_buyer_unit_number')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                    </div>
+
 
                     <div class="d-flex justify-content-between mt-2">
                         <button class="btn btn-outline-secondary btn-prev second-prev">
@@ -388,25 +463,148 @@
                 </div>
 
                 <div class="account-home-details" style="display: none;" wire:ignore.self>
+
                     <div class="content-header mb-2">
-                        <h2 class="fw-bolder mb-75">الهنوان الوطني</h2>
+                        <h2 class="fw-bolder mb-75">بيانات العميل البائع</h2>
+                    </div>
+
+                    <div class="row" wire:ignore>
+
+                        <div class="col-md-12 mb-1">
+                            <label class="form-label" for="search">رقم الجوال /
+                                الهوية</label>
+
+                            <select wire:model='customer_seller_id'
+                                class="select2 search-customer-seller form-select">
+                                @foreach ($customers as $customer)
+                                    <option value="{{ $customer->id }}">
+                                        {{ $customer->name . ' :: ' . $customer->phone . ' :: ' . $customer->nationality_id }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <small class="text-danger text-select-seller"></small>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-1">
+                            <label class="form-label">الاسم</label>
+                            <input type="text" class="form-control " wire:model='customer_seller_name'
+                                placeholder="الاسم" />
+                            @error('customer_seller_name')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-6 mb-1">
+                            <label class="form-label">رقم الجوال</label>
+                            <input type="text" class="form-control " wire:model='customer_seller_phone'
+                                placeholder="رقم الجوال" />
+                            @error('customer_seller_phone')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-1">
+                            <label class="form-label">البريد الالكترونى</label>
+                            <input type="email" class="form-control " wire:model='customer_seller_email'
+                                placeholder="البريد الالكترونى" />
+                            @error('customer_seller_email')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-6 mb-1">
+                            <label class="form-label">رقم الهوية</label>
+                            <input type="text" class="form-control " wire:model='customer_seller_id_number'
+                                placeholder="رقم الهوية" />
+                            @error('customer_seller_id_number')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-1">
+                            <label class="form-label">الجنسية</label>
+                            <select class="form-control" wire:model='customer_seller_nationality'>
+                                @foreach (getNationalities() as $nationality)
+                                    <option value="{{ $nationality->id }}">{{ $nationality->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('customer_seller_nationality')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-6 mb-1">
+                            <label class="form-label">المنطقة</label>
+                            <select class="form-control" wire:model='customer_seller_city_name'>
+                                @foreach (getCities() as $city)
+                                    <option value="{{ $city->id }}" selected>{{ $city->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('customer_seller_city_name')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-1">
+                            <label class="form-label">موظف</label>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" wire:model='customer_seller_public'
+                                    id="inlineRadio1" value="option1">
+                                <label class="form-check-label" for="inlineRadio1">قطاع
+                                    عام</label>
+                            </div>
+
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" wire:model='customer_seller_private'
+                                    id="inlineRadio2" value="option2">
+                                <label class="form-check-label" for="inlineRadio2">خاص</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-1">
+                            <label class="form-label">هل مدعوم من الإسكان </label>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" wire:model='customer_seller_yes'
+                                    id="inlineRadio1" value="option1">
+                                <label class="form-check-label" for="inlineRadio1">نعم</label>
+                            </div>
+
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" wire:model='customer_seller_no'
+                                    id="inlineRadio2" value="option2">
+                                <label class="form-check-label" for="inlineRadio2">لا</label>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="content-header mb-2">
+                        <h2 class="fw-bolder mb-75">العنوان الوطني</h2>
                     </div>
 
                     <div class="row">
                         <div class="col-md-6 mb-1">
                             <label class="form-label">رقم المبنى</label>
-                            <input type="number" class="form-control " wire:model='building_number'
+                            <input type="number" class="form-control " wire:model='customer_seller_building_number'
                                 placeholder="رقم المبنى" />
-                            @error('building_number')
+                            @error('customer_seller_building_number')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
                         <div class="col-md-6 mb-1">
                             <label class="form-label">اسم الشارع</label>
-                            <input type="text" class="form-control " wire:model='street_name'
+                            <input type="text" class="form-control " wire:model='customer_seller_street_name'
                                 placeholder="اسم الشارع" />
-                            @error('street_name')
+                            @error('customer_seller_street_name')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
@@ -415,18 +613,18 @@
                     <div class="row">
                         <div class="col-md-6 mb-1">
                             <label class="form-label">اسم الحي</label>
-                            <input type="text" class="form-control " wire:model='neighborhood'
+                            <input type="text" class="form-control " wire:model='customer_seller_neighborhood'
                                 placeholder="اسم الحي" />
-                            @error('neighborhood')
+                            @error('customer_seller_neighborhood')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
                         <div class="col-md-6 mb-1">
                             <label class="form-label">الرمز البريدي</label>
-                            <input type="text" class="form-control " wire:model='zip_code'
+                            <input type="text" class="form-control " wire:model='customer_seller_zip_code'
                                 placeholder="الرمز البريدي" />
-                            @error('zip_code')
+                            @error('customer_seller_zip_code')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
@@ -435,22 +633,24 @@
                     <div class="row">
                         <div class="col-md-6 mb-1">
                             <label class="form-label">الرقم الاضافي</label>
-                            <input type="number" class="form-control " wire:model='addtional_number'
+                            <input type="number" class="form-control " wire:model='customer_seller_addtional_number'
                                 placeholder="الرقم الاضافي" />
-                            @error('addtional_number')
+                            @error('customer_seller_addtional_number')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
                         <div class="col-md-6 mb-1">
                             <label class="form-label">رقم الوحدة</label>
-                            <input type="text" class="form-control " wire:model='unit_number'
+                            <input type="text" class="form-control " wire:model='customer_seller_unit_number'
                                 placeholder="رقم الوحدة" />
-                            @error('unit_number')
+                            @error('customer_seller_unit_number')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                     </div>
+
+
 
                     <div class="d-flex justify-content-between mt-1">
                         <button class="btn btn-primary btn-prev third-prev">
@@ -474,16 +674,27 @@
             $(document).ready(function() {
 
                 window.createSaleSelect2 = () => {
-                    $('.search-customer').select2({
+                    $('.search-customer-buyer').select2({
+                        placeholder: 'رقم الهاتف/ رقم الهوية',
+                        closeOnSelect: true,
+                        tags: true,
+                    });
+
+                    $('.search-customer-seller').select2({
                         placeholder: 'رقم الهاتف/ رقم الهوية',
                         closeOnSelect: true,
                         tags: true,
                     });
                 }
 
-                $('.search-customer').on('change', function() {
-                    var customer_id = $(this).val();
-                    @this.set('customer_id', customer_id);
+                $('.search-customer-buyer').on('change', function() {
+                    var customer_buyer_id = $(this).val();
+                    @this.set('customer_buyer_id', customer_buyer_id);
+                });
+
+                $('.search-customer-seller').on('change', function() {
+                    var customer_seller_id = $(this).val();
+                    @this.set('customer_seller_id', customer_seller_id);
                 });
 
                 window.Livewire.on('setSaee', function($value) {
@@ -498,27 +709,42 @@
                     }
                 });
 
-                window.Livewire.on('message', function(message, check) {
+                window.Livewire.on('message_buyer', function(message, check) {
                     if (check) {
-                        $('.text-select').text(message);
-                        $('.text-select').removeClass('text-danger');
-                        $('.text-select').removeClass('text-warning');
-                        $('.text-select').addClass('text-success');
+                        $('.text-select-buyer').text(message);
+                        $('.text-select-buyer').removeClass('text-danger');
+                        $('.text-select-buyer').removeClass('text-warning');
+                        $('.text-select-buyer').addClass('text-success');
                     } else {
-                        $('.text-select').text(message);
-                        $('.text-select').addClass('text-warning');
-                        $('.text-select').removeClass('text-danger');
-                        $('.text-select').removeClass('text-success');
+                        $('.text-select-buyer').text(message);
+                        $('.text-select-buyer').addClass('text-warning');
+                        $('.text-select-buyer').removeClass('text-danger');
+                        $('.text-select-buyer').removeClass('text-success');
                     }
                 });
 
-                $('.search-customer').on('select2:select', function(e) {
-                    var value = $('.search-customer').val();
-                    @this.set('customer_id', value);
-                    // var search = $(".search-customer").data("select2").dropdown.$search;
-                    // // console.log(search.val());
+                window.Livewire.on('message_seller', function(message, check) {
+                    if (check) {
+                        $('.text-select-seller').text(message);
+                        $('.text-select-seller').removeClass('text-danger');
+                        $('.text-select-seller').removeClass('text-warning');
+                        $('.text-select-seller').addClass('text-success');
+                    } else {
+                        $('.text-select-seller').text(message);
+                        $('.text-select-seller').addClass('text-warning');
+                        $('.text-select-seller').removeClass('text-danger');
+                        $('.text-select-seller').removeClass('text-success');
+                    }
+                });
 
-                    // // @this.set('customer_phone', search.val());
+                $('.search-customer-buyer').on('select2:select', function(e) {
+                    var value = $('.search-customer-buyer').val();
+                    @this.set('customer_buyer_id', value);
+                });
+
+                $('.search-customer-seller').on('select2:select', function(e) {
+                    var value = $('.search-customer-seller').val();
+                    @this.set('customer_seller_id', value);
                 });
 
                 var x = 0;
@@ -553,22 +779,41 @@
                     }
                 }
 
+
                 $(document).keyup(function() {
-                    var search = $(".search-customer").data("select2").dropdown.$search;
-                    if (x == 0) {
-                        search.attr('wire:model', 'value');
+                    var select_search_buyer = $(".search-customer-buyer").data("select2").dropdown.$search;
+                    var select_search_seller = $(".search-customer-seller").data("select2").dropdown.$search;
+
+                    if (select_search_buyer.val()) {
+                        var value = select_search_buyer.val();
+                        @this.set('customer_buyer_phone', value);
+                        var check = checkPhoneNumber(select_search_buyer, value);
                     }
-                    var value = search.val();
-                    var check = checkPhoneNumber(search, value);
+
+                    if (select_search_seller.val()) {
+                        var value = select_search_seller.val();
+                        @this.set('customer_seller_phone', value);
+                        var check = checkPhoneNumber(select_search_seller, value);
+                    }
+
                 });
 
 
                 $(document).bind("paste", function(e) {
-                    var search = $(".search-customer").data("select2").dropdown.$search;
-                    var value = e.originalEvent.clipboardData.getData('text');
-                    var check = checkPhoneNumber(search, value);
-                });
+                    var select_search_buyer = $(".search-customer-buyer").data("select2").dropdown.$search;
+                    var select_search_seller = $(".search-customer-seller").data("select2").dropdown.$search;
 
+
+                    if (select_search_buyer.val()) {
+                        var value = e.originalEvent.clipboardData.getData('text');
+                        var check = checkPhoneNumber(select_search_buyer, value);
+                    }
+
+                    if (select_search_seller.val()) {
+                        var value = e.originalEvent.clipboardData.getData('text');
+                        var check = checkPhoneNumber(select_search_seller, value);
+                    }
+                });
 
                 var first = $(".personal-info");
                 var second = $(".account-details");
