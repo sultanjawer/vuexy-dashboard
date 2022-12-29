@@ -63,7 +63,7 @@ class PDFService extends Controller
 
         $original_pdf = public_path() . '/pdfs/madar.pdf';
         $temp_path = public_path('temp') . '/madar_' . random_int(111111, 999999) . '.pdf';
-        dd($temp_path);
+        dd(asset('pdfs/temp'));
         $pdf = new Pdf($original_pdf, [
             'locale' => 'ar_SA.utf8',
             'procEnv' => [
