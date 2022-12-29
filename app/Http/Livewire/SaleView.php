@@ -12,21 +12,18 @@ class SaleView extends Component
 
     public $sale_id;
     public $sale;
+    public $pdf_path;
 
     public function mount($sale_id)
     {
         $this->sale_id = $sale_id;
-        $this->sale = Sale::with(['offer', 'order', 'customer', 'realEstate'])->find($sale_id);
+        $this->setData($sale_id);
     }
 
-    public function render()
+    public function setData($sale_id)
     {
-        return view('livewire.sale-view');
-    }
-
-    public function download(PDFService $pDFService)
-    {
-        $sale = Sale::find($this->sale_id);
+        $sale = Sale::with(['offer', 'order', 'customer', 'realEstate'])->find($sale_id);
+        $this->sale = $sale;
         $customer_buyer = Customer::find($sale->customer_buyer_id);
         $customer_seller = Customer::find($sale->customer_seller_id);
         $realEstate = $sale->realEstate;
@@ -78,7 +75,18 @@ class SaleView extends Component
             'customer_seller_name' => $customer_seller->name,
         ];
 
+        $pDFService = new PDFService();
+        $this->pdf_path = $pDFService->writePdf($data);
+    }
 
-        return $pDFService->exportPdf($data);
+
+    public function render()
+    {
+        return view('livewire.sale-view');
+    }
+
+    public function download(PDFService $pDFService)
+    {
+        return $pDFService->exportPdf($this->pdf_path);
     }
 }

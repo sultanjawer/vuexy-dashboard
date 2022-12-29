@@ -57,13 +57,13 @@ class PDFService extends Controller
         'customer_seller_name' => "",
     ];
 
-    public function exportPdf($data)
+    public function writePdf($data)
     {
         $fillable = array_merge($this->fillable, $data);
 
         $original_pdf = public_path() . '/pdfs/madar.pdf';
-        $temp_path = public_path('temp') . '/madar.pdf';
-
+        $temp_path = public_path('temp') . '/madar_' . random_int(111111, 999999) . '.pdf';
+        dd($temp_path);
         $pdf = new Pdf($original_pdf, [
             'locale' => 'ar_SA.utf8',
             'procEnv' => [
@@ -71,18 +71,19 @@ class PDFService extends Controller
             ],
         ]);
 
-        $pdf->tempDir = public_path('temp');
-
         $result = $pdf->fillForm($fillable)
-            ->execute();
+            ->needAppearances()
+            ->saveAs($temp_path);
 
         if ($result === false) {
             dd($pdf->getError());
         }
 
-        $content = file_get_contents((string) $pdf->getTmpFile());
-        dd($content);
-        // return Response::download(public_path('madar.pdf'), 'madar.pdf', ['Content-Type: application/pdf']);
-        return Response::download(public_path('madar.pdf'), 'madarr.pdf', ['Content-Type: application/pdf']);
+        return $temp_path;
+    }
+
+    public function exportPdf($path)
+    {
+        return Response::download($path, 'madar.pdf', ['Content-Type: application/pdf']);
     }
 }
