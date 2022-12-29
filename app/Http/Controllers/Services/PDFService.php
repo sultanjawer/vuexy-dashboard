@@ -60,7 +60,7 @@ class PDFService extends Controller
     public function writePdf($data)
     {
         $fillable = array_merge($this->fillable, $data);
-
+        $fillable = ['test' => "اليوم بدي اخلص منها"];
         $original_pdf = public_path() . '/pdfs/testing_v1.pdf';
         $temp_path = public_path() . '/testing_v1.pdf';
 
