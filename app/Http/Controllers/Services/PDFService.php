@@ -62,8 +62,7 @@ class PDFService extends Controller
         $fillable = array_merge($this->fillable, $data);
 
         $original_pdf = public_path() . '/pdfs/madar.pdf';
-
-        $font = public_path('/pdfs/fonts/arial.ttf');
+        $temp_path = public_path('temp') . '/madar.pdf';
 
         $pdf = new Pdf($original_pdf, [
             'locale' => 'ar_SA.utf8',
@@ -72,16 +71,17 @@ class PDFService extends Controller
             ],
         ]);
 
-        // $result = $pdf->fillForm($fillable)
-        //     ->replacementFont($font)
-        //     ->needAppearances()
-        //     ->saveAs(public_path() . '/madar.pdf');
+        $pdf->tempDir = public_path('temp');
 
-        $result = $pdf->generateFdfFile(public_path() . '/madar.fdf');
+        $result = $pdf->fillForm($fillable)
+            ->needAppearances()
+            ->execute();
 
         if ($result === false) {
             dd($pdf->getError());
         }
+
+        $content = file_get_contents((string) $pdf->getTmpFile());
 
         // return Response::download(public_path('madar.pdf'), 'madar.pdf', ['Content-Type: application/pdf']);
         return Response::download(public_path('madar.pdf'), 'madarr.pdf', ['Content-Type: application/pdf']);
