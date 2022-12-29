@@ -60,30 +60,34 @@ class PDFService extends Controller
     public function writePdf($data)
     {
         $fillable = array_merge($this->fillable, $data);
-        $fillable = ['test' => "اليوم بدي اخلص منها"];
-        $original_pdf = public_path() . '/pdfs/testing_v1.pdf';
-        $temp_path = public_path() . '/testing_v1.pdf';
+
+        $original_pdf = public_path() . '/pdfs/madar.pdf';
+        $temp_path = public_path() . '/madar.pdf';
+
 
         $pdf = new Pdf($original_pdf, [
             'locale' => 'ar_SA.utf8',
             'procEnv' => [
                 'LANG' => 'ar_SA.utf-8',
             ],
+            // 'command' => 'C:\Program Files (x86)\PDFtk\bin\pdftk.exe',
+            // 'useExec' => true,
         ]);
 
         $result = $pdf->fillForm($fillable)
             ->needAppearances()
             ->saveAs($temp_path);
 
+
         if ($result === false) {
             dd($pdf->getError());
         }
 
-        return asset('testing_v1.pdf');
+        return asset('madar.pdf');
     }
 
     public function exportPdf($file_name)
     {
-        return Response::download(public_path($file_name), 'testing_v1.pdf', ['Content-Type: application/pdf']);
+        return Response::download(public_path($file_name), 'madar.pdf', ['Content-Type: application/pdf']);
     }
 }
