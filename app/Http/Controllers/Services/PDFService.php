@@ -80,7 +80,7 @@ class PDFService extends Controller
             dd($pdf->getError());
         }
 
-        return $temp_path;
+        return asset('madar.pdf');
     }
 
     public function exportPdf($path)
