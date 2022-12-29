@@ -87,6 +87,6 @@ class SaleView extends Component
 
     public function download(PDFService $pDFService)
     {
-        return $pDFService->exportPdf($this->pdf_path);
+        return $pDFService->exportPdf('madar.pdf');
     }
 }
