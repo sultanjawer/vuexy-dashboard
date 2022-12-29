@@ -77,10 +77,13 @@ class PDFService extends Controller
             ->needAppearances()
             ->saveAs(public_path() . '/madar.pdf');
 
+        $pdf->generateFdfFile(public_path() . '/madar.fdf');
+
         if ($result === false) {
             dd($pdf->getError());
         }
 
-        return Response::download(public_path('madar.pdf'), 'madar.pdf', ['Content-Type: application/pdf']);
+        // return Response::download(public_path('madar.pdf'), 'madar.pdf', ['Content-Type: application/pdf']);
+        return Response::download(public_path('madar.pdf'), 'madarr.pdf', ['Content-Type: application/pdf']);
     }
 }
