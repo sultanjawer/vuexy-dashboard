@@ -11,8 +11,8 @@
                         <div class="card card-developer-meetup">
 
                             <div class="meetup-img-wrapper rounded-top text-center">
-                                <img src="{{asset('app-assets/images/illustration/email.svg')}}"
-                                    alt="Meeting Pic" height="170">
+                                <img src="{{ asset('app-assets/images/illustration/email.svg') }}" alt="Meeting Pic"
+                                    height="170">
                             </div>
 
                             <div class="card-body">
