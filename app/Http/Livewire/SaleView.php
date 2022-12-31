@@ -77,6 +77,7 @@ class SaleView extends Component
 
         $pDFService = new PDFService();
         $this->pdf_path = $pDFService->writePdf($data);
+        $this->pdf_path = asset('assets/pdfjs/web/viewer.html?file=madar.pdf');
     }
 
 

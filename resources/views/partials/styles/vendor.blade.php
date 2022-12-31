@@ -53,6 +53,8 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css-rtl/pages/modal-create-app.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/forms/wizard/bs-stepper.min.css') }}">
 
+<script src="{{ asset('assets/pdfjs/build/pdf.js') }}"></script>
+<script src="{{ asset('assets/pdfjs/build/pdf.worker.js') }}"></script>
 
 <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>

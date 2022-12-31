@@ -67,6 +67,7 @@
 
 
 
+
 <script>
     @if (Session::has('message'))
         toastr.success("{{ Session::get('message') }}", 'تمت المهمة!', {

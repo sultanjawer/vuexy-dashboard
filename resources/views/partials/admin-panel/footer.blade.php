@@ -24,6 +24,8 @@
 @stack('sale-update')
 @stack('test')
 
+
+
 </body>
 
 </html>

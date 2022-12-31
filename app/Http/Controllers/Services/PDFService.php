@@ -62,7 +62,7 @@ class PDFService extends Controller
         $fillable = array_merge($this->fillable, $data);
 
         $original_pdf = public_path() . '/pdfs/madar.pdf';
-        $temp_path = public_path() . '/madar.pdf';
+        $temp_path = public_path() . '/assets/pdfjs/web/madar.pdf';
 
 
         $pdf = new Pdf($original_pdf, [
@@ -70,8 +70,8 @@ class PDFService extends Controller
             'procEnv' => [
                 'LANG' => 'ar_SA.utf-8',
             ],
-            // 'command' => 'C:\Program Files (x86)\PDFtk\bin\pdftk.exe',
-            // 'useExec' => true,
+            'command' => 'C:\Program Files (x86)\PDFtk\bin\pdftk.exe',
+            'useExec' => true,
         ]);
 
         $result = $pdf->fillForm($fillable)

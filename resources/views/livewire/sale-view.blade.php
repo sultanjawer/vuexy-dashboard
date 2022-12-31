@@ -501,10 +501,11 @@
                                         </div>
                                     </div>
                                 </div> --}}
-
                                 <div class="row avg-sessions pt-50">
-                                    <iframe src="{{ $pdf_path }}" width="100%" height="570px">
+
+                                    <iframe id="pdf-frame" src="{{ $pdf_path }}" width="100%" height="570px">
                                     </iframe>
+
                                 </div>
                             </div>
                         </div>
@@ -961,25 +962,13 @@
                                             <i data-feather="file"></i> إضافة
                                         </button>
                                     </div>
-
                                 </div>
-
                                 <hr>
-
-
-
-
                             </div>
                         </div>
-
                     </div>
-                    <!-- /Invoice -->
-                    <!-- Invoice Actions -->
-                    <!-- /Invoice Actions -->
                 </div>
-
             </section>
-
 
             <div class="modal fade" id="addNote" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-lg modal-dialog-centered modal-edit-user">
@@ -1166,4 +1155,5 @@
 
         </div>
     </div>
+
 </div>
