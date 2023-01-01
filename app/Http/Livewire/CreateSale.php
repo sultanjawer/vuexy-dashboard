@@ -18,6 +18,9 @@ class CreateSale extends Component
     public $space = 0;
     public $saee_type = "saee_prc";
 
+    public $seller_adj = '';
+    public $buyer_adj = '';
+
     public $price = 0;
     public $vat = 0;
     public $saee_prc = 0;
@@ -26,13 +29,13 @@ class CreateSale extends Component
     public $paid_amount = 0;
     public $price_sub = 0;
     public $still_amount = 0;
-
+    public $check_number = '';
+    public $bank_id = 1;
     public $message_vat = '';
     public $success_message_vat = '';
     public $message_paid_amount = '';
     public $success_message_saee_prc = '';
     public $error_message_saee_prc = '';
-
 
     #Recieved Offer
     public $offer;
@@ -158,6 +161,8 @@ class CreateSale extends Component
         $this->total_price =  number_format($this->offer->realEstate->total_price);
         $this->vat = 0;
         $this->saee_prc = 0;
+        $this->check_number = '';
+        $this->bank_id = 1;
         $this->saee_price = number_format(0);
         $this->paid_amount = number_format(0);
     }
@@ -187,6 +192,21 @@ class CreateSale extends Component
             $validation[$field] = ['required'];
         }
 
+
+        if ($this->check) {
+            $validation['check_number'] = ['required'];
+            if (($key = array_search('bank_id', $validation)) !== false) {
+                unset($validation[$key]);
+            }
+        }
+
+        if ($this->bank) {
+            $validation['bank_id'] = ['required'];
+            if (($key = array_search('check_number', $validation)) !== false) {
+                unset($validation[$key]);
+            }
+        }
+
         return $validation;
     }
 
@@ -196,8 +216,22 @@ class CreateSale extends Component
 
         $validation = [];
 
+        if ($this->check) {
+            $validation['check_number.required'] = "هذا الحقل مطلوب";
+            if (($key = array_search('bank_id', $validation)) !== false) {
+                unset($validation[$key]);
+            }
+        }
+
+        if ($this->bank) {
+            $validation['bank_id.required'] = "هذا الحقل مطلوب";
+            if (($key = array_search('check_number', $validation)) !== false) {
+                unset($validation[$key]);
+            }
+        }
+
         foreach ($fields as $field) {
-            $validation[$field . '.required'] = "❌ هذا الحقل مطلوب ❌";
+            $validation[$field . '.required'] = "هذا الحقل مطلوب";
         }
 
         return $validation;
@@ -309,9 +343,9 @@ class CreateSale extends Component
 
     public function calculate($propertyName, $value)
     {
-        $saee_price = (int)$this->is_numeric('saee_price', $this->saee_price);
-        $total_price = (int)$this->is_numeric('total_price', $this->total_price);
-        $paid_amount = (int)$this->is_numeric('paid_amount', $this->paid_amount);
+        $saee_price = (float)$this->is_numeric('saee_price', $this->saee_price);
+        $total_price = (float)$this->is_numeric('total_price', $this->total_price);
+        $paid_amount = (float)$this->is_numeric('paid_amount', $this->paid_amount);
         $real_estate_price = $this->offer->realEstate->total_price;
 
         if ($propertyName == 'vat') {
@@ -320,9 +354,11 @@ class CreateSale extends Component
                 $this->message_vat = "نسبة الضريبة بين 0 - 100";
                 $this->success_message_vat = '';
             } else {
-                $num = (($real_estate_price * (int)$this->vat) / 100);
-                $this->success_message_vat = "مبلغ الضريبة من سعر العقار: $num ريال سعودي";
-                $this->message_vat = '';
+                if ($this->vat) {
+                    $num = (($real_estate_price * (float)$this->vat) / 100);
+                    $this->success_message_vat = "مبلغ الضريبة من سعر العقار: $num ريال سعودي";
+                    $this->message_vat = '';
+                }
             }
         }
 
@@ -336,15 +372,15 @@ class CreateSale extends Component
         }
 
         if ($this->saee_prc && $this->saee_type == 'saee_prc') {
-            $saee_prc = (($real_estate_price * (int)$this->saee_prc) / 100);
-            $total_price = ((($real_estate_price * (int)$this->vat) / 100) + $real_estate_price)  + $saee_prc;
+            $saee_prc = (($real_estate_price * (float)$this->saee_prc) / 100);
+            $total_price = ((($real_estate_price * (float)$this->vat) / 100) + $real_estate_price)  + $saee_prc;
             $this->total_price = number_format($total_price, 3);
             $numb = number_format($saee_prc, 3);
             $this->success_message_saee_prc = "مبلغ السعي من سعر العقار: $numb ريال سعودي";
         }
 
         if ($this->saee_price && $this->saee_type == 'saee_price') {
-            $total_price = ((($real_estate_price * (int)$this->vat) / 100) + $real_estate_price) + $saee_price;
+            $total_price = ((($real_estate_price * (float)$this->vat) / 100) + $real_estate_price) + $saee_price;
             $this->total_price = number_format($total_price, 3);
         }
 
@@ -411,18 +447,22 @@ class CreateSale extends Component
             $this->cash = 'option1';
             $this->check = '';
             $this->bank = '';
+            $this->bank_id = null;
+            $this->check_number = null;
         }
 
         if ($propertyName == 'check') {
             $this->cash = '';
             $this->check = 'option2';
             $this->bank = '';
+            $this->bank_id = null;
         }
 
         if ($propertyName == 'bank') {
             $this->cash = '';
             $this->check = '';
             $this->bank = 'option3';
+            $this->check_number = null;
         }
 
         if ($propertyName == 'saee_type') {
@@ -437,7 +477,7 @@ class CreateSale extends Component
             $this->emit('setSaee', $value);
         }
 
-        if ($propertyName == "paid_amount" || $propertyName == 'saee_price' || $propertyName == 'price' || $propertyName == 'vat') {
+        if ($propertyName == "paid_amount" || $propertyName == 'saee_price' || $propertyName == 'price') {
             $this->is_numeric($propertyName, $value);
         }
         $this->calculate($propertyName, $value);
@@ -467,6 +507,10 @@ class CreateSale extends Component
         $data['offer_id'] = $this->offer_id;
         $data['customer_buyer_id'] = $this->customer_buyer_id;
         $data['customer_seller_id'] = $this->customer_seller_id;
+        $data['bank_id'] = $this->bank_id;
+        $data['check_number'] = $this->check_number;
+        $data['seller_adj'] = $this->seller_adj;
+        $data['buyer_adj'] = $this->buyer_adj;
 
         if ($this->cash) {
             $data['payment_method_id'] = 1;

@@ -33,6 +33,7 @@ class SaleService extends Controller
             'zip_code' => $data['zip_code'],
             'addtional_number' => $data['addtional_number'],
             'unit_number' => $data['unit_number'],
+            'adj' => $data['adj'] ?? 'نفسه',
             'support_eskan' => $data['support_eskan'],
             'employee_type' => $data['employee_type'],
             'status' => 1,
@@ -56,6 +57,7 @@ class SaleService extends Controller
             'neighborhood_name' => $data['neighborhood_name'],
             'zip_code' => $data['zip_code'],
             'addtional_number' => $data['addtional_number'],
+            'adj' => $data['adj'] ?? 'نفسه',
             'unit_number' => $data['unit_number'],
             'support_eskan' => $data['support_eskan'],
             'employee_type' => $data['employee_type'],
@@ -83,6 +85,7 @@ class SaleService extends Controller
                 'unit_number' => $data['customer_buyer_unit_number'],
                 'support_eskan' => $data['customer_buyer_support_eskan'],
                 'employee_type' => $data['customer_buyer_employee_type'],
+                'adj' => $data['buyer_adj'] ?? 'نفسه',
             ];
         }
 
@@ -102,6 +105,7 @@ class SaleService extends Controller
                 'unit_number' => $data['customer_seller_unit_number'],
                 'support_eskan' => $data['customer_seller_support_eskan'],
                 'employee_type' => $data['customer_seller_employee_type'],
+                'adj' => $data['seller_adj'] ?? 'نفسه',
             ];
         }
 
@@ -141,6 +145,8 @@ class SaleService extends Controller
             'real_estate_id' => $offer->realEstate->id,
             'order_id' => $offer->order ? $offer->order->id : null,
             'payment_method_id' => $payment_method->id,
+            'bank_id' => $data['bank_id'],
+            'check_number' => $data['check_number'],
             'vat' => $data['vat'],
             'saee_prc' => $data['saee_prc'],
             'saee_price' => $data['saee_price'],
@@ -170,6 +176,8 @@ class SaleService extends Controller
             'payment_method_id' => $data['payment_method_id'],
             'vat' => $data['vat'],
             'saee_prc' => $data['saee_prc'],
+            'bank_id' => $data['bank_id'],
+            'check_number' => $data['check_number'],
             'saee_price' => $data['saee_price'],
             'tatal_req_amount' => $data['total_price'],
             'paid_amount' => $data['paid_amount'],

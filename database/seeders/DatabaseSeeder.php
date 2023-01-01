@@ -43,6 +43,7 @@ class DatabaseSeeder extends Seeder
             LandSeeder::class,
             LandTypeSeeder::class,
             BranchSeeder::class,
+            BankSeeder::class,
             // MediatorSeeder::class,
             DesireToBuySeeder::class,
             PurchaseMethodSeeder::class,

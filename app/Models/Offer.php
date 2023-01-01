@@ -96,7 +96,6 @@ class Offer extends Model
             'search' => '',
         ], $filters);
 
-
         $builder->when($filters['search'] != '', function ($query) use ($filters) {
             $query->where('offer_code', 'like', '%' . $filters['search'] . '%');
         });

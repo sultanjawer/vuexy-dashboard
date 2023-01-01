@@ -22,8 +22,10 @@ return new class extends Migration
             $table->foreignId('customer_id')->constrained('customers');
             $table->foreignId('real_estate_id')->constrained('real_estates');
             $table->foreignId('payment_method_id')->constrained('payment_methods');
+            $table->foreignId('bank_id')->nullable()->constrained('banks');
 
             #Pricing
+            $table->string('check_number')->nullable();
             $table->integer('vat');
             $table->integer('customer_buyer_id');
             $table->integer('customer_seller_id');

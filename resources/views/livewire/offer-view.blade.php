@@ -992,19 +992,19 @@
                 <div class="modal-header bg-transparent" wire:ignore>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body pb-5 px-sm-5 pt-50">
+                <div class="modal-body ">
                     <div class="text-center mb-2">
                         <h1 class="mb-1">تفاصيل الحجز</h1>
                     </div>
-                    <form class="row gy-1 pt-75" onsubmit="return false">
 
+                    <div class="row">
                         <div class="col-12 col-md-6 customer-name" wire:ignore>
                             <label class="form-label">اسم العميل</label>
                             <select class="js-select2-customer-name select2 form-select" wire:model='customer_id'
                                 @if ($is_booked) disabled @endif wire:ignore.self>
                                 @foreach (getCustomers() as $customer)
                                     <option value="{{ $customer->id }}" selected>
-                                        {{ $customer->name }}</option>
+                                        {{ $customer->name . '::' . $customer->phone }}</option>
                                 @endforeach
                             </select>
                             @error('customer_id')
@@ -1027,7 +1027,9 @@
                             </div>
                         </div>
 
+                    </div>
 
+                    <div class="row">
                         <div class="col-12 col-md-6">
                             <label class="form-label" for="fp-range">التاريخ</label>
                             <input type="text" dir="ltr" wire:model='date'
@@ -1038,7 +1040,6 @@
                             @enderror
                         </div>
 
-
                         <div class="col-12 col-md-6">
                             <label class="form-label" for="modalEditUserEmail">ملاحظات:</label>
                             <textarea class="form-control" wire:model='reservation_notes' rows="3" placeholder="ملاحظات"
@@ -1047,20 +1048,20 @@
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
+                    </div>
 
-                        <div class="col-12 text-center mt-2 pt-50">
-                            @if (!$is_booked)
-                                <button type="submit" class="btn btn-primary btn-submit me-1"
-                                    wire:click='storeReservation'>حفظ</button>
-                            @endif
 
-                            <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal"
-                                aria-label="Close">
-                                الغاء
-                            </button>
-                        </div>
+                    <div class="col-12 text-center mt-2 pt-50">
+                        @if (!$is_booked)
+                            <button type="submit" class="btn btn-primary btn-submit me-1"
+                                wire:click='storeReservation'>حفظ</button>
+                        @endif
 
-                    </form>
+                        <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal"
+                            aria-label="Close">
+                            الغاء
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1074,11 +1075,10 @@
                 window.initSelectCompanyDrop = () => {
                     $('.js-select2-customer-name').select2({
                         placeholder: 'اختار العميل',
-                        closeOnSelect: true
+                        closeOnSelect: true,
+                        tags: true,
                     });
                 }
-
-                // initSelectCompanyDrop();
 
                 $(".js-select2-customer-name").on('change', function() {
                     var data = $('.js-select2-customer-name').val();
@@ -1086,7 +1086,6 @@
                 });
 
                 window.livewire.on('select2', (check) => {
-                    // initSelectCompanyDrop();
                     if (check) {
                         $(".js-select2-customer-name").prop('disabled', true);
                     } else {

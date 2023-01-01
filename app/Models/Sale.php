@@ -21,7 +21,8 @@ class Sale extends Model
         'customer_seller_id',
         'real_estate_id',
         'payment_method_id',
-
+        'check_number',
+        'bank_id',
         'vat',
         'saee_prc',
         'saee_price',
@@ -41,6 +42,11 @@ class Sale extends Model
     public function offer()
     {
         return $this->belongsTo(Offer::class, 'offer_id', 'id');
+    }
+
+    public function bank()
+    {
+        return $this->belongsTo(Bank::class, 'bank_id', 'id');
     }
 
     public function order()
@@ -174,6 +180,8 @@ class Sale extends Model
             'payment_method_id',
 
             'vat',
+            'check_number',
+            'bank_id',
             'saee_prc',
             'saee_price',
             'tatal_req_amount',

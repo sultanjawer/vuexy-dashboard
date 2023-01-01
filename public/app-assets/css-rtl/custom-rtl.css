@@ -28,7 +28,7 @@ pre, code, kbd, samp {
           align-items : center;
 }
 
-[type='tel'], [type='url'], [type='email'], [type='number'] {
+[type='tel'], [type='url'], [type='number'] {
   direction : rtl;
 }
 

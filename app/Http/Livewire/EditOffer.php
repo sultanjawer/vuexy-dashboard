@@ -15,12 +15,12 @@ class EditOffer extends Component
     use LivewireAlert;
 
     protected $listeners = ['setMediatorsIds', 'setIds', 'setEvent', 'refreshSelect2' => '$refresh'];
-    public $land_fields = ['price_by_meter', 'total_price', 'direction_ids', 'land_type_id', 'licensed_id', 'street_width_ids', 'interface_length_id', 'character'];
-    public $duplex_fields = ['price_by_meter', 'total_price', 'direction_ids', 'land_type_id', 'licensed_id', 'street_width_ids', 'interface_length_id', 'character', 'real_estate_age', 'building_type_id', 'building_status_id', 'construction_delivery_id'];
-    public $condominium_fields = ['real_estate_age', 'floors_number', 'flats_number', 'stores_number', 'flat_rooms_number', 'annual_income', 'total_price',];
+    public $land_fields = ['price_by_meter', 'direction_ids', 'land_type_id', 'licensed_id', 'street_width_ids', 'interface_length_id', 'character'];
+    public $duplex_fields = ['price_by_meter',  'direction_ids', 'land_type_id', 'licensed_id', 'street_width_ids', 'interface_length_id', 'character', 'real_estate_age', 'building_type_id', 'building_status_id', 'construction_delivery_id'];
+    public $condominium_fields = ['real_estate_age', 'floors_number', 'flats_number', 'stores_number', 'flat_rooms_number', 'annual_income',];
     public $flat_fields = ['floor_number', 'real_estate_age'];
     public $chalet_fields = ['direction_ids', 'street_width_ids', 'owner_ship_type_id', 'real_estate_age', 'price'];
-    public $main_fields = ['city_id', 'neighborhood_id', 'land_number',  'real_estate_statement', 'block_number', 'notes', 'space', 'property_type_id', 'mediators_ids', 'branch_id'];
+    public $main_fields = ['city_id', 'neighborhood_id', 'land_number',  'real_estate_statement', 'block_number', 'notes', 'space', 'property_type_id', 'mediators_ids', 'branch_id', 'total_price',];
 
     #Form One
     public $city_id = 1;
@@ -78,6 +78,7 @@ class EditOffer extends Component
     {
         $this->offer_id = $offer_id;
         $this->offer = Offer::find($offer_id);
+
         $offer = $this->offer;
         $this->city_id = $offer->realEstate->city_id;
         $this->neighborhood_id = $offer->realEstate->neighborhood_id;
@@ -146,26 +147,6 @@ class EditOffer extends Component
 
         $neighborhoods_json = json_decode(json_encode($neighborhoods));
         $this->emit('neighborhoods', $neighborhoods_json, $this->neighborhood_id);
-    }
-
-    public function step($form)
-    {
-        $this->first = '';
-        $this->second = '';
-        $this->third = '';
-
-        if ($form == 'first') {
-            $this->first = 'active';
-        }
-
-        if ($form == 'second') {
-            $this->emit('set-form', $this->property_type_id);
-            $this->second = 'active';
-        }
-
-        if ($form == 'third') {
-            $this->third = 'active';
-        }
     }
 
     public function hydrate()

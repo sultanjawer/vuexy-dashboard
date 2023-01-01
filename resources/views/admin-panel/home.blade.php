@@ -251,7 +251,7 @@
                                                     <i data-feather='shopping-bag' class="font-medium-5"></i>
                                                 </div>
                                             </div>
-                                            <h2 class="fw-bolder">{{ getOffersCount() }}</h2>
+                                            <h2 class="fw-bolder">{{ getOffersUserCount() }}</h2>
                                             <p class="card-text">عدد العروض</p>
                                         </div>
                                     </div>

@@ -29,7 +29,8 @@
                                         <div class="d-flex">
                                             <div>
                                                 <a class="  btn btn-sm bg-light-warning waves-effect waves-float waves-light"
-                                                    href="#">تعديل الاتفاقية</a>
+                                                    href="{{ route('panel.update.sale', $sale->id) }}">تعديل
+                                                    الاتفاقية</a>
                                             </div>
                                             <div class="ms-1">
                                                 <a href="javascript:;"
@@ -454,13 +455,11 @@
                                         style="position: relative;">
                                         <div class="dropdown chart-dropdown">
                                             <button
-                                                class="btn btn-sm border-0 dropdown-toggle p-50 waves-effect waves-float waves-light"
-                                                type="button" id="dropdownItem5" data-bs-toggle="dropdown"
-                                                aria-haspopup="true" aria-expanded="false">
-                                                Last 7 Days
+                                                class="btn btn-sm border-1 p-50 waves-effect waves-float waves-light text-white"
+                                                type="button">
+                                                {{ $last_update_time }}
                                             </button>
                                         </div>
-
 
                                         <div class="resize-triggers">
                                             <div class="expand-trigger">

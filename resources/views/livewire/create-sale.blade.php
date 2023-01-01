@@ -116,8 +116,8 @@
                         <div class="col-md-6 mb-1">
                             <label class="form-label">الضريبة</label>
                             <div class="input-group input-group-merge" wire:ignore.self>
-                                <input type="number" class="form-control" wire:model='vat' min="0"
-                                    max="100" placeholder="الضريبة">
+                                <input type="number" class="form-control" step="0.01" wire:model='vat'
+                                    min="0" max="100" placeholder="الضريبة">
                                 <span class="input-group-text">%</span>
                             </div>
                             @error('vat')
@@ -148,8 +148,8 @@
                         <div class="col-md-6 mb-1 saee_prc" style="display: block;" wire:ignore.self>
                             <label class="form-label">نسبة السعي</label>
                             <div class="input-group input-group-merge">
-                                <input type="number" class="form-control" min="0" max="100"
-                                    wire:model='saee_prc' placeholder="السعي">
+                                <input type="number" class="form-control" step="0.01" min="0"
+                                    max="100" wire:model='saee_prc' placeholder="السعي">
                                 <span class="input-group-text">%</span>
                             </div>
 
@@ -169,7 +169,7 @@
                         <div class="col-md-6 mb-1 saee_price" style="display: none;" wire:ignore.self>
                             <label class="form-label">سعر السعي</label>
                             <div class="input-group input-group-merge" wire:ignore.self>
-                                <input type="text" class="form-control" wire:model='saee_price'
+                                <input type="text" class="form-control" step="0.01" wire:model='saee_price'
                                     placeholder="السعي">
                             </div>
                             @error('saee_price')
@@ -247,6 +247,34 @@
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
+
+                        @if ($check)
+                            <div class="col-md-8 mb-1">
+                                <label class="form-label">رقم الشيك</label>
+                                <div class="input-group input-group-merge" wire:ignore.self>
+                                    <input type="text" class="form-control " placeholder="رقم الشيك"
+                                        wire:model='check_number' />
+                                </div>
+                                @error('check_number')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        @endif
+
+                        @if ($bank)
+                            <div class="col-md-8 mb-1">
+                                <label class="form-label">البنك</label>
+                                <select class="form-control select2" wire:model='bank_id'>
+                                    @foreach (getBanks() as $bank)
+                                        <option value="{{ $bank->id }}">{{ $bank->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            @error('bank_id')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        @endif
+
                     </div>
 
                     <div class="d-flex justify-content-between mt-2">
@@ -265,6 +293,17 @@
 
                     <div class="content-header mb-2">
                         <h2 class="fw-bolder mb-75">بيانات العميل المشتري</h2>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-1">
+                            <label class="form-label">صفة العميل المشتري</label>
+                            <input type="text" class="form-control " wire:model='buyer_adj'
+                                placeholder="صفة العميل المشتري" />
+                            @error('buyer_adj')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
                     </div>
 
                     <div class="row" wire:ignore>

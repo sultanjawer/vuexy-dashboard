@@ -114,7 +114,6 @@ class Reservation extends Component
         $this->paginate_ids = $data->pluck('id')->toArray();
 
         return $data;
-
     }
 
     public function dateFrom()
@@ -142,12 +141,15 @@ class Reservation extends Component
 
     public function changeReservationStatus($reservation_id)
     {
-        $reservation = ModelsReservation::find($reservation_id);
+        $reservation = ModelsReservation::with('offer.realEstate')->find($reservation_id);
+
         if ($reservation) {
             if ($reservation->status == 1) {
                 $reservation->update(['status' => 2]);
+                $reservation->offer->realEstate->update(['property_status_id' => 1]);
             } else {
                 $reservation->update(['status' => 1]);
+                $reservation->offer->realEstate->update(['property_status_id' => 2]);
             }
         }
 
@@ -155,7 +157,7 @@ class Reservation extends Component
             'toast' => true,
             'position' => 'center',
             'timer' => 3000,
-            'text' => '👍 تم تغيير حالة الحجز بنجاح',
+            'text' => '👍 تم تغيير حالة الحجز والعقار بنجاح',
             'timerProgressBar' => true,
         ]);
     }

@@ -522,6 +522,7 @@ class CustomerSeeder extends Seeder
                 'support_eskan' => 1,
                 'employee_type' => 'public',
                 'status' => 1,
+                'adj' => 'نفسه',
                 'is_buy' => 1,
                 'who_add' => 1,
                 // 'who_edit',

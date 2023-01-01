@@ -53,7 +53,7 @@
 
                         <div class="col-md-6 mb-1">
                             <label class="form-label" for="email">البريد الالكترونى</label>
-                            <input type="email" class="form-control" placeholder="البريد الالكترونى"
+                            <input type="email" class="form-control" dir="ltr" placeholder="البريد الالكترونى"
                                 wire:model='email' />
                             @error('email')
                                 <small class="text-danger">{{ $message }}</small>
@@ -66,7 +66,7 @@
 
                         <div class="col-md-6 mb-1">
                             <label class="form-label" for="phone">رقم الجوال</label>
-                            <input type="text" class="form-control" placeholder="رقم الجوال" maxlength="10"
+                            <input type="text" class="form-control" dir="ltr" placeholder="رقم الجوال" maxlength="10"
                                 wire:model='phone' />
                             @error('phone')
                                 <small class="text-danger">{{ $message }}</small>
@@ -77,9 +77,9 @@
                         <div class="col-md-6 mb-1">
                             <label class="form-label" for="password">كلمة المرور</label>
                             <div class="input-group input-group-merge form-password-toggle">
-                                <input type="password" class="form-control" placeholder="كلمة المرور"
+                                <input type="password" class="form-control" dir="ltr" placeholder="كلمة المرور"
                                     wire:model='password' />
-                                <span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
+                                <span class="input-group-text cursor-pointer" wire:ignore><i data-feather="eye"></i></span>
                             </div>
                             @error('password')
                                 <small class="text-danger">{{ $message }}</small>

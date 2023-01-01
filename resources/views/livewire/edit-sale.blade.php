@@ -113,8 +113,8 @@
                         <div class="col-md-6 mb-1">
                             <label class="form-label">الضريبة</label>
                             <div class="input-group input-group-merge" wire:ignore.self>
-                                <input type="number" class="form-control" wire:model='vat' min="0"
-                                    max="100" placeholder="الضريبة">
+                                <input type="number" class="form-control" step="0.01" wire:model='vat'
+                                    min="0" max="100" placeholder="الضريبة">
                                 <span class="input-group-text">%</span>
                             </div>
                             @error('vat')
@@ -145,8 +145,8 @@
                         <div class="col-md-6 mb-1 saee_prc" style="display: block;" wire:ignore.self>
                             <label class="form-label">نسبة السعي</label>
                             <div class="input-group input-group-merge">
-                                <input type="number" class="form-control" min="0" max="100"
-                                    wire:model='saee_prc' placeholder="السعي">
+                                <input type="number" class="form-control" step="0.01" min="0"
+                                    max="100" wire:model='saee_prc' placeholder="السعي">
                                 <span class="input-group-text">%</span>
                             </div>
 
@@ -244,6 +244,35 @@
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
+
+
+                        @if ($check)
+                            <div class="col-md-8 mb-1">
+                                <label class="form-label">رقم الشيك</label>
+                                <div class="input-group input-group-merge" wire:ignore.self>
+                                    <input type="text" class="form-control " placeholder="رقم الشيك"
+                                        wire:model='check_number' />
+                                </div>
+                                @error('check_number')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        @endif
+
+                        @if ($bank)
+                            <div class="col-md-8 mb-1">
+                                <label class="form-label">البنك</label>
+                                <select class="form-control select2" wire:model='bank_id'>
+                                    @foreach (getBanks() as $bank)
+                                        <option value="{{ $bank->id }}">{{ $bank->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            @error('bank_id')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        @endif
+
                     </div>
 
                     <div class="d-flex justify-content-between mt-2">
@@ -262,6 +291,18 @@
 
                     <div class="content-header mb-2">
                         <h2 class="fw-bolder mb-75">بيانات العميل المشتري</h2>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-6 mb-1">
+                            <label class="form-label">صفة العميل المشتري</label>
+                            <input type="text" class="form-control " wire:model='buyer_adj'
+                                placeholder="صفة العميل المشتري" />
+                            @error('buyer_adj')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
                     </div>
 
                     <div class="row" wire:ignore>
@@ -465,6 +506,18 @@
                         <h2 class="fw-bolder mb-75">بيانات العميل البائع</h2>
                     </div>
 
+
+                    <div class="row">
+                        <div class="col-md-6 mb-1">
+                            <label class="form-label">صفة العميل البائع</label>
+                            <input type="text" class="form-control " wire:model='seller_adj'
+                                placeholder="صفة العميل البائع" />
+                            @error('seller_adj')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                    </div>
+
                     <div class="row" wire:ignore>
 
                         <div class="col-md-12 mb-1">
@@ -666,6 +719,19 @@
         <script>
             $(document).ready(function() {
 
+                $value = "{{ $saee_type }}";
+
+                if ($value == 'saee_price') {
+                    $('.saee_price').css('display', 'block');
+                    $('.saee_prc').css('display', 'none');
+                }
+
+                if ($value == 'saee_prc') {
+                    $('.saee_price').css('display', 'none');
+                    $('.saee_prc').css('display', 'block');
+                }
+
+
                 window.createSaleSelect2 = () => {
                     $('.search-customer-buyer').select2({
                         placeholder: 'رقم الهاتف/ رقم الهوية',
@@ -690,17 +756,6 @@
                     @this.set('customer_seller_id', customer_seller_id);
                 });
 
-                window.Livewire.on('setSaee', function($value) {
-                    if ($value == 'saee_price') {
-                        $('.saee_price').css('display', 'block');
-                        $('.saee_prc').css('display', 'none');
-                    }
-
-                    if ($value == 'saee_prc') {
-                        $('.saee_price').css('display', 'none');
-                        $('.saee_prc').css('display', 'block');
-                    }
-                });
 
                 window.Livewire.on('message_buyer', function(message, check) {
                     if (check) {

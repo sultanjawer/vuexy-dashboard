@@ -40,6 +40,11 @@ class EditUser extends Component
     public $can_edit_offer;
     public $can_change_offer_status;
 
+    #Sale
+    public  $can_show_sale;
+    public  $can_create_sale;
+    public  $can_edit_sale;
+    public  $can_change_sale_status;
 
     public $info = 'active';
     public $permissions;

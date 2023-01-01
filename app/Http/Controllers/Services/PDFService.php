@@ -86,8 +86,8 @@ class PDFService extends Controller
         return asset('madar.pdf');
     }
 
-    public function exportPdf($file_name)
+    public function exportPdf($file_path, $name)
     {
-        return Response::download(public_path($file_name), 'madar.pdf', ['Content-Type: application/pdf']);
+        return Response::download($file_path, $name . '.pdf', ['Content-Type: application/pdf']);
     }
 }

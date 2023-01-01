@@ -63,7 +63,7 @@
 
                                 <div class="bs-stepper-header px-0" role="tablist" wire:ignore.self>
 
-                                    <div class="step {{ $first }}" wire:click="step('first')" role="tab">
+                                    <div class="step first-step" role="tab">
                                         <button type="button" class="step-trigger" wire:ignore.self>
                                             <span
                                                 class="bs-stepper-box
@@ -81,7 +81,7 @@
                                                 </svg>
                                                 {{-- <i data-feather="map-pin" class="font-medium-3"></i> --}}
                                             </span>
-                                            <span class="bs-stepper-label">
+                                            <span class="bs-stepper-label" wire:ignore>
                                                 <span class="bs-stepper-title">الخطوة الاولى</span>
                                                 <span class="bs-stepper-subtitle">المعلومات الاساسية للعرض</span>
                                             </span>
@@ -92,7 +92,7 @@
                                         <i data-feather="chevron-right" class="font-medium-2"></i>
                                     </div>
 
-                                    <div class="step {{ $second }}" wire:click="step('second')" role="tab">
+                                    <div class="step second-step " role="tab" wire:ignore.self>
                                         <button type="button" class="step-trigger">
                                             <span
                                                 class="bs-stepper-box
@@ -117,9 +117,9 @@
 
                                                 {{-- <i data-feather="send" class="font-medium-3"></i> --}}
                                             </span>
-                                            <span class="bs-stepper-label">
-                                                <span class="bs-stepper-title">الخطوة الثانية</span>
-                                                <span class="bs-stepper-subtitle">اختيار نوع العقار ومعلوماته</span>
+                                            <span class="bs-stepper-label" wire:ignore.self>
+                                                <span class="bs-stepper-title" wire:ignore.self>الخطوة الثانية</span>
+                                                <span class="bs-stepper-subtitle" wire:ignore.self>اختيار نوع العقار ومعلوماته</span>
                                             </span>
                                         </button>
                                     </div>
@@ -128,14 +128,14 @@
                                         <i data-feather="chevron-right" class="font-medium-2"></i>
                                     </div>
 
-                                    <div class="step {{ $third }}" wire:click="step('third')" role="tab">
-                                        <button type="button" class="step-trigger">
-                                            <span class="bs-stepper-box" wire:ignore>
+                                    <div class="step third-step" role="tab" wire:ignore.self>
+                                        <button type="button" class="step-trigger" wire:ignore.self>
+                                            <span class="bs-stepper-box" wire:ignore >
                                                 <i data-feather="percent" class="font-medium-3"></i>
                                             </span>
-                                            <span class="bs-stepper-label">
-                                                <span class="bs-stepper-title">الخطوة الثالثة</span>
-                                                <span class="bs-stepper-subtitle">ملاحظات</span>
+                                            <span class="bs-stepper-label " wire:ignore.self>
+                                                <span class="bs-stepper-title" wire:ignore.self>الخطوة الثالثة</span>
+                                                <span class="bs-stepper-subtitle" wire:ignore.self>ملاحظات</span>
                                             </span>
                                         </button>
                                     </div>
@@ -144,8 +144,7 @@
 
                                 <div class="bs-stepper-content px-0 mt-4" wire:ignore.self>
 
-                                    <div style="display: @if (!$first) none @endif;"
-                                        role="tabpanel">
+                                    <div class="personal-info" style="display: block;" role="tabpanel" wire:ignore.self>
 
                                         <div class="content-header mb-2" wire:ignore.self>
                                             <h2 class="fw-bolder mb-75">الخطوة الاولى</h2>
@@ -213,11 +212,11 @@
 
 
                                         <div class="d-flex justify-content-between mt-2">
-                                            <button class="btn btn-outline-secondary" disabled wire:ignore>
+                                            <button class="btn btn-outline-secondary btn-prev" disabled wire:ignore>
                                                 <i data-feather="chevron-left" class="align-middle me-sm-25 me-0"></i>
                                                 <span class="align-middle d-sm-inline-block d-none">السابق</span>
                                             </button>
-                                            <button class="btn btn-primary" wire:click="step('second')" wire:ignore>
+                                            <button class="btn btn-primary btn-next first-next"  wire:ignore>
                                                 <span class="align-middle d-sm-inline-block d-none">التالى</span>
                                                 <i data-feather="chevron-right"
                                                     class="align-middle ms-sm-25 ms-0"></i>
@@ -225,8 +224,7 @@
                                         </div>
                                     </div>
 
-                                    <div style="display: @if (!$second) none @endif;"
-                                        role="tabpanel">
+                                    <div class="account-details" style="display: none;" role="tabpanel" wire:ignore.self>
 
                                         <div class="content-header mb-2">
                                             <h2 class="fw-bolder mb-75">الخطوة الثانية</h2>
@@ -566,12 +564,11 @@
                                         </div>
 
                                         <div class="d-flex justify-content-between mt-2">
-                                            <button class="btn btn-outline-secondary" wire:click="step('first')"
-                                                wire:ignore>
+                                            <button class="btn btn-primary btn-prev second-prev" wire:ignore>
                                                 <i data-feather="chevron-left" class="align-middle me-sm-25 me-0"></i>
                                                 <span class="align-middle d-sm-inline-block d-none">السابق</span>
                                             </button>
-                                            <button class="btn btn-primary" wire:click="step('third')" wire:ignore>
+                                            <button class="btn btn-primary btn-next second-next"  wire:ignore>
                                                 <span class="align-middle d-sm-inline-block d-none">التالى</span>
                                                 <i data-feather="chevron-right"
                                                     class="align-middle ms-sm-25 ms-0"></i>
@@ -579,14 +576,11 @@
                                         </div>
                                     </div>
 
-
-                                    <div style="display: @if (!$third) none @endif;"
-                                        role="tabpanel">
+                                    <div class="account-home-details" style="display: none;" role="tabpanel" wire:ignore.self>
 
                                         <div class="content-header mb-2">
                                             <h2 class="fw-bolder mb-75">الخطوة الثالثة</h2>
                                         </div>
-
 
                                         <form>
 
@@ -659,7 +653,7 @@
                                         </form>
 
                                         <div class="d-flex justify-content-between mt-1">
-                                            <button class="btn btn-primary" wire:click="step('second')" wire:ignore>
+                                            <button class="btn btn-primary third-prev" wire:ignore>
                                                 <i data-feather="chevron-left" class="align-middle me-sm-25 me-0"></i>
                                                 <span class="align-middle d-sm-inline-block d-none">السابق</span>
                                             </button>
@@ -670,7 +664,6 @@
                                         </div>
 
                                     </div>
-
 
                                 </div>
                             </div>
@@ -965,6 +958,97 @@
                         closeOnSelect: true
                     });
                 });
+
+
+                var first = $(".personal-info");
+                var second = $(".account-details");
+                var third = $(".account-home-details");
+
+                var first_step = $(".first-step");
+                var second_step = $(".second-step");
+                var third_step = $(".third-step");
+                first_step.addClass('active');
+
+
+                $(".first-next").on('click', function() {
+                    initSelectCompanyDrop();
+                    first_step.removeClass('active');
+                    second_step.addClass('active');
+                    third_step.removeClass('active');
+                    first.css('display', 'none');
+                    second.css('display', 'block');
+                    third.css('display', 'none');
+                });
+
+                $(".second-prev").on('click', function() {
+                    first_step.addClass('active');
+                    second_step.removeClass('active');
+                    third_step.removeClass('active');
+                    first.css('display', 'block');
+                    second.css('display', 'none');
+                    third.css('display', 'none');
+                });
+
+                $(".second-next").on('click', function() {
+                    first_step.removeClass('active');
+                    second_step.removeClass('active');
+                    third_step.addClass('active');
+                    first.css('display', 'none');
+                    second.css('display', 'none');
+                    third.css('display', 'block');
+                });
+
+                $(".third-prev").on('click', function() {
+                    initSelectCompanyDrop();
+                    first_step.removeClass('active');
+                    second_step.addClass('active');
+                    third_step.removeClass('active');
+                    first.css('display', 'none');
+                    second.css('display', 'block');
+                    third.css('display', 'none');
+                });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             });
         </script>

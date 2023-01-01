@@ -47,7 +47,10 @@ class Offer extends Component
         $user = auth()->user();
 
         if ($user->user_type == "office") {
-            $collection = ModelsOffer::data()->filters($this->filters)->where('offer_type_id', 2)->reorder($this->sort_field, $this->sort_direction);
+            $ids = $user->branches->pluck('id')->toArray();
+            $collection = ModelsOffer::data()->with('realEstate.branch')->whereHas('realEstate.branch', function ($query) use ($ids) {
+                $query->whereIn('id', $ids);
+            })->filters($this->filters)->where('offer_type_id', 2)->reorder($this->sort_field, $this->sort_direction);
 
             if ($this->rows_number == 'all') {
                 $this->rows_number = $collection->count();
@@ -63,7 +66,14 @@ class Offer extends Component
         $types = ['office', 'admin', 'superadmin', 'marketer'];
 
         if (in_array($user->user_type, $types)) {
-            $collection = ModelsOffer::data()->filters($this->filters)->where('offer_type_id', 1)->reorder($this->sort_field, $this->sort_direction);
+
+            if ($user->user_type == 'superadmin') {
+                $collection = ModelsOffer::data()->filters($this->filters)->where('offer_type_id', 1)->reorder($this->sort_field, $this->sort_direction);
+            } else {
+                $ids = $user->branches->pluck('id')->toArray();
+                $collection = ModelsOffer::data()->filters($this->filters)->whereIn('id', $ids)->where('offer_type_id', 1)->reorder($this->sort_field, $this->sort_direction);
+            }
+
             if ($this->rows_number == 'all') {
                 $this->rows_number = $collection->count();
             }
@@ -85,7 +95,15 @@ class Offer extends Component
         $types = ['office', 'admin', 'superadmin', 'marketer'];
 
         if (in_array($user->user_type, $types)) {
-            $collection = ModelsOffer::data()->filters($this->in_filters)->where('offer_type_id', 2)->reorder($this->in_sort_field, $this->in_sort_direction);
+
+            if ($user->user_type == 'superadmin') {
+                $collection = ModelsOffer::data()->filters($this->in_filters)->where('offer_type_id', 2)->reorder($this->in_sort_field, $this->in_sort_direction);
+            } else {
+                $ids = $user->branches->pluck('id')->toArray();
+                $collection = ModelsOffer::data()->with('realEstate.branch')->whereHas('realEstate.branch', function ($query) use ($ids) {
+                    $query->whereIn('id', $ids);
+                })->filters($this->in_filters)->where('offer_type_id', 2)->reorder($this->in_sort_field, $this->in_sort_direction);
+            }
             if ($this->in_rows_number == 'all') {
                 $this->in_rows_number = $collection->count();
             }

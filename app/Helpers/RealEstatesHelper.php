@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Bank;
 use App\Models\Branch;
 use App\Models\BuildingStatus;
 use App\Models\BuildingType;
@@ -40,6 +41,13 @@ if (!function_exists('websiteMode')) {
             }
         }
         return 'light-layout dark-layout';
+    }
+}
+
+if (!function_exists('getBanks')) {
+    function getBanks()
+    {
+        return Bank::data()->get();
     }
 }
 
@@ -572,7 +580,6 @@ if (!function_exists('getUsersMarketersBranch')) {
     }
 }
 
-
 if (!function_exists('getOffersCount')) {
     function getOffersCount()
     {
@@ -580,6 +587,13 @@ if (!function_exists('getOffersCount')) {
     }
 }
 
+if (!function_exists('getOffersUserCount')) {
+    function getOffersUserCount()
+    {
+        $user = auth()->user();
+        return $user->branches->count();
+    }
+}
 
 if (!function_exists('getBranchesUser')) {
     function getBranchesUser()

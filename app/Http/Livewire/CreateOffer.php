@@ -12,12 +12,12 @@ class CreateOffer extends Component
     use LivewireAlert;
 
     protected $listeners = ['setMediatorsIds', 'setNeiborhoods', 'refreshSelect2' => '$refresh'];
-    public $land_fields = ['price_by_meter', 'total_price', 'direction_ids', 'land_type_id', 'licensed_id', 'street_width_ids', 'interface_length_id', 'character'];
-    public $duplex_fields = ['price_by_meter', 'total_price', 'direction_ids', 'land_type_id', 'licensed_id', 'street_width_ids', 'interface_length_id', 'character', 'real_estate_age', 'building_type_id', 'building_status_id', 'construction_delivery_id'];
-    public $condominium_fields = ['real_estate_age', 'floors_number', 'flats_number', 'stores_number', 'flat_rooms_number', 'annual_income', 'total_price',];
-    public $flat_fields = ['floor_number', 'real_estate_age'];
+    public $land_fields = ['price_by_meter',  'direction_ids', 'land_type_id', 'licensed_id', 'street_width_ids', 'interface_length_id', 'character'];
+    public $duplex_fields = ['price_by_meter', 'direction_ids', 'land_type_id', 'licensed_id', 'street_width_ids', 'interface_length_id', 'character', 'real_estate_age', 'building_type_id', 'building_status_id', 'construction_delivery_id'];
+    public $condominium_fields = ['real_estate_age', 'floors_number', 'flats_number', 'stores_number', 'flat_rooms_number', 'annual_income', ];
+    public $flat_fields = ['floor_number', 'real_estate_age',];
     public $chalet_fields = ['direction_ids', 'street_width_ids', 'owner_ship_type_id', 'real_estate_age', 'price'];
-    public $main_fields = ['city_id', 'neighborhood_id', 'land_number', 'real_estate_statement', 'block_number', 'notes', 'space', 'property_type_id', 'mediators_ids', 'branch_id'];
+    public $main_fields = ['city_id', 'neighborhood_id', 'land_number', 'real_estate_statement', 'block_number', 'notes', 'space', 'property_type_id', 'mediators_ids', 'branch_id', 'total_price',];
 
     public $property_types = ['land', 'duplex', 'condominium', 'flat', 'chalet'];
 
@@ -72,6 +72,16 @@ class CreateOffer extends Component
 
     public $neighborhoods_json;
 
+    public function mount()
+    {
+        $branches = getBranchesUser();
+        if ($branches->count()) {
+            $branch = $branches->first();
+            if ($branch) {
+                $this->branch_id = $branch->id;
+            }
+        }
+    }
 
     public function setNeiborhoods()
     {
@@ -99,25 +109,6 @@ class CreateOffer extends Component
         $this->emit('neighborhoods', $neighborhoods_json, $this->neighborhood_id);
     }
 
-    public function step($form)
-    {
-        $this->first = '';
-        $this->second = '';
-        $this->third = '';
-
-        if ($form == 'first') {
-            $this->first = 'active';
-        }
-
-        if ($form == 'second') {
-            $this->second = 'active';
-        }
-
-        if ($form == 'third') {
-            $this->emit('mediators-show', $this->is_direct);
-            $this->third = 'active';
-        }
-    }
 
     public function hydrate()
     {

@@ -3,10 +3,13 @@
 namespace App\Http\Livewire;
 
 use App\Http\Controllers\Services\ReservationService;
+use App\Jobs\ReservationPeriod;
 use App\Models\Offer;
 use App\Models\OfferEditors;
+use Illuminate\Console\Scheduling\Schedule;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
+
 
 class OfferView extends Component
 {
@@ -184,10 +187,12 @@ class OfferView extends Component
         return $validation;
     }
 
-    public function storeReservation(ReservationService $reservationService)
+    public function storeReservation(ReservationService $reservationService, Schedule $schedule)
     {
         $data = $this->validate();
         $reservation = $reservationService->store($data, $this->offer);
+        // $day = now()->addMinutes(1);
+        // dispatch(new ReservationPeriod($reservation->id))->delay($day)->onQueue('reservations-periods');
 
         if ($reservation) {
             $this->alert('success', '', [

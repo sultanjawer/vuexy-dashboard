@@ -167,8 +167,9 @@
                                                         <td>{{ getCityName($direct_offer->realEstate->city_id) }}</td>
                                                         <td>{{ getNeighborhoodName($direct_offer->realEstate->neighborhood_id) }}
                                                         </td>
-                                                        <td>ريال
+                                                        <td>
                                                             {{ number_format($direct_offer->realEstate->total_price) }}
+                                                            ريال
                                                         </td>
                                                         <td>{{ getBranchName($direct_offer->realEstate->branch_id) }}
                                                         </td>
@@ -204,13 +205,13 @@
                                                                         <i class="fas fa-edit"></i>
                                                                     </a>
                                                                 @endcan
-
+                                                                {{--
                                                                 @can('changeOfferStatus', $direct_offer)
                                                                     <button class="btn item-edit"
                                                                         style="padding:0;color:#EA5455 ">
                                                                         <i class="fas fa-trash-alt"></i>
                                                                     </button>
-                                                                @endcan
+                                                                @endcan --}}
 
                                                             </div>
                                                         </td>
@@ -416,12 +417,12 @@
                                                                         </a>
                                                                     @endcan
 
-                                                                    @can('changeOfferStatus', $in_direct_offer)
+                                                                    {{-- @can('changeOfferStatus', $in_direct_offer)
                                                                         <button class="btn item-edit"
                                                                             style="padding:0;color:#EA5455 ">
                                                                             <i class="fas fa-trash-alt"></i>
                                                                         </button>
-                                                                    @endcan
+                                                                    @endcan --}}
                                                                 </div>
                                                             </td>
 

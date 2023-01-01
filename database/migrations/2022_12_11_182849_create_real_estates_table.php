@@ -50,8 +50,8 @@ return new class extends Migration
 
             #Fields Text
             $table->text('notes')->nullable();
-            $table->unsignedBigInteger('land_number')->nullable();
-            $table->unsignedBigInteger('block_number')->nullable();
+            $table->string('land_number')->nullable();
+            $table->string('block_number')->nullable();
             $table->string('character')->nullable();
 
             #Fields Enum

@@ -53,8 +53,8 @@
 
                         <div class="col-md-6 mb-1">
                             <label class="form-label" for="email">البريد الالكترونى</label>
-                            <input type="email" class="form-control" placeholder="البريد الالكترونى"
-                                wire:model='email' />
+                            <input type="email" class="form-control" dir="ltr" style="direction: ltr;"
+                                placeholder="البريد الالكترونى" wire:model='email' />
                             @error('email')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -66,8 +66,8 @@
 
                         <div class="col-md-6 mb-1">
                             <label class="form-label" for="phone">رقم الجوال</label>
-                            <input type="text" class="form-control" placeholder="رقم الجوال" maxlength="10"
-                                wire:model='phone' />
+                            <input type="text" class="form-control" dir="ltr" placeholder="رقم الجوال"
+                                maxlength="10" wire:model='phone' />
                             @error('phone')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -260,6 +260,39 @@
                                         </td>
                                     </tr>
 
+
+                                    <tr>
+                                        <td class="text-nowrap fw-bolder">المبيعات</td>
+                                        <td>
+                                            <div class="d-flex">
+                                                <div class="form-check me-3 me-lg-5">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        wire:model='can_show_sale'>
+                                                    <label class="form-check-label"> رؤية </label>
+                                                </div>
+
+                                                <div class="form-check me-3 me-lg-5">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        wire:model='can_create_sale'>
+                                                    <label class="form-check-label" for="canAdd"> اضافة </label>
+                                                </div>
+
+                                                <div class="form-check me-3 me-lg-5">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        wire:model='can_edit_sale'>
+                                                    <label class="form-check-label" for="canEdit"> تعديل
+                                                    </label>
+                                                </div>
+
+                                                <div class="form-check me-3 me-lg-5">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        wire:model='can_change_sale_status'>
+                                                    <label class="form-check-label" for="canCancel">إلغاء</label>
+                                                </div>
+
+                                            </div>
+                                        </td>
+                                    </tr>
 
 
                                     <tr>

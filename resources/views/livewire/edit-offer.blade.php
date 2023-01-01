@@ -61,7 +61,7 @@
 
                                 <div class="bs-stepper-header px-0" role="tablist" wire:ignore.self>
 
-                                    <div class="step {{ $first }}" wire:click="step('first')" role="tab">
+                                    <div class="step first-step" role="tab">
                                         <button type="button" class="step-trigger" wire:ignore.self>
                                             <span
                                                 class="bs-stepper-box
@@ -90,7 +90,7 @@
                                         <i data-feather="chevron-right" class="font-medium-2"></i>
                                     </div>
 
-                                    <div class="step {{ $second }}" wire:click="step('second')" role="tab">
+                                    <div class="step second-step" role="tab">
                                         <button type="button" class="step-trigger">
                                             <span
                                                 class=" bs-stepper-box
@@ -128,7 +128,7 @@
                                         <i data-feather="chevron-right" class="font-medium-2"></i>
                                     </div>
 
-                                    <div class="step {{ $third }}" wire:click="step('third')" role="tab">
+                                    <div class="step third-step" role="tab">
                                         <button type="button" class="step-trigger">
                                             <span class="bs-stepper-box" wire:ignore>
                                                 <i data-feather="percent" class="font-medium-3"></i>
@@ -144,8 +144,7 @@
 
                                 <div class="bs-stepper-content px-0 mt-4" wire:ignore.self>
 
-                                    <div style="display: @if (!$first) none @endif;"
-                                        role="tabpanel">
+                                    <div class="personal-info" style="display: block;" role="tabpanel" wire:ignore.self>
 
                                         <div class="content-header mb-2" wire:ignore.self>
                                             <h2 class="fw-bolder mb-75">الخطوة الاولى</h2>
@@ -215,11 +214,11 @@
                                         </div>
 
                                         <div class="d-flex justify-content-between mt-2">
-                                            <button class="btn btn-outline-secondary" disabled wire:ignore>
+                                            <button class="btn btn-outline-secondary btn-prev" disabled wire:ignore>
                                                 <i data-feather="chevron-left" class="align-middle me-sm-25 me-0"></i>
                                                 <span class="align-middle d-sm-inline-block d-none">السابق</span>
                                             </button>
-                                            <button class="btn btn-primary" wire:click="step('second')" wire:ignore>
+                                            <button class="btn btn-primary btn-next first-next" wire:ignore>
                                                 <span class="align-middle d-sm-inline-block d-none">التالى</span>
                                                 <i data-feather="chevron-right"
                                                     class="align-middle ms-sm-25 ms-0"></i>
@@ -227,8 +226,7 @@
                                         </div>
                                     </div>
 
-                                    <div style="display: @if (!$second) none @endif;"
-                                        role="tabpanel">
+                                    <div class="account-details" style="display: none;" role="tabpanel" wire:ignore.self>
 
                                         <div class="content-header mb-2">
                                             <h2 class="fw-bolder mb-75">الخطوة الثانية</h2>
@@ -554,7 +552,7 @@
                                                     <label class="form-label">الفرع</label>
                                                     <select class="js-select2-branch select2 form-select"
                                                         wire:model='branch_id'>
-                                                        @foreach (getBranches() as $branch)
+                                                        @foreach (getBranchesUser() as $branch)
                                                             <option value="{{ $branch->id }}" selected>
                                                                 {{ $branch->name }}
                                                             </option>
@@ -571,12 +569,11 @@
                                         </div>
 
                                         <div class="d-flex justify-content-between mt-2">
-                                            <button class="btn btn-outline-secondary" wire:click="step('first')"
-                                                wire:ignore>
+                                            <button class="btn btn-primary btn-prev second-prev" wire:ignore>
                                                 <i data-feather="chevron-left" class="align-middle me-sm-25 me-0"></i>
                                                 <span class="align-middle d-sm-inline-block d-none">السابق</span>
                                             </button>
-                                            <button class="btn btn-primary" wire:click="step('third')" wire:ignore>
+                                            <button class="btn btn-primary btn-next second-next" wire:ignore>
                                                 <span class="align-middle d-sm-inline-block d-none">التالى</span>
                                                 <i data-feather="chevron-right"
                                                     class="align-middle ms-sm-25 ms-0"></i>
@@ -584,9 +581,7 @@
                                         </div>
                                     </div>
 
-
-                                    <div style="display: @if (!$third) none @endif;"
-                                        role="tabpanel">
+                                    <div class="account-home-details" style="display: none;" role="tabpanel" wire:ignore.self>
 
                                         <div class="content-header mb-2">
                                             <h2 class="fw-bolder mb-75">الخطوة الثالثة</h2>
@@ -657,7 +652,7 @@
                                         </form>
 
                                         <div class="d-flex justify-content-between mt-1">
-                                            <button class="btn btn-primary" wire:click="step('second')" wire:ignore>
+                                            <button class="btn btn-primary third-prev" wire:ignore>
                                                 <i data-feather="chevron-left" class="align-middle me-sm-25 me-0"></i>
                                                 <span class="align-middle d-sm-inline-block d-none">السابق</span>
                                             </button>
@@ -682,6 +677,8 @@
             $(document).ready(function() {
 
 
+                $property_type_id = "{{ $property_type_id }}";
+
                 // Hide All
                 $(".price-by-meter").hide();
                 $(".total-price").hide();
@@ -692,7 +689,7 @@
                 $(".character").hide();
                 $(".interface-length-div-hide").hide();
                 $(".condominium-extra").hide();
-                // $(".price").hide();
+                $(".price").hide();
                 $(".floor-number").hide();
                 $(".notes").hide();
                 $(".branch-div-hide").hide();
@@ -702,19 +699,83 @@
                 $(".building-status").hide();
                 $(".construction-delivery").hide();
 
-                // Init
-                $(".price-by-meter").show();
-                $(".total-price").show();
+                // // Init
+                // $(".price-by-meter").show();
+                // $(".total-price").show();
 
-                $(".direction-div-hide").show();
-                $(".land-type-div-hide").show();
-                $(".licensed-div-hide").show();
-                $(".street-width-div-hide").show();
-                $(".character").show();
-                $(".interface-length-div-hide").show();
-                $(".notes").show();
-                $(".branch-div-hide").show();
-                $(".total-price-input").prop('disabled', true);
+                // $(".direction-div-hide").show();
+                // $(".land-type-div-hide").show();
+                // $(".licensed-div-hide").show();
+                // $(".street-width-div-hide").show();
+                // $(".character").show();
+                // $(".interface-length-div-hide").show();
+                // $(".notes").show();
+                // $(".branch-div-hide").show();
+                // $(".total-price-input").prop('disabled', true);
+
+                if ($property_type_id == 1) {
+                    $(".price-by-meter").show();
+                    $(".total-price").show();
+                    $(".direction-div-hide").show();
+                    $(".land-type-div-hide").show();
+                    $(".licensed-div-hide").show();
+                    $(".total-price-input").prop('disabled', true);
+                    $(".street-width-div-hide").show();
+                    $(".character").show();
+                    $(".interface-length-div-hide").show();
+                    $(".notes").show();
+                    $(".branch-div-hide").show();
+
+                }
+
+                if ($property_type_id == 2) {
+                    // $(".price-by-meter").show();
+                    $(".total-price").show();
+                    $(".direction-div-hide").show();
+                    $(".land-type-div-hide").show();
+                    $(".licensed-div-hide").show();
+                    $(".street-width-div-hide").show();
+                    $(".character").show();
+                    $(".interface-length-div-hide").show();
+                    $(".building-type").show();
+                    $(".building-status").show();
+                    $(".construction-delivery").show();
+                    $(".notes").show();
+                    $(".real-estate-age").show();
+                    $(".branch-div-hide").show();
+
+                }
+
+                if ($property_type_id == 3) {
+                    $(".condominium-extra").show();
+                    $(".real-estate-age").show();
+                    $(".notes").show();
+                    $(".total-price").show();
+                    $(".branch-div-hide").show();
+
+                }
+
+                if ($property_type_id == 4) {
+                    // // $(".price").show();
+                    $(".floor-number").show();
+                    $(".notes").show();
+                    $(".total-price").show();
+                    $(".branch-div-hide").show();
+                    $(".real-estate-age").show();
+                }
+
+                if ($property_type_id == 5) {
+                    $(".direction-div-hide").show();
+                    $(".street-width-div-hide").show();
+                    $(".notes").show();
+                    $(".owner-ship-type").show();
+                    $(".real-estate-age").show();
+                    $(".total-price").show();
+                    // $(".price").show();
+                    $(".branch-div-hide").show();
+                }
+
+                // window.livewire.emit('setMediatorsIds');
 
 
 
@@ -781,7 +842,6 @@
                 initSelectCompanyDrop();
 
                 $(".js-select2-multi").on('change', function() {
-                    console.log($(".js-select2-multi").val());
                     var data = $('.js-select2-multi').val();
                     @this.set('mediators_ids', data);
                     window.livewire.emit('setMediatorsIds');
@@ -952,10 +1012,6 @@
                     @this.set('direction_ids', ids['direction_ids']);
                     @this.set('street_width_ids', ids['street_width_ids']);
 
-                    console.log(ids);
-                    console.log(typeof(ids));
-                    console.log("typeof(ids)");
-
                     if (is_direct) {
                         $('.mediators').hide(ids);
                     } else {
@@ -970,94 +1026,9 @@
                     // window.livewire.emit('setMediatorsIds');
                 });
 
-                window.livewire.on('set-form', (property_type_id) => {
-
-                    // Hide All
-                    $(".price-by-meter").hide();
-                    $(".total-price").hide();
-                    $(".direction-div-hide").hide();
-                    $(".land-type-div-hide").hide();
-                    $(".licensed-div-hide").hide();
-                    $(".street-width-div-hide").hide();
-                    $(".character").hide();
-                    $(".interface-length-div-hide").hide();
-                    $(".condominium-extra").hide();
-                    // // // $(".price").hide();
-                    $(".floor-number").hide();
-                    $(".notes").hide();
-                    $(".branch-div-hide").hide();
-                    $(".owner-ship-type").hide();
-                    $(".real-estate-age").hide();
-                    $(".building-type").hide();
-                    $(".building-status").hide();
-                    $(".construction-delivery").hide();
-
-                    if (property_type_id == 1) {
-                        $(".price-by-meter").show();
-                        $(".total-price").show();
-                        $(".direction-div-hide").show();
-                        $(".land-type-div-hide").show();
-                        $(".licensed-div-hide").show();
-                        $(".total-price-input").prop('disabled', true);
-                        $(".street-width-div-hide").show();
-                        $(".character").show();
-                        $(".interface-length-div-hide").show();
-                        $(".notes").show();
-                        $(".branch-div-hide").show();
-
-                    }
-
-                    if (property_type_id == 2) {
-                        // $(".price-by-meter").show();
-                        $(".total-price").show();
-                        $(".direction-div-hide").show();
-                        $(".land-type-div-hide").show();
-                        $(".licensed-div-hide").show();
-                        $(".street-width-div-hide").show();
-                        $(".character").show();
-                        $(".interface-length-div-hide").show();
-                        $(".building-type").show();
-                        $(".building-status").show();
-                        $(".construction-delivery").show();
-                        $(".notes").show();
-                        $(".real-estate-age").show();
-                        $(".branch-div-hide").show();
-
-                    }
-
-                    if (property_type_id == 3) {
-                        $(".condominium-extra").show();
-                        $(".real-estate-age").show();
-                        $(".notes").show();
-                        $(".total-price").show();
-                        $(".branch-div-hide").show();
-
-                    }
-
-                    if (property_type_id == 4) {
-                        // // $(".price").show();
-                        $(".floor-number").show();
-                        $(".notes").show();
-                        $(".branch-div-hide").show();
-                        $(".real-estate-age").show();
-                    }
-
-                    if (property_type_id == 5) {
-                        $(".direction-div-hide").show();
-                        $(".street-width-div-hide").show();
-                        $(".notes").show();
-                        $(".owner-ship-type").show();
-                        $(".real-estate-age").show();
-                        // $(".price").show();
-                        $(".branch-div-hide").show();
-                    }
-
-                    window.livewire.emit('setMediatorsIds');
-                });
 
                 window.livewire.on('neighborhoods', (data) => {
                     $('.js-select2-neighborhood').html('');
-                    console.log(data);
 
                     $('.js-select2-neighborhood').select2({
                         placeholder: 'اختيار الحي',
@@ -1065,6 +1036,69 @@
                         closeOnSelect: true
                     });
                 });
+
+                var first = $(".personal-info");
+                var second = $(".account-details");
+                var third = $(".account-home-details");
+
+                var first_step = $(".first-step");
+                var second_step = $(".second-step");
+                var third_step = $(".third-step");
+                first_step.addClass('active');
+
+
+                $(".first-next").on('click', function() {
+                    initSelectCompanyDrop();
+                    first_step.removeClass('active');
+                    second_step.addClass('active');
+                    third_step.removeClass('active');
+                    first.css('display', 'none');
+                    second.css('display', 'block');
+                    third.css('display', 'none');
+                });
+
+                $(".second-prev").on('click', function() {
+                    first_step.addClass('active');
+                    second_step.removeClass('active');
+                    third_step.removeClass('active');
+                    first.css('display', 'block');
+                    second.css('display', 'none');
+                    third.css('display', 'none');
+                });
+
+                $(".second-next").on('click', function() {
+                    first_step.removeClass('active');
+                    second_step.removeClass('active');
+                    third_step.addClass('active');
+                    first.css('display', 'none');
+                    second.css('display', 'none');
+                    third.css('display', 'block');
+                });
+
+                $(".third-prev").on('click', function() {
+                    initSelectCompanyDrop();
+                    first_step.removeClass('active');
+                    second_step.addClass('active');
+                    third_step.removeClass('active');
+                    first.css('display', 'none');
+                    second.css('display', 'block');
+                    third.css('display', 'none');
+                });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
             });
