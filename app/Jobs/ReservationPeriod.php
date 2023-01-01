@@ -33,5 +33,6 @@ class ReservationPeriod implements ShouldQueue
     {
         $reservation = Reservation::find($this->reservation_id);
         $reservation->update(['status' => 2]);
+        $reservation->offer->realEstate->update(['property_status_id' => 1]);
     }
 }

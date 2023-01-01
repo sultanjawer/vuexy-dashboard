@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Services;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\ReservationPeriod;
 use App\Models\Customer;
 use App\Models\Offer;
 use App\Models\OfferEditors;
 use App\Models\Reservation;
-use Illuminate\Http\Request;
+
 
 class ReservationService extends Controller
 {
@@ -16,6 +17,7 @@ class ReservationService extends Controller
         $dates = explode(" to ", $data['date']);
         $date_from = $dates[0];
         $date_to = $dates[1];
+
         $user = auth()->user();
         $customer = Customer::find($data['customer_id']);
 
@@ -63,6 +65,12 @@ class ReservationService extends Controller
             'action' => 'book',
         ]);
 
+        $tesi = now()->addMinutes(1);
+        $dif = strtotime($tesi) - strtotime(now());
+
+        $diff = strtotime($date_to) - strtotime($date_from);
+        dispatch(new ReservationPeriod($reservation->id))->delay($dif)->onQueue('reservations-periods');
+
         return $reservation;
     }
 
@@ -85,6 +93,7 @@ class ReservationService extends Controller
         $active_reservation = $offer->reservations->where('status', 1)->first();
         if ($active_reservation) {
             $active_reservation->update(['status' => 2]);
+            $active_reservation->offer->realEstate->update(['property_status_id' => 1]);
         }
 
         if ($user->user_type == 'admin' || $user->user_type == 'superadmin') {
