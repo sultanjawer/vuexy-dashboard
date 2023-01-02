@@ -65,7 +65,7 @@ class ReservationService extends Controller
             'action' => 'book',
         ]);
 
-        $tesi = now()->addMinutes(1);
+        $tesi = now()->addMinutes(3);
         $dif = strtotime($tesi) - strtotime(now());
 
         $diff = strtotime($date_to) - strtotime($date_from);
