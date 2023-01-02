@@ -79,7 +79,7 @@
     <audio class="sound" src="{{ asset('assets/sound.wav') }}" allow="autoplay 'src'"></audio>
 
     <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
-    {{-- <script>
+    <script>
         // Enable pusher logging - don't include this in production
         Pusher.logToConsole = true;
 
@@ -128,6 +128,6 @@
                 }
             }
         });
-    </script> --}}
+    </script>
 
 </div>
