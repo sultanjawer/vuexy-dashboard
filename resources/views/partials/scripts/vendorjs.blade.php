@@ -28,7 +28,7 @@
 {{-- <script src="{{ asset('app-assets/js/scripts/pages/app-invoice-list.js') }}"></script> --}}
 
 <!-- BEGIN: Theme JS-->
-{{-- <script src="{{ asset('app-assets/js/core/app-menu.js') }}"></script> --}}
+<script src="{{ asset('app-assets/js/core/app-menu.js') }}"></script>
 <script src="{{ asset('app-assets/js/core/app.js') }}"></script>
 <!-- END: Theme JS-->
 
@@ -42,7 +42,7 @@
 <script src="{{ asset('app-assets/js/scripts/pages/modal-add-new-cc.js') }}"></script>
 <script src="{{ asset('app-assets/js/scripts/pages/page-pricing.js') }}"></script>
 <script src="{{ asset('app-assets/js/scripts/pages/modal-add-new-address.js') }}"></script>
-{{-- <script src="{{ asset('app-assets/js/scripts/pages/modal-create-app.js') }}"></script> --}}
+<script src="{{ asset('app-assets/js/scripts/pages/modal-create-app.js') }}"></script>
 <script src="{{ asset('app-assets/js/scripts/pages/modal-two-factor-auth.js') }}"></script>
 <script src="{{ asset('app-assets/js/scripts/pages/modal-edit-user.js') }}"></script>
 <script src="{{ asset('app-assets/js/scripts/pages/modal-share-project.js') }}"></script>
