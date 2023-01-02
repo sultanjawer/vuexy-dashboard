@@ -19,7 +19,7 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/tables/datatable/rowGroup.bootstrap5.min.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/js/scripts/sweetalerts/sweetalert2.min.css') }}" />
 <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/js/scripts/sweetalerts/sweetalert.css') }}" />
-<link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css-rtl/custom-sweetalert.css') }}" />
+{{-- <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css-rtl/custom-sweetalert.css') }}" /> --}}
 
 <link rel="stylesheet" type="text/css" href="{{asset('app-assets/vendors/css/charts/apexcharts.css')}}">
 <link rel="stylesheet" type="text/css" href="{{asset('app-assets/css-rtl/plugins/charts/chart-apex.css')}}">
