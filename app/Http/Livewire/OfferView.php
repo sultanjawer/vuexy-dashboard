@@ -29,12 +29,20 @@ class OfferView extends Component
     public $reservation_notes;
     public $is_booked = false;
     public $user_id;
+    public $check_sale = false;
 
     public function mount($offer_id)
     {
         $this->offer_id = $offer_id;
         $this->offer = Offer::find($offer_id);
         $this->real_estate = $this->offer->realEstate;
+
+        if ($this->offer->sale) {
+            if ($this->offer->sale->sale_status == 1) {
+                $this->check_sale = true;
+            }
+        }
+
         $this->isBookedOffer();
     }
 

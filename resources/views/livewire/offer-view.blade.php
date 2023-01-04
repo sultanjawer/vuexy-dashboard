@@ -36,23 +36,21 @@
                                             </div>
                                         </div>
 
-                                        @if ($offer->sale)
-                                            @if (!($offer->sale->sale_status == 1))
-                                                <a href="javascript:;"
-                                                    class="btn bg-light-success mt-2 waves-effect waves-float waves-light"
-                                                    data-bs-target="#addReservation" wire:click='reservationData'
-                                                    data-bs-toggle="modal">
-                                                    @if (!$is_booked)
-                                                        حجز
-                                                    @endif
 
-                                                    @if ($is_booked)
-                                                        تفاصيل الحجز
-                                                    @endif
-                                                </a>
-                                            @endif
+                                        @if (!$check_sale)
+                                            <a href="javascript:;"
+                                                class="btn bg-light-success mt-2 waves-effect waves-float waves-light"
+                                                data-bs-target="#addReservation" wire:click='reservationData'
+                                                data-bs-toggle="modal">
+                                                @if (!$is_booked)
+                                                    حجز
+                                                @endif
+
+                                                @if ($is_booked)
+                                                    تفاصيل الحجز
+                                                @endif
+                                            </a>
                                         @endif
-
 
                                         @auth
                                             @if ((($is_booked && auth()->id() == $user_id) || ($is_booked && auth()->user()->user_type == 'superadmin')) &&
@@ -65,7 +63,6 @@
                                         @endauth
 
                                         @if ($offer->sale)
-
                                             @if ($offer->sale->sale_status == 1)
                                                 <a href="{{ route('panel.sale', $offer->sale->id) }}"
                                                     class="btn bg-light-info mt-1 waves-effect waves-float waves-light">
