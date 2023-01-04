@@ -80,13 +80,14 @@
                                                     إلغاء صفقة البيع
                                                 </a>
                                             @endif
+                                        @endif
 
-                                            @if (!$check_sale)
-                                                <a href="{{ route('panel.create.sale', $offer->id) }}"
-                                                    class="btn bg-light-primary mt-1 waves-effect waves-float waves-light">
-                                                    بيع
-                                                </a>
-                                            @endif
+                                        @if (!$check_sale)
+                                            <a href="{{ route('panel.create.sale', $offer->id) }}"
+                                                class="btn bg-light-primary mt-1 waves-effect waves-float waves-light">
+                                                بيع
+                                            </a>
+                                        @endif
 
 
                                     </div>
