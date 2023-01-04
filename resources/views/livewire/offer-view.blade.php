@@ -62,24 +62,22 @@
                                             @endif
                                         @endauth
 
-                                        @if ($offer->sale)
-                                            @if ($offer->sale->sale_status == 1)
-                                                <a href="{{ route('panel.sale', $offer->sale->id) }}"
-                                                    class="btn bg-light-info mt-1 waves-effect waves-float waves-light">
-                                                    تفاصيل الاتفاقية
-                                                </a>
+                                        @if ($check_sale)
+                                            <a href="{{ route('panel.sale', $offer->sale->id) }}"
+                                                class="btn bg-light-info mt-1 waves-effect waves-float waves-light">
+                                                تفاصيل الاتفاقية
+                                            </a>
 
-                                                <a href="#"
-                                                    class="btn bg-light-danger mt-1 waves-effect waves-float waves-light">
-                                                    تم البيع
-                                                </a>
+                                            <a href="#"
+                                                class="btn bg-light-danger mt-1 waves-effect waves-float waves-light">
+                                                تم البيع
+                                            </a>
 
-                                                <a href="#"
-                                                    class="btn bg-light-danger mt-1 waves-effect waves-float waves-light"
-                                                    wire:click="cancelSale">
-                                                    إلغاء صفقة البيع
-                                                </a>
-                                            @endif
+                                            <a href="#"
+                                                class="btn bg-light-danger mt-1 waves-effect waves-float waves-light"
+                                                wire:click="cancelSale">
+                                                إلغاء صفقة البيع
+                                            </a>
                                         @endif
 
                                         @if (!$check_sale)
