@@ -259,6 +259,8 @@ class OfferView extends Component
 
         $this->check_sale = false;
         $this->emit('refreshComponent');
+        $this->emit('refreshComponent');
+        $this->emit('refreshComponent');
         return true;
     }
 }
