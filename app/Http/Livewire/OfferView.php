@@ -35,6 +35,7 @@ class OfferView extends Component
     {
         $this->offer_id = $offer_id;
         $this->offer = Offer::find($offer_id);
+        dd($this->offer , $this->offer->sale);
         $this->real_estate = $this->offer->realEstate;
         $this->isBookedOffer();
     }
