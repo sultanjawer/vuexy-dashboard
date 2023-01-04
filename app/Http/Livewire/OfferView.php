@@ -257,8 +257,8 @@ class OfferView extends Component
             'timerProgressBar' => true,
         ]);
 
+        $this->check_sale = false;
         $this->emit('refreshComponent');
-        $this->isBookedOffer();
         return true;
     }
 }
