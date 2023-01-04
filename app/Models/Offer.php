@@ -50,7 +50,7 @@ class Offer extends Model
 
     public function sale()
     {
-        return $this->hasOne(Sale::class, 'offer_id', 'id');
+        return $this->hasOne(Sale::class, 'offer_id', 'id')->where('sale_status', 2)->first();
     }
 
     public function offerType()
