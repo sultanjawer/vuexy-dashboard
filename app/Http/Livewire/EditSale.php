@@ -38,6 +38,7 @@ class EditSale extends Component
     public $check_number = '';
     public $bank_id = 1;
     public $message_vat = '';
+    public $deserved_amount_mesage = '';
     public $success_message_vat = '';
     public $message_paid_amount = '';
     public $success_message_saee_prc = '';
@@ -165,9 +166,13 @@ class EditSale extends Component
         $customer_buyer = Customer::find($this->sale->customer_buyer_id);
         $customer_seller = Customer::find($this->sale->customer_seller_id);
         $offer = $this->sale->offer;
-        $this->offer = $offer;
-        $this->order = $offer->order;
-        $realEstate = $offer->realEstate;
+        $realEstate = $this->sale->realEstate;
+
+        if ($offer) {
+            $this->offer = $offer;
+            $this->order = $offer->order;
+            $realEstate = $offer->realEstate;
+        }
 
         if ($this->sale) {
             $this->sale_code = $this->sale->sale_code;
@@ -547,6 +552,9 @@ class EditSale extends Component
         $this->saee_price = (int)str_replace(',', '', $this->saee_price);
         $this->price = (int)str_replace(',', '', $this->price);
         $this->total_price = (int)str_replace(',', '', $this->total_price);
+        $this->vat = (float)str_replace(',', '', $this->vat);
+        $this->saee_prc = (float)str_replace(',', '', $this->saee_prc);
+        $this->deserved_amount = (float)str_replace(',', '', $this->deserved_amount);
 
         $data = $this->validate();
 
@@ -629,6 +637,26 @@ class EditSale extends Component
         if ($check == 'no') {
             $this->is_first_no = 'option2';
         }
+    }
+
+    public function deservedAmount()
+    {
+        $deserved_amount = (float)$this->is_numeric('deserved_amount', $this->deserved_amount);
+        $total_price = (float)$this->is_numeric('total_price', $this->total_price) - (float)$this->paid_amount;
+
+        $this->deserved_amount_mesage = '';
+        $this->deserved_amount_success = '';
+
+        if ($total_price > 1000000) {
+            $deserved_amount = $total_price - 1000000;
+            $process  = number_format((float)(($deserved_amount * 5) / 100), 3);
+            $this->deserved_amount = number_format((float)$deserved_amount, 3);
+            $this->deserved_amount_mesage = "مقدار المبلغ المستحق $process ريال";
+            return true;
+        }
+
+        $this->deserved_amount = 0.0;
+        $this->deserved_amount_mesage = "مقدار المبلغ المستحق 0.0 ريال";
     }
 
     public function changeSaeeType()

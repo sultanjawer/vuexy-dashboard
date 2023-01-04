@@ -316,9 +316,15 @@
                                 <div class="col-md-6 mb-1">
                                     <label class="form-label">المبلغ المستحق</label>
                                     <div class="input-group input-group-merge" wire:ignore.self>
-                                        <input type="number" step="0.01" class="form-control "
-                                            placeholder="المبلغ المستحق" wire:model='deserved_amount' />
+                                        <input type="text" step="0.01" class="form-control "
+                                            placeholder="المبلغ المستحق" wire:change="deservedAmount"
+                                            wire:model='deserved_amount' />
                                     </div>
+
+                                    @if ($deserved_amount_mesage)
+                                        <small class="text-success">{{ $deserved_amount_mesage }}</small>
+                                    @endif
+
                                     @error('deserved_amount')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror

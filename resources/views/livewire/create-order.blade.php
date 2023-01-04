@@ -340,9 +340,9 @@
                                         <div class="col-12 col-md-6">
                                             <label class="form-label">كيفية الشراء</label>
                                             <select class="select2 form-select" wire:model='purch_method_id'>
-                                                @foreach (getPurchaseMethods() as $getPurchaseMethod)
-                                                    <option value="{{ $getPurchaseMethod->id }}">
-                                                        {{ $getPurchaseMethod->name }}</option>
+                                                @foreach (getPaymentMethods() as $payment_method)
+                                                    <option value="{{ $payment_method->id }}">
+                                                        {{ $payment_method->name }}</option>
                                                 @endforeach
                                             </select>
                                             @error('purch_method_id')

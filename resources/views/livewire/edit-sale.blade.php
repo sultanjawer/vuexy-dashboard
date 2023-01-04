@@ -113,8 +113,8 @@
                         <div class="col-md-6 mb-1">
                             <label class="form-label">الضريبة</label>
                             <div class="input-group input-group-merge" wire:ignore.self>
-                                <input type="number" class="form-control" step="0.01" wire:change="vat" wire:model='vat'
-                                    min="0" max="100" placeholder="الضريبة">
+                                <input type="number" class="form-control" step="0.01" wire:change="vat"
+                                    wire:model='vat' min="0" max="100" placeholder="الضريبة">
                                 <span class="input-group-text">%</span>
                             </div>
                             @error('vat')
@@ -136,7 +136,8 @@
                     <div class="row">
                         <div class="col-md-6 mb-1" wire:ignore.self>
                             <label class="form-label">السعي</label>
-                            <select class="form-control" wire:change="ChangeSaeeType" wire:model='saee_type' wire:ignore.self>
+                            <select class="form-control" wire:change="ChangeSaeeType" wire:model='saee_type'
+                                wire:ignore.self>
                                 <option value="saee_prc">نسبة</option>
                                 <option value="saee_price">سعر</option>
                             </select>
@@ -166,8 +167,8 @@
                         <div class="col-md-6 mb-1 saee_price" style="display: none;" wire:ignore.self>
                             <label class="form-label">سعر السعي</label>
                             <div class="input-group input-group-merge" wire:ignore.self>
-                                <input type="text" class="form-control" wire:change="saeePrice" wire:model='saee_price'
-                                    placeholder="السعي">
+                                <input type="text" class="form-control" wire:change="saeePrice"
+                                    wire:model='saee_price' placeholder="السعي">
                             </div>
                             @error('saee_price')
                                 <small class="text-danger">{{ $message }}</small>
@@ -181,7 +182,7 @@
                             <label class="form-label">السعر الكلى</label>
                             <div class="input-group input-group-merge"wire:ignore.self>
                                 <input type="text" class="form-control " placeholder="السعر الكلى" disabled
-                                wire:change="totalPrice" wire:model='total_price' />
+                                    wire:change="totalPrice" wire:model='total_price' />
                                 <span class="input-group-text" wire:ignore.self>ريال</span>
                             </div>
 
@@ -199,8 +200,8 @@
                         <div class="col-md-6 mb-1">
                             <label class="form-label">المبلغ المدفوع</label>
                             <div class="input-group input-group-merge">
-                                <input type="text" class="form-control" wire:change="paidAmount" wire:model='paid_amount'
-                                    placeholder="المبلغ المدفوع" />
+                                <input type="text" class="form-control" wire:change="paidAmount"
+                                    wire:model='paid_amount' placeholder="المبلغ المدفوع" />
                             </div>
                             @error('paid_amount')
                                 <small class="text-danger">{{ $message }}</small>
@@ -213,23 +214,23 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-8 mb-1">
+                        <div class="col-md-6 mb-1">
                             <label class="form-label"> طريقة الدفع الحالية</label>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" wire:change="paymentMethod('cash')" wire:model='cash' id="inlineRadio1"
-                                    value="option1" checked="">
+                                <input class="form-check-input" type="radio" wire:change="paymentMethod('cash')"
+                                    wire:model='cash' id="inlineRadio1" value="option1" checked="">
                                 <label class="form-check-label" for="inlineRadio3">كاش</label>
                             </div>
 
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" wire:change="paymentMethod('check')" wire:model='check' id="inlineRadio2"
-                                    value="option2">
+                                <input class="form-check-input" type="radio" wire:change="paymentMethod('check')"
+                                    wire:model='check' id="inlineRadio2" value="option2">
                                 <label class="form-check-label" for="inlineRadio4">شيك</label>
                             </div>
 
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" wire:change="paymentMethod('bank')" wire:model='bank' id="inlineRadio2"
-                                    value="option3">
+                                <input class="form-check-input" type="radio" wire:change="paymentMethod('bank')"
+                                    wire:model='bank' id="inlineRadio2" value="option3">
                                 <label class="form-check-label" for="inlineRadio4">تحويل بنكي</label>
                             </div>
                             @error('bank')
@@ -245,9 +246,35 @@
                             @enderror
                         </div>
 
+                        @if (in_array($offer->realEstate->property_type_id, [2, 3, 4, 5]))
+                            <div class="col-md-6 mb-1">
+                                <label class="form-label"> هل مسكن اول</label>
+                                <div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio"
+                                            wire:change="isFirstHome('yes')" wire:model='is_first_yes'
+                                            id="inlineRadio1" value="option1">
+                                        <label class="form-check-label" for="inlineRadio3">نعم</label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio"
+                                            wire:change="isFirstHome('no')" wire:model='is_first_no'
+                                            id="inlineRadio2" value="option2">
+                                        <label class="form-check-label" for="inlineRadio4">لا</label>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+
+
+                    </div>
+
+
+                    <div class="row">
 
                         @if ($check)
-                            <div class="col-md-8 mb-1">
+                            <div class="col-md-6 mb-1">
                                 <label class="form-label">رقم الشيك</label>
                                 <div class="input-group input-group-merge" wire:ignore.self>
                                     <input type="text" class="form-control " placeholder="رقم الشيك"
@@ -260,7 +287,7 @@
                         @endif
 
                         @if ($bank)
-                            <div class="col-md-8 mb-1">
+                            <div class="col-md-6 mb-1">
                                 <label class="form-label">البنك</label>
                                 <select class="form-control select2" wire:model='bank_id'>
                                     @foreach (getBanks() as $bank)
@@ -273,7 +300,30 @@
                             @enderror
                         @endif
 
+
+                        @if (in_array($offer->realEstate->property_type_id, [2, 3, 4, 5]))
+                            @if ($is_first_yes)
+                                <div class="col-md-6 mb-1">
+                                    <label class="form-label">المبلغ المستحق</label>
+                                    <div class="input-group input-group-merge" wire:ignore.self>
+                                        <input type="text" step="0.01" class="form-control "
+                                            placeholder="المبلغ المستحق" wire:change="deservedAmount"
+                                            wire:model='deserved_amount' />
+                                    </div>
+
+                                    @if ($deserved_amount_mesage)
+                                        <small class="text-success">{{ $deserved_amount_mesage }}</small>
+                                    @endif
+
+                                    @error('deserved_amount')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                            @endif
+                        @endif
+
                     </div>
+
 
                     <div class="d-flex justify-content-between mt-2">
                         <button class="btn btn-outline-secondary btn-prev" disabled>
@@ -392,14 +442,16 @@
                         <div class="col-md-6 mb-1">
                             <label class="form-label">موظف</label>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" wire:change="customerBuyerType('public')" wire:model='customer_buyer_public'
+                                <input class="form-check-input" type="radio"
+                                    wire:change="customerBuyerType('public')" wire:model='customer_buyer_public'
                                     id="inlineRadio1" value="option1">
                                 <label class="form-check-label" for="inlineRadio1">قطاع
                                     عام</label>
                             </div>
 
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" wire:change="customerBuyerType('private')" wire:model='customer_buyer_private'
+                                <input class="form-check-input" type="radio"
+                                    wire:change="customerBuyerType('private')" wire:model='customer_buyer_private'
                                     id="inlineRadio2" value="option2">
                                 <label class="form-check-label" for="inlineRadio2">خاص</label>
                             </div>
@@ -408,14 +460,15 @@
                         <div class="col-md-6 mb-1">
                             <label class="form-label">هل مدعوم من الإسكان </label>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" wire:change="customerBuyerEskan('yes')" wire:model='customer_buyer_yes'
+                                <input class="form-check-input" type="radio"
+                                    wire:change="customerBuyerEskan('yes')" wire:model='customer_buyer_yes'
                                     id="inlineRadio1" value="option1">
                                 <label class="form-check-label" for="inlineRadio1">نعم</label>
                             </div>
 
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" wire:change="customerBuyerEskan('no')" wire:model='customer_buyer_no'
-                                    id="inlineRadio2" value="option2">
+                                <input class="form-check-input" type="radio" wire:change="customerBuyerEskan('no')"
+                                    wire:model='customer_buyer_no' id="inlineRadio2" value="option2">
                                 <label class="form-check-label" for="inlineRadio2">لا</label>
                             </div>
                         </div>
@@ -614,7 +667,8 @@
                             </div>
 
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" wire:change="customerSellerType('private')" wire:model='customer_seller_private'
+                                <input class="form-check-input" type="radio"
+                                    wire:change="customerSellerType('private')" wire:model='customer_seller_private'
                                     id="inlineRadio2" value="option2">
                                 <label class="form-check-label" for="inlineRadio2">خاص</label>
                             </div>
@@ -623,13 +677,15 @@
                         <div class="col-md-6 mb-1">
                             <label class="form-label">هل مدعوم من الإسكان </label>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" wire:change="customerSellerEskan('yes')" wire:model='customer_seller_yes'
+                                <input class="form-check-input" type="radio"
+                                    wire:change="customerSellerEskan('yes')" wire:model='customer_seller_yes'
                                     id="inlineRadio1" value="option1">
                                 <label class="form-check-label" for="inlineRadio1">نعم</label>
                             </div>
 
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" wire:change="customerSellerEskan('no')" wire:model='customer_seller_no'
+                                <input class="form-check-input" type="radio"
+                                    wire:change="customerSellerEskan('no')" wire:model='customer_seller_no'
                                     id="inlineRadio2" value="option2">
                                 <label class="form-check-label" for="inlineRadio2">لا</label>
                             </div>
@@ -644,7 +700,7 @@
                     <div class="row">
                         <div class="col-md-6 mb-1">
                             <label class="form-label">رقم المبنى</label>
-                            <input type="number" class="form-control"  wire:model='customer_seller_building_number'
+                            <input type="number" class="form-control" wire:model='customer_seller_building_number'
                                 placeholder="رقم المبنى" />
                             @error('customer_seller_building_number')
                                 <small class="text-danger">{{ $message }}</small>

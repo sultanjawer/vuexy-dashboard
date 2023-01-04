@@ -12,6 +12,7 @@ use App\Models\Neighborhood;
 use App\Models\Offer;
 use App\Models\Order;
 use App\Models\Reservation;
+use App\Models\Sale;
 use App\Models\User;
 use App\Policies\BranchPolicy;
 use App\Policies\CityPolicy;
@@ -22,6 +23,7 @@ use App\Policies\NeighborhoodPolicy;
 use App\Policies\OfferPolicy;
 use App\Policies\OrderPolicy;
 use App\Policies\ReservationPolicy;
+use App\Policies\SalePolicy;
 use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\DB;
@@ -46,7 +48,8 @@ class AuthServiceProvider extends ServiceProvider
         Order::class => OrderPolicy::class,
         Offer::class => OfferPolicy::class,
         Reservation::class => ReservationPolicy::class,
-        Branch::class => BranchPolicy::class
+        Branch::class => BranchPolicy::class,
+        Sale::class => SalePolicy::class
     ];
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Http\Controllers\Services\ReservationService;
+use App\Http\Controllers\Services\SaleService;
 use App\Models\Offer;
 use App\Models\OfferEditors;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
@@ -232,6 +233,22 @@ class OfferView extends Component
             'timerProgressBar' => true,
         ]);
 
+        return true;
+    }
+
+    public function cancelSale(SaleService $saleService)
+    {
+        $saleService->cancel($this->offer->sale->id);
+
+        $this->alert('success', '', [
+            'toast' => true,
+            'position' => 'center',
+            'timer' => 3000,
+            'text' => '👍 تم إلغاء الاتفاقية بنجاح',
+            'timerProgressBar' => true,
+        ]);
+
+        $this->emit('refreshComponent');
         return true;
     }
 }

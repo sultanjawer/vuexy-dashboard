@@ -22,8 +22,8 @@ class CreateSale extends Component
     public $buyer_adj = '';
 
     public $price = 0;
-    public $vat = 0;
     public $deserved_amount = 0;
+    public $vat = 0;
     public $saee_prc = 0;
     public $saee_price = 0;
     public $total_price = 0;
@@ -33,6 +33,8 @@ class CreateSale extends Component
     public $check_number = '';
     public $bank_id = 1;
     public $message_vat = '';
+    public $deserved_amount_mesage = '';
+    public $deserved_amount_success = '';
     public $success_message_vat = '';
     public $message_paid_amount = '';
     public $success_message_saee_prc = '';
@@ -373,10 +375,13 @@ class CreateSale extends Component
 
     public function store(SaleService $saleService)
     {
-        $this->paid_amount = (int)str_replace(',', '', $this->paid_amount);
-        $this->saee_price = (int)str_replace(',', '', $this->saee_price);
-        $this->price = (int)str_replace(',', '', $this->price);
-        $this->total_price = (int)str_replace(',', '', $this->total_price);
+        $this->paid_amount = (float)str_replace(',', '', $this->paid_amount);
+        $this->saee_price = (float)str_replace(',', '', $this->saee_price);
+        $this->price = (float)str_replace(',', '', $this->price);
+        $this->total_price = (float)str_replace(',', '', $this->total_price);
+        $this->vat = (float)str_replace(',', '', $this->vat);
+        $this->saee_prc = (float)str_replace(',', '', $this->saee_prc);
+        $this->deserved_amount = (float)str_replace(',', '', $this->deserved_amount);
 
         $data = $this->validate();
 
@@ -451,13 +456,16 @@ class CreateSale extends Component
     {
         $this->is_first_yes = '';
         $this->is_first_no = '';
+        $this->deserved_amount = 0.0;
 
         if ($check == 'yes') {
             $this->is_first_yes = 'option1';
+            $this->deservedAmount();
         }
 
         if ($check == 'no') {
             $this->is_first_no = 'option2';
+            $this->deserved_amount = 0.0;
         }
     }
 
@@ -469,6 +477,26 @@ class CreateSale extends Component
         $this->total_price = 0;
         $this->saee_prc = 0;
         $this->emit('setSaee', $this->saee_type);
+    }
+
+    public function deservedAmount()
+    {
+        $deserved_amount = (float)$this->is_numeric('deserved_amount', $this->deserved_amount);
+        $total_price = (float)$this->is_numeric('total_price', $this->total_price) - (float)$this->paid_amount;
+
+        $this->deserved_amount_mesage = '';
+        $this->deserved_amount_success = '';
+
+        if ($total_price > 1000000) {
+            $deserved_amount = $total_price - 1000000;
+            $process  = number_format((float)(($deserved_amount * 5) / 100), 3);
+            $this->deserved_amount = number_format((float)$deserved_amount, 3);
+            $this->deserved_amount_mesage = "مقدار المبلغ المستحق $process ريال";
+            return true;
+        }
+
+        $this->deserved_amount = 0.0;
+        $this->deserved_amount_mesage = "مقدار المبلغ المستحق 0.0 ريال";
     }
 
     public function vat()
@@ -496,6 +524,7 @@ class CreateSale extends Component
         $this->total_price = number_format($total_price, 3);
         $this->success_message_vat = "مبلغ الضريبة من سعر العقار: $result ريال سعودي";
         $this->message_vat = '';
+        $this->deservedAmount();
     }
 
     public function saeePrc()
@@ -521,11 +550,13 @@ class CreateSale extends Component
 
         $this->success_message_saee_prc = "مبلغ السعي من سعر العقار: $result ريال سعودي";
         $this->total_price = number_format($total_price, 3);
+        $this->deservedAmount();
     }
 
     public function totalPrice()
     {
         $this->total_price = number_format((float)$this->total_price);
+        $this->deservedAmount();
     }
 
     public function saeePrice()
@@ -536,6 +567,7 @@ class CreateSale extends Component
         $process = ($real_estate_price * $vat) / 100;
         $total_price = $process + $real_estate_price + $saee_price;
         $this->total_price = number_format((float)$total_price, 3);
+        $this->deservedAmount();
     }
 
     public function paidAmount()
@@ -547,12 +579,15 @@ class CreateSale extends Component
         if ($paid_amount > $total_price) {
             $this->message_paid_amount = "يجب ان يكون المبلغ أقل أو يساوي السعر الكلي للعرض";
             $this->still_amount = 0;
+            $this->deservedAmount();
             return false;
         }
 
         $process = (float)($total_price - $paid_amount);
 
         $this->still_amount = number_format($process, 3);
+
+        $this->deservedAmount();
     }
 
     public function paymentMethod($method)

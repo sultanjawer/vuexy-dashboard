@@ -36,7 +36,7 @@
                                             </div>
                                         </div>
 
-                                        @if (!$offer->sale)
+                                        @if (!($offer->sale->sale_status == 1))
                                             <a href="javascript:;"
                                                 class="btn bg-light-success mt-2 waves-effect waves-float waves-light"
                                                 data-bs-target="#addReservation" wire:click='reservationData'
@@ -62,7 +62,7 @@
                                             @endif
                                         @endauth
 
-                                        @if ($offer->sale)
+                                        @if ($offer->sale->sale_status == 1)
                                             <a href="{{ route('panel.sale', $offer->sale->id) }}"
                                                 class="btn bg-light-info mt-1 waves-effect waves-float waves-light">
                                                 تفاصيل الاتفاقية
@@ -71,6 +71,12 @@
                                             <a href="#"
                                                 class="btn bg-light-danger mt-1 waves-effect waves-float waves-light">
                                                 تم البيع
+                                            </a>
+
+                                            <a href="#"
+                                                class="btn bg-light-danger mt-1 waves-effect waves-float waves-light"
+                                                wire:click="cancelSale">
+                                                إلغاء صفقة البيع
                                             </a>
                                         @else
                                             <a href="{{ route('panel.create.sale', $offer->id) }}"

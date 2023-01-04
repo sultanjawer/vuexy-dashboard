@@ -21,6 +21,7 @@ use App\Models\Order;
 use App\Models\OrderNoteStatuse;
 use App\Models\OrderStatus;
 use App\Models\OwnerShipType;
+use App\Models\PaymentMethod;
 use App\Models\PriceType;
 use App\Models\PropertyStatus;
 use App\Models\PropertyType;
@@ -343,6 +344,14 @@ if (!function_exists('getOrderNoteStatuse')) {
         return OrderNoteStatuse::data()->get();
     }
 }
+
+if (!function_exists('getPaymentMethods')) {
+    function getPaymentMethods()
+    {
+        return PaymentMethod::data()->get();
+    }
+}
+
 
 
 if (!function_exists('getDirections')) {

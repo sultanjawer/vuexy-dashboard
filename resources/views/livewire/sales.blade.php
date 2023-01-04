@@ -183,7 +183,7 @@
                                                 <tr class="odd">
                                                     <td class="sorting_1">{{ $sale->sale_code }}</td>
                                                     <td> {{ $sale->created_at->format('Y-m-d') }} </td>
-                                                    <td> {{ $sale->offer->realEstate->city->name }} </td>
+                                                    <td> {{ $sale->realEstate->city->name }} </td>
 
                                                     <td>
                                                         @if ($sale->realEstate->property_type_id == 1)
@@ -218,9 +218,9 @@
                                                         @endif
                                                     </td>
 
-                                                    <td> {{ $sale->offer->realEstate->land_number }} </td>
-                                                    <td> {{ number_format($sale->offer->realEstate->space) }} </td>
-                                                    <td> {{ number_format($sale->offer->realEstate->total_price) }}
+                                                    <td> {{ $sale->realEstate->land_number }} </td>
+                                                    <td> {{ number_format($sale->realEstate->space) }} </td>
+                                                    <td> {{ number_format($sale->realEstate->total_price) }}
                                                     </td>
 
                                                     @if ($sale->customer->employee_type == 'public')
@@ -235,7 +235,7 @@
                                                         </td>
                                                     @endif
 
-                                                    <td> {{ $sale->offer->realEstate->branch->name }} </td>
+                                                    <td> {{ $sale->realEstate->branch->name }} </td>
 
                                                     <td>
                                                         @if ($sale->sale_status == 1)
@@ -261,6 +261,14 @@
                                                                         <i class="fas fa-edit"></i>
                                                                     </a>
                                                                 @endif
+
+                                                                {{-- @if (auth()->user()->can('cancelSale', App\Models\Sale::class))
+                                                                    <a class="btn item-edit"
+                                                                        wire:click='cancelSale({{ $sale->id }})'
+                                                                        style="padding:0;color:#EA5455 ">
+                                                                        <i class="fas fa-trash-alt"></i>
+                                                                    </a>
+                                                                @endif --}}
 
                                                             @endauth
 

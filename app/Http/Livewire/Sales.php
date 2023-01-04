@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Exports\PDFExports;
 use App\Exports\SalesExport;
+use App\Http\Controllers\Services\SaleService;
 use App\Models\Sale;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
@@ -123,5 +124,21 @@ class Sales extends Component
 
             return $excel;
         }
+    }
+
+    public function cancelSale(SaleService $saleService, $sale_id)
+    {
+        $saleService->cancel($sale_id);
+
+        $this->alert('success', '', [
+            'toast' => true,
+            'position' => 'center',
+            'timer' => 3000,
+            'text' => '👍 تم إلغاء الاتفاقية بنجاح',
+            'timerProgressBar' => true,
+        ]);
+
+        $this->emit('refreshComponent');
+        return true;
     }
 }
