@@ -6,7 +6,7 @@
             </div>
             <div class="modal-body pb-5 px-sm-5 pt-50" wire:ignore.self>
                 <div class="text-center mb-2" wire:ignore.self>
-                    <h1 class="mb-1">تفاصيل الحجز</h1>
+                    <h1 class="mb-1">تفاصيل الحجز {{$reservation_user_id}}</h1>
                 </div>
 
                 <form class="row gy-1 pt-75" wire:submit.prevent="update">

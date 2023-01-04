@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Http\Controllers\Services\PDFService;
 use App\Models\Customer;
 use App\Models\Sale;
+use ArPHP\I18N\Arabic;
 use Livewire\Component;
 
 class SaleView extends Component
@@ -28,6 +29,8 @@ class SaleView extends Component
         $customer_buyer = Customer::find($sale->customer_buyer_id);
         $customer_seller = Customer::find($sale->customer_seller_id);
         $realEstate = $sale->realEstate;
+
+        $obj = new Arabic('Numbers');
 
         $data = [
             'sale_created_at' => (string)$this->sale->created_at->format('Y-m-d'),
@@ -65,13 +68,13 @@ class SaleView extends Component
 
             #Real Estate Information
             'real_estate_statement' => $realEstate->real_estate_statement,
-            'real_estate_space' => number_format($realEstate->space),
+            'real_estate_space' => number_format($realEstate->space, 3),
             'real_estate_location' => $realEstate->city->name . ' ' . $realEstate->land_number . ' ' . $realEstate->block_number,
-            'total_price' => number_format($sale->tatal_req_amount),
-            'total_price_text' => 'تسعة الاف واربعمئة وخمسون الف',
-            'paid_amount' => number_format($sale->paid_amount),
+            'total_price' => number_format((float)$sale->tatal_req_amount, 3),
+            'total_price_text' => $obj->int2str((float)$sale->tatal_req_amount),
+            'paid_amount' => number_format((float)$sale->paid_amount, 3),
             'date_expire' => "01-02-2022",
-            'amount_due' => number_format($sale->tatal_req_amount - $sale->paid_amount),
+            'amount_due' => number_format((float)($sale->tatal_req_amount - $sale->paid_amount), 3),
             'days' => "360",
             'customer_buyer_name' => $customer_buyer->name,
             'customer_seller_name' => $customer_seller->name,

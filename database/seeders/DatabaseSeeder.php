@@ -46,7 +46,7 @@ class DatabaseSeeder extends Seeder
             BankSeeder::class,
             // MediatorSeeder::class,
             DesireToBuySeeder::class,
-            PurchaseMethodSeeder::class,
+            // PurchaseMethodSeeder::class,
             CustomerSeeder::class,
             OrderStatusSeeder::class,
             // OrderSeeder::class,

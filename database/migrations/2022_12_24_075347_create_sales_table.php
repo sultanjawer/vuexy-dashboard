@@ -26,16 +26,18 @@ return new class extends Migration
 
             #Pricing
             $table->string('check_number')->nullable();
-            $table->integer('vat');
             $table->integer('customer_buyer_id');
             $table->integer('customer_seller_id');
 
+            $table->double('vat');
             $table->double('saee_prc')->nullable();
             $table->double('saee_price')->nullable();
             $table->double('tatal_req_amount');
             $table->double('paid_amount');
+            $table->double('deserved_amount')->nullable();
 
             $table->enum('sale_status', [1, 2]);
+            $table->enum('is_first_home', [1, 2]);
 
             $table->integer('who_add')->nullable();
             $table->integer('who_edit')->nullable();

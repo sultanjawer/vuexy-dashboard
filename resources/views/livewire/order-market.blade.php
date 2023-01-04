@@ -162,6 +162,7 @@
                                                 <th class="sorting {{ $oo_style_sort_direction }}"
                                                     wire:click="oo_sortBy('property_type_id')" tabindex="0"
                                                     rowspan="1" colspan="1">نوع العقار</th>
+                                                <th rowspan="1" colspan="1">صاحب الطلب</th>
                                                 <th class="sorting {{ $oo_style_sort_direction }}"
                                                     wire:click="oo_sortBy('city_id')" tabindex="0" rowspan="1"
                                                     colspan="1">المدينة </th>
@@ -226,6 +227,22 @@
                                                             </span>
                                                         @endif
                                                     </td>
+
+                                                    @if (in_array(auth()->user()->user_type, ['superadmin', 'admin', 'marketer']))
+                                                        <td>
+                                                            @if (getUser($order->user_id)->user_type == 'marketer')
+                                                                {{ 'المسوق ' . $order->user->name }}
+                                                            @endif
+
+                                                            @if (getUser($order->user_id)->user_type == 'office')
+                                                                {{ 'المكتب ' . $order->user->name }}
+                                                            @endif
+
+                                                            @if (in_array(getUser($order->user_id)->user_type, ['admin', 'superadmin']))
+                                                                {{ 'المدير ' . $order->user->name }}
+                                                            @endif
+                                                        </td>
+                                                    @endif
 
                                                     <td>
                                                         <span class="badge bg-dark">
@@ -497,6 +514,8 @@
                                                 <th class="sorting {{ $os_style_sort_direction }}"
                                                     wire:click="os_sortBy('property_type_id')" tabindex="0"
                                                     rowspan="1" colspan="1">نوع العقار</th>
+                                                <th rowspan="1" colspan="1">صاحب الطلب</th>
+
                                                 <th class="sorting {{ $os_style_sort_direction }}"
                                                     wire:click="os_sortBy('city_id')" tabindex="0" rowspan="1"
                                                     colspan="1">المدينة </th>
@@ -563,6 +582,23 @@
                                                             </span>
                                                         @endif
                                                     </td>
+
+
+                                                    @if (in_array(auth()->user()->user_type, ['superadmin', 'admin', 'marketer']))
+                                                        <td>
+                                                            @if (getUser($order->user_id)->user_type == 'marketer')
+                                                                {{ 'المسوق ' . $order->user->name }}
+                                                            @endif
+
+                                                            @if (getUser($order->user_id)->user_type == 'office')
+                                                                {{ 'المكتب ' . $order->user->name }}
+                                                            @endif
+
+                                                            @if (in_array(getUser($order->user_id)->user_type, ['admin', 'superadmin']))
+                                                                {{ 'المدير ' . $order->user->name }}
+                                                            @endif
+                                                        </td>
+                                                    @endif
 
                                                     <td>
                                                         <span class="badge bg-dark">

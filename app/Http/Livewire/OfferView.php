@@ -20,6 +20,7 @@ class OfferView extends Component
     public $offer_id;
     public $last_update_time = '';
     public $last_update_note_time = '';
+    public $reservation_user;
 
     public $customer_id;
     public $price;
@@ -70,6 +71,7 @@ class OfferView extends Component
         $active_reservation = $this->offer->reservations->where('status', 1)->first();
 
         if ($active_reservation) {
+            $this->reservation_user = 'USR-' . $active_reservation->user_id;
             $this->customer_id = $active_reservation->customer->id;
             $this->price = number_format($active_reservation->price);
             $this->date = $active_reservation->date_from . ' to ' . $active_reservation->date_to;

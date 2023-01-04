@@ -39,8 +39,10 @@ return new class extends Migration
             $table->integer('flat_rooms_number')->nullable(); #The number of the rooms in flats of Condominium.
             $table->integer('rooms_number')->nullable(); #The number of the rooms in flat.
             $table->integer('stores_number')->nullable(); #The number of the stores in Condominium.
+            $table->integer('bathroom_number')->nullable();
 
             #Fields Double
+            $table->double('interface_length')->nullable();
             $table->string('price_by_meter')->nullable();
             $table->string('price')->nullable();
             $table->string('total_price')->nullable();

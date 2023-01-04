@@ -15,18 +15,18 @@ class PurchaseMethodSeeder extends Seeder
      */
     public function run()
     {
-        $purchase_methods = [
-            'نقدا',
-            'تمويل بنك',
-            'تمويل شركة',
-            'دفعة اولى كاش والمتبقي تمويل',
-        ];
+        // $purchase_methods = [
+        //     'نقدا',
+        //     'تمويل بنك',
+        //     'تمويل شركة',
+        //     'دفعة اولى كاش والمتبقي تمويل',
+        // ];
 
-        foreach ($purchase_methods as $purchase_method) {
-            DB::table('purchase_methods')->insert([
-                'name' => $purchase_method,
-                'created_at' => now(),
-            ]);
-        }
+        // foreach ($purchase_methods as $purchase_method) {
+        //     DB::table('purchase_methods')->insert([
+        //         'name' => $purchase_method,
+        //         'created_at' => now(),
+        //     ]);
+        // }
     }
 }

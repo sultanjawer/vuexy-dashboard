@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('offer_id')->constrained('offers')->cascadeOnDelete();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->text('note');
-            $table->enum('action', ['edit', 'cancel', 'book', 'add', 'active', 'suspended']);
+            $table->enum('action', ['edit', 'cancel', 'book', 'add', 'active', 'suspended', 'sell']);
             $table->timestamps();
         });
     }

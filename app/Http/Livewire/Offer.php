@@ -48,9 +48,10 @@ class Offer extends Component
 
         if ($user->user_type == "office") {
             $ids = $user->branches->pluck('id')->toArray();
+
             $collection = ModelsOffer::data()->with('realEstate.branch')->whereHas('realEstate.branch', function ($query) use ($ids) {
                 $query->whereIn('id', $ids);
-            })->filters($this->filters)->where('offer_type_id', 2)->reorder($this->sort_field, $this->sort_direction);
+            })->filters($this->filters)->reorder($this->sort_field, $this->sort_direction);
 
             if ($this->rows_number == 'all') {
                 $this->rows_number = $collection->count();

@@ -144,7 +144,8 @@
 
                                 <div class="bs-stepper-content px-0 mt-4" wire:ignore.self>
 
-                                    <div class="personal-info" style="display: block;" role="tabpanel" wire:ignore.self>
+                                    <div class="personal-info" style="display: block;" role="tabpanel"
+                                        wire:ignore.self>
 
                                         <div class="content-header mb-2" wire:ignore.self>
                                             <h2 class="fw-bolder mb-75">الخطوة الاولى</h2>
@@ -226,7 +227,8 @@
                                         </div>
                                     </div>
 
-                                    <div class="account-details" style="display: none;" role="tabpanel" wire:ignore.self>
+                                    <div class="account-details" style="display: none;" role="tabpanel"
+                                        wire:ignore.self>
 
                                         <div class="content-header mb-2">
                                             <h2 class="fw-bolder mb-75">الخطوة الثانية</h2>
@@ -289,8 +291,8 @@
                                                 </div>
                                             </div>
 
-                                            <div class="row condominium-extra" wire:ignore.self>
-                                                <div class="col-md-6 mb-1">
+                                            <div class="row" wire:ignore>
+                                                <div class="col-md-6 mb-1 condominium-extra-stores-number">
                                                     <label class="form-label" for="price">عدد المحلات</label>
                                                     <div class="input-group input-group-merge">
                                                         <input type="number" wire:model='stores_number'
@@ -301,7 +303,18 @@
                                                     @enderror
                                                 </div>
 
-                                                <div class="col-md-6 mb-1">
+                                                <div class="col-md-6 mb-1 condominium-extra-bathroom-number">
+                                                    <label class="form-label" for="price">عدد دورات المياه</label>
+                                                    <div class="input-group input-group-merge">
+                                                        <input type="number" wire:model='bathroom_number'
+                                                            class="form-control" placeholder="عدد دورات المياه">
+                                                    </div>
+                                                    @error('bathroom_number')
+                                                        <small class="text-danger">{{ $message }}</small>
+                                                    @enderror
+                                                </div>
+
+                                                <div class="col-md-6 mb-1 condominium-extra-flat-rooms">
                                                     <label class="form-label" for="price">عدد غرف الشقة</label>
                                                     <div class="input-group input-group-merge">
                                                         <input type="number" wire:model='flat_rooms_number'
@@ -425,8 +438,20 @@
                                                     @enderror
                                                 </div>
 
-                                                <div class="col-md-6 mb-1 interface-length-div-hide" wire:ignore>
+                                                <div class="col-md-6 mb-1 interface-length-div-hide" wire:ignore.self>
                                                     <label class="form-label">طول الواجهة</label>
+
+                                                    <div class="input-group input-group-merge">
+                                                        <input type="number" step="0.01"
+                                                            wire:model='interface_length' class="form-control"
+                                                            placeholder="طول الواجهة">
+                                                    </div>
+                                                    @error('interface_length')
+                                                        <small class="text-danger">{{ $message }}</small>
+                                                    @enderror
+
+
+                                                    {{--
                                                     <select class="js-select2-interface-length select2 form-select"
                                                         wire:model='interface_length_id'>
                                                         @foreach (getInterfaceLengths() as $interface_length)
@@ -437,7 +462,7 @@
 
                                                     @error('interface_length_id')
                                                         <small class="text-danger">{{ $message }}</small>
-                                                    @enderror
+                                                    @enderror --}}
                                                 </div>
 
                                                 <div class="col-md-6 mb-1 building-type" wire:ignore>
@@ -581,7 +606,8 @@
                                         </div>
                                     </div>
 
-                                    <div class="account-home-details" style="display: none;" role="tabpanel" wire:ignore.self>
+                                    <div class="account-home-details" style="display: none;" role="tabpanel"
+                                        wire:ignore.self>
 
                                         <div class="content-header mb-2">
                                             <h2 class="fw-bolder mb-75">الخطوة الثالثة</h2>
@@ -620,7 +646,7 @@
                                                 </div>
 
 
-                                                <div class="col-md-6 mb-1 mediators" wire:ignore>
+                                                <div class="col-md-5 mb-1 mediators" wire:ignore>
                                                     <div class="position-relative">
 
                                                         <select
@@ -635,7 +661,8 @@
                                                                 @endif
                                                                 @foreach (getMediators() as $mediator)
                                                                     <option value="{{ $mediator->id }}">
-                                                                        {{ $mediator->name }}</option>
+                                                                        {{ $mediator->name . '::' . $mediator->phone_number }}
+                                                                    </option>
                                                                 @endforeach
                                                             </optgroup>
                                                         </select>
@@ -647,6 +674,27 @@
                                                         <span class="dropdown-wrapper" aria-hidden="true"></span>
                                                     </div>
                                                 </div>
+
+                                                <div class="col-md-1 mb-1 mediators">
+                                                    <a type="button" href="javascript:;"
+                                                        class="btn btn-icon rounded-circle btn-outline-primary waves-effect"
+                                                        data-bs-toggle="modal" data-bs-target="#CreateMediatorForm">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                            height="24" viewBox="0 0 24 24" fill="none"
+                                                            stroke="currentColor" stroke-width="2"
+                                                            stroke-linecap="round" stroke-linejoin="round"
+                                                            class="feather feather-user-plus">
+                                                            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                                            <circle cx="8.5" cy="7" r="4">
+                                                            </circle>
+                                                            <line x1="20" y1="8" x2="20"
+                                                                y2="14"></line>
+                                                            <line x1="23" y1="11" x2="17"
+                                                                y2="11"></line>
+                                                        </svg>
+                                                    </a>
+                                                </div>
+
                                             </div>
 
                                         </form>
@@ -672,10 +720,92 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="CreateMediatorForm" tabindex="-1" aria-labelledby="CreateMediatorFormTitle"
+        aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog modal-dialog-centered modal-lg" wire:ignore.self>
+            <div class="modal-content" wire:ignore.self>
+                <div class="modal-header bg-transparent" wire:ignore.self>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body pb-5 px-sm-4 mx-50" wire:ignore.self>
+                    <h1 class="address-title text-center mb-1" id="CreateMediatorFormTitle" wire:ignore.self>إضافة
+                        وسيط
+                    </h1>
+                    <p class="address-subtitle text-center mb-2 pb-75"></p>
+
+                    <form id="addNewAddressForm" class="row gy-1 gx-2" wire:ignore.self>
+
+
+                        <div class="col-12 col-md-6" wire:ignore.self>
+                            <label class="form-label">اسم الوسيط</label>
+                            <input type="text" wire:model='name' class="form-control" placeholder="اسم الوسيط" />
+                            @error('name')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        {{--
+                    <div class="col-12 col-md-6" wire:ignore.self>
+                        <label class="form-label">كود الوسيط</label>
+                        <input type="text" wire:model='code' disabled class="form-control"
+                            placeholder="example: 1011" />
+                        @error('code')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div> --}}
+
+
+                        <div class="col-12 col-md-6" wire:ignore.self>
+                            <label class="form-label">رقم الجوال</label>
+                            <input type="tel" wire:model='phone_number' maxlength="10" class="form-control"
+                                placeholder="رقم الجوال" />
+                            @error('phone_number')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+
+                        <div class="col-12 col-md-6" wire:ignore.self>
+                            <label class="form-label">صفة الوسيط</label>
+                            <select wire:model='type' class="form-select">
+                                <option value="office">مكتب</option>
+                                <option value="individual">فرد</option>
+                            </select>
+                            @error('type')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+
+                        <div class="col-12 text-center mt-2 pt-50" wire:ignore.self>
+                            <button type="button" class="btn btn-primary btn-submit me-1"
+                                wire:click="createMediator">حفظ</button>
+                            <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal"
+                                aria-label="Close">الغاء</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     @push('test')
         <script>
             $(document).ready(function() {
 
+
+                window.livewire.on('submitMediator', (data) => {
+                    $('#CreateMediatorForm').modal('hide');
+                    $('.js-select2-multi').html('');
+                    $('.js-select2-multi').select2({
+                        placeholder: ' اختيار الوسطاء',
+                        data: data,
+                        closeOnSelect: false,
+                    });
+                });
 
                 $property_type_id = "{{ $property_type_id }}";
 
@@ -689,6 +819,10 @@
                 $(".character").hide();
                 $(".interface-length-div-hide").hide();
                 $(".condominium-extra").hide();
+                $(".condominium-extra-stores-number").hide();
+                $(".condominium-extra-flat-rooms").hide();
+                $(".condominium-extra-bathroom-number").hide();
+
                 $(".price").hide();
                 $(".floor-number").hide();
                 $(".notes").hide();
@@ -748,6 +882,8 @@
 
                 if ($property_type_id == 3) {
                     $(".condominium-extra").show();
+                    $(".condominium-extra-stores-number").show();
+                    $(".condominium-extra-flat-rooms").show();
                     $(".real-estate-age").show();
                     $(".notes").show();
                     $(".total-price").show();
@@ -759,6 +895,8 @@
                     // // $(".price").show();
                     $(".floor-number").show();
                     $(".notes").show();
+                    $(".condominium-extra-flat-rooms").show();
+                    $(".condominium-extra-bathroom-number").show();
                     $(".total-price").show();
                     $(".branch-div-hide").show();
                     $(".real-estate-age").show();
@@ -783,7 +921,8 @@
 
                     $('.js-select2-multi').select2({
                         placeholder: 'اختار الوسطاء',
-                        closeOnSelect: true
+                        closeOnSelect: true,
+                        tags: true
                     });
 
                     $('.js-select2-city').select2({

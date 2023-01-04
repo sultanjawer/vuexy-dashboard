@@ -21,6 +21,7 @@ class Sale extends Model
         'customer_seller_id',
         'real_estate_id',
         'payment_method_id',
+        'is_first_home',
         'check_number',
         'bank_id',
         'vat',
@@ -178,6 +179,7 @@ class Sale extends Model
             'customer_id',
             'real_estate_id',
             'payment_method_id',
+            'is_first_home',
 
             'vat',
             'check_number',

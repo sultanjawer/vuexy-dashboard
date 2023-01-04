@@ -36,21 +36,25 @@
                                             </div>
                                         </div>
 
-                                        <a href="javascript:;"
-                                            class="btn bg-light-success mt-2 waves-effect waves-float waves-light"
-                                            data-bs-target="#addReservation" wire:click='reservationData'
-                                            data-bs-toggle="modal">
-                                            @if (!$is_booked)
-                                                حجز
-                                            @endif
+                                        @if (!$offer->sale)
+                                            <a href="javascript:;"
+                                                class="btn bg-light-success mt-2 waves-effect waves-float waves-light"
+                                                data-bs-target="#addReservation" wire:click='reservationData'
+                                                data-bs-toggle="modal">
+                                                @if (!$is_booked)
+                                                    حجز
+                                                @endif
 
-                                            @if ($is_booked)
-                                                تفاصيل الحجز
-                                            @endif
-                                        </a>
+                                                @if ($is_booked)
+                                                    تفاصيل الحجز
+                                                @endif
+                                            </a>
+                                        @endif
+
 
                                         @auth
-                                            @if (($is_booked && auth()->id() == $user_id) || ($is_booked && auth()->user()->user_type == 'superadmin'))
+                                            @if ((($is_booked && auth()->id() == $user_id) || ($is_booked && auth()->user()->user_type == 'superadmin')) &&
+                                                !$offer->sale)
                                                 <a href="javascript:;" wire:click="cancelReservation"
                                                     class="btn bg-light-danger mt-1 waves-effect waves-float waves-light">
                                                     إلغاء الحجز
@@ -58,10 +62,22 @@
                                             @endif
                                         @endauth
 
-                                        <a href="{{ route('panel.create.sale', $offer->id) }}"
-                                            class="btn bg-light-primary mt-1 waves-effect waves-float waves-light">
-                                            بيع
-                                        </a>
+                                        @if ($offer->sale)
+                                            <a href="{{ route('panel.sale', $offer->sale->id) }}"
+                                                class="btn bg-light-info mt-1 waves-effect waves-float waves-light">
+                                                تفاصيل الاتفاقية
+                                            </a>
+
+                                            <a href="#"
+                                                class="btn bg-light-danger mt-1 waves-effect waves-float waves-light">
+                                                تم البيع
+                                            </a>
+                                        @else
+                                            <a href="{{ route('panel.create.sale', $offer->id) }}"
+                                                class="btn bg-light-primary mt-1 waves-effect waves-float waves-light">
+                                                بيع
+                                            </a>
+                                        @endif
 
                                     </div>
 
@@ -247,11 +263,13 @@
                                         <h4 class="card-title mb-25">معلومات العقار</h4>
                                         <p class="card-text mb-0">
 
-                                            @can('updateOffer', $offer)
-                                                <a class="btn btn-sm bg-light-danger waves-effect waves-float waves-light"
-                                                    href="{{ route('panel.update.offer', $offer->id) }}"> تعديل هذا
-                                                    العقار</a>
-                                            @endcan
+                                            @if (auth()->id() == $offer->user_id && !$offer->sale)
+                                                @can('updateOffer', $offer)
+                                                    <a class="btn btn-sm bg-light-danger waves-effect waves-float waves-light"
+                                                        href="{{ route('panel.update.offer', $offer->id) }}"> تعديل هذا
+                                                        العقار</a>
+                                                @endcan
+                                            @endif
 
                                         </p>
                                     </div>
@@ -994,7 +1012,7 @@
                 </div>
                 <div class="modal-body ">
                     <div class="text-center mb-2">
-                        <h1 class="mb-1">تفاصيل الحجز</h1>
+                        <h1 class="mb-1">تفاصيل الحجز {{ $reservation_user }}</h1>
                     </div>
 
                     <div class="row">

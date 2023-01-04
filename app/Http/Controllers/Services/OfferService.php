@@ -141,6 +141,9 @@ class OfferService extends Controller
             'total_price' => $data['total_price'],
             'property_status_id' => 1,
             'space' => $data['space'],
+            'space' => $data['space'],
+            'flat_rooms_number' => $data['flat_rooms_number'],
+            'bathroom_number' => $data['bathroom_number'],
             'branch_id' => $data['branch_id'],
             'notes' => $data['notes'],
             'real_estate_type' => 'flat',
@@ -198,6 +201,7 @@ class OfferService extends Controller
             'branch_id' => $data['branch_id'],
             'character' => $data['character'],
             'interface_length_id' => $data['interface_length_id'],
+            'interface_length' => $data['interface_length'],
             'building_type_id' => $data['building_type_id'],
             'building_status_id' => $data['building_status_id'],
             'construction_delivery_id' => $data['construction_delivery_id'],
@@ -230,6 +234,7 @@ class OfferService extends Controller
             'notes' => $data['notes'],
             'character' => $data['character'],
             'interface_length_id' => $data['interface_length_id'],
+            'interface_length' => $data['interface_length'],
             'real_estate_statement' => $data['real_estate_statement']
         ]);
 
@@ -266,6 +271,7 @@ class OfferService extends Controller
                 'notes' => $data['notes'],
                 'character' => $data['character'],
                 'interface_length_id' => $data['interface_length_id'],
+                'interface_length' => $data['interface_length'],
                 'real_estate_statement' => $data['real_estate_statement']
             ]);
         }
@@ -286,6 +292,7 @@ class OfferService extends Controller
                 'branch_id' => $data['branch_id'],
                 'character' => $data['character'],
                 'interface_length_id' => $data['interface_length_id'],
+                'interface_length' => $data['interface_length'],
                 'building_type_id' => $data['building_type_id'],
                 'building_status_id' => $data['building_status_id'],
                 'construction_delivery_id' => $data['construction_delivery_id'],
@@ -325,6 +332,8 @@ class OfferService extends Controller
                 'property_status_id' => 1,
                 'total_price' => $data['total_price'],
                 'space' => $data['space'],
+                'bathroom_number' => $data['bathroom_number'],
+                'flat_rooms_number' => $data['flat_rooms_number'],
                 'branch_id' => $data['branch_id'],
                 'notes' => $data['notes'],
                 'floor_number' => $data['floor_number'],

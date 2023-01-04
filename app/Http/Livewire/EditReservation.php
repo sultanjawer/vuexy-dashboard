@@ -17,6 +17,7 @@ class EditReservation extends Component
     public $date_from;
     public $date_to;
     public $note;
+    public $reservation_user_id;
 
     public function render()
     {
@@ -58,6 +59,7 @@ class EditReservation extends Component
     public function reservationModal($reservation_id)
     {
         $reservation = Reservation::find($reservation_id);
+        $this->reservation_user_id = 'USR-' . $reservation->user_id;
         $this->customer_name = $reservation->customer_name;
         $this->price =  number_format($reservation->price);
         $this->date_from = $reservation->date_from;

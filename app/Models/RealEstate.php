@@ -19,6 +19,7 @@ class RealEstate extends Model
         'property_type_id',
         'property_status_id',
         'interface_length_id',
+        'interface_length',
         'licensed_id',
         'owner_ship_type_id',
         'building_type_id',
@@ -29,6 +30,7 @@ class RealEstate extends Model
         'floors_number',
         'flats_numbers',
         'flat_rooms_number',
+        'bathroom_number',
         'rooms_number',
         'stores_number',
         'real_estate_statement',
@@ -119,7 +121,6 @@ class RealEstate extends Model
     {
         return $this->hasOne(Branch::class, 'id', 'branch_id');
     }
-
 
     #Has Many Relationship
     public function offers()

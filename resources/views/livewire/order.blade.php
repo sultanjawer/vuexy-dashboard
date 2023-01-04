@@ -1,12 +1,9 @@
 <div>
-
     <section class="app-user-list">
         <section id="basic-datatable">
             <div class="row">
-
                 <div class="col-12">
                     <div class="card">
-
                         {{-- Navbar Sections --}}
                         <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist" wire:ignore>
 
@@ -26,10 +23,9 @@
                                 @endif
                             @endauth
                         </ul>
+
                         {{-- Navbar Sections --}}
-
                         <div class="tab-content pt-1">
-
                             <div class="tab-pane active" id="home-fill" role="tabpanel" aria-labelledby="home-tab-fill"
                                 wire:ignore.self>
                                 <div class="dataTables_wrapper dt-bootstrap5 no-footer">
@@ -161,8 +157,10 @@
                                                 <th class="sorting {{ $style_sort_direction }}"
                                                     wire:click="sortBy('id')" tabindex="0"
                                                     rowspan="1"colspan="1">كود الطلب </th>
+
                                                 <th rowspan="1" colspan="1">التاريخ</th>
                                                 <th rowspan="1" colspan="1">نوع العقار</th>
+                                                <th rowspan="1" colspan="1">صاحب الطلب</th>
                                                 <th rowspan="1" colspan="1">المدينة</th>
                                                 <th rowspan="1" colspan="1">اسم العميل</th>
                                                 <th rowspan="1" colspan="1">الميزانية</th>
@@ -223,6 +221,22 @@
                                                             </span>
                                                         @endif
                                                     </td>
+
+                                                    @if (in_array(auth()->user()->user_type, ['superadmin', 'admin', 'marketer']))
+                                                        <td>
+                                                            @if (getUser($order->user_id)->user_type == 'marketer')
+                                                                {{ 'المسوق ' . $order->user->name }}
+                                                            @endif
+
+                                                            @if (getUser($order->user_id)->user_type == 'office')
+                                                                {{ 'المكتب ' . $order->user->name }}
+                                                            @endif
+
+                                                            @if (in_array(getUser($order->user_id)->user_type, ['admin', 'superadmin']))
+                                                                {{ 'المدير ' . $order->user->name }}
+                                                            @endif
+                                                        </td>
+                                                    @endif
 
                                                     <td>
                                                         <span class="badge bg-dark">
@@ -620,17 +634,10 @@
                                                                 <i class="fas fa-trash-alt"></i>
                                                             </button>
                                                             @endif --}}
-
-
-
-
-
                                                                 </div>
                                                             </td>
                                                         </tr>
                                                     @endforeach
-
-
                                                 </tbody>
                                             </table>
 
@@ -658,17 +665,13 @@
                                                     </div>
                                                 </div>
                                             </div>
-
                                         </div>
                                     </div>
                                 @endif
                             @endauth
-
-
                         </div>
                     </div>
                 </div>
-
             </div>
         </section>
     </section>

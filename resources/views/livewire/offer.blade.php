@@ -42,39 +42,42 @@
 
                                     <div class="dataTables_wrapper dt-bootstrap5 no-footer">
 
-                                        <div class="card-header border-bottom p-1">
-                                            <div class="head-label"></div>
-                                            <div class="btn-group">
-                                                <button class="btn btn-gradient-warning dropdown-toggle" type="button"
-                                                    id="dropdownMenuButton303" data-bs-toggle="dropdown"
-                                                    aria-expanded="false">
-                                                    تصدير
-                                                </button>
-                                                <div class="dropdown-menu text-center export p-0"
-                                                    aria-labelledby="dropdownMenuButton303" style="">
+                                        @auth
+                                            @if (in_array(auth()->user()->user_type, ['superadmin', 'admin', 'marketer']))
+                                                <div class="card-header border-bottom p-1">
+                                                    <div class="head-label"></div>
+                                                    <div class="btn-group">
+                                                        <button class="btn btn-gradient-warning dropdown-toggle" type="button"
+                                                            id="dropdownMenuButton303" data-bs-toggle="dropdown"
+                                                            aria-expanded="false">
+                                                            تصدير
+                                                        </button>
+                                                        <div class="dropdown-menu text-center export p-0"
+                                                            aria-labelledby="dropdownMenuButton303" style="">
 
-                                                    <button class="btn export" tabindex="0"
-                                                        wire:click="export('excel', 1)" aria-controls="DataTables_Table_0"
-                                                        type="button">
-                                                        <span>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                height="24" viewBox="0 0 24 24" fill="none"
-                                                                stroke="currentColor" stroke-width="2"
-                                                                stroke-linecap="round" stroke-linejoin="round"
-                                                                class="feather feather-file font-small-4 me-50">
-                                                                <path
-                                                                    d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z">
-                                                                </path>
-                                                                <polyline points="13 2 13 9 20 9"></polyline>
-                                                            </svg>Excel
-                                                        </span>
-                                                    </button>
+                                                            <button class="btn export" tabindex="0"
+                                                                wire:click="export('excel', 1)"
+                                                                aria-controls="DataTables_Table_0" type="button">
+                                                                <span>
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                        height="24" viewBox="0 0 24 24" fill="none"
+                                                                        stroke="currentColor" stroke-width="2"
+                                                                        stroke-linecap="round" stroke-linejoin="round"
+                                                                        class="feather feather-file font-small-4 me-50">
+                                                                        <path
+                                                                            d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z">
+                                                                        </path>
+                                                                        <polyline points="13 2 13 9 20 9"></polyline>
+                                                                    </svg>Excel
+                                                                </span>
+                                                            </button>
 
-                                                    {{-- <a class="dropdown-item" href="#">Excel</a> --}}
+                                                            {{-- <a class="dropdown-item" href="#">Excel</a> --}}
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>
-
+                                            @endif
+                                        @endauth
 
                                         <div class="d-flex justify-content-between align-items-center mx-0 row">
 
@@ -115,6 +118,7 @@
                                                         wire:click="sortBy('id')" tabindex="0" rowspan="1"
                                                         colspan="1" aria-sort="ascending">كود العرض</th>
                                                     <th>نوع العقار</th>
+                                                    <th>صاحب العرض</th>
                                                     <th>بيان العقار</th>
                                                     <th>المدينة</th>
                                                     <th>الحي</th>
@@ -163,6 +167,23 @@
                                                             @endif
                                                         </td>
 
+                                                        @if (in_array(auth()->user()->user_type, ['superadmin', 'admin', 'marketer']))
+                                                            <td>
+                                                                @if (getUser($direct_offer->user_id)->user_type == 'marketer')
+                                                                    {{ 'المسوق ' . $direct_offer->user->name }}
+                                                                @endif
+
+                                                                @if (getUser($direct_offer->user_id)->user_type == 'office')
+                                                                    {{ 'المكتب ' . $direct_offer->user->name }}
+                                                                @endif
+
+                                                                @if (in_array(getUser($direct_offer->user_id)->user_type, ['admin', 'superadmin']))
+                                                                    {{ 'المدير ' . $direct_offer->user->name }}
+                                                                @endif
+                                                            </td>
+                                                        @endif
+
+
                                                         <td>{{ $direct_offer->realEstate->real_estate_statement }}</td>
                                                         <td>{{ getCityName($direct_offer->realEstate->city_id) }}</td>
                                                         <td>{{ getNeighborhoodName($direct_offer->realEstate->neighborhood_id) }}
@@ -199,12 +220,28 @@
                                                                     </a>
                                                                 @endcan
 
-                                                                @can('updateOffer', $direct_offer)
-                                                                    <a href="{{ route('panel.update.offer', $direct_offer->id) }}"
-                                                                        class="item-edit">
-                                                                        <i class="fas fa-edit"></i>
-                                                                    </a>
-                                                                @endcan
+                                                                @auth
+                                                                    @if (in_array(auth()->user()->user_type, ['office', 'marketer']) && !$direct_offer->sale)
+                                                                        @if (auth()->id() == $direct_offer->user_id)
+                                                                            @can('updateOffer', $direct_offer)
+                                                                                <a href="{{ route('panel.update.offer', $direct_offer->id) }}"
+                                                                                    class="item-edit">
+                                                                                    <i class="fas fa-edit"></i>
+                                                                                </a>
+                                                                            @endcan
+                                                                        @endif
+                                                                    @endif
+
+                                                                    @if (in_array(auth()->user()->user_type, ['admin', 'superadmin']) && !$direct_offer->sale)
+                                                                        @can('updateOffer', $direct_offer)
+                                                                            <a href="{{ route('panel.update.offer', $direct_offer->id) }}"
+                                                                                class="item-edit">
+                                                                                <i class="fas fa-edit"></i>
+                                                                            </a>
+                                                                        @endcan
+                                                                    @endif
+                                                                @endauth
+
                                                                 {{--
                                                                 @can('changeOfferStatus', $direct_offer)
                                                                     <button class="btn item-edit"
@@ -256,38 +293,43 @@
 
                                         <div class="dataTables_wrapper dt-bootstrap5 no-footer">
 
-                                            <div class="card-header border-bottom p-1">
-                                                <div class="head-label"></div>
-                                                <div class="btn-group">
-                                                    <button class="btn btn-gradient-warning dropdown-toggle"
-                                                        type="button" id="dropdownMenuButton303"
-                                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                                        تصدير
-                                                    </button>
-                                                    <div class="dropdown-menu text-center export p-0"
-                                                        aria-labelledby="dropdownMenuButton303" style="">
+                                            @auth
+                                                @if (in_array(auth()->user()->user_type, ['superadmin', 'admin', 'marketer']))
+                                                    <div class="card-header border-bottom p-1">
+                                                        <div class="head-label"></div>
+                                                        <div class="btn-group">
+                                                            <button class="btn btn-gradient-warning dropdown-toggle"
+                                                                type="button" id="dropdownMenuButton303"
+                                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                                تصدير
+                                                            </button>
+                                                            <div class="dropdown-menu text-center export p-0"
+                                                                aria-labelledby="dropdownMenuButton303" style="">
 
-                                                        <button class="btn export" tabindex="0"
-                                                            wire:click="export('excel', 2)"
-                                                            aria-controls="DataTables_Table_0" type="button">
-                                                            <span>
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                    height="24" viewBox="0 0 24 24" fill="none"
-                                                                    stroke="currentColor" stroke-width="2"
-                                                                    stroke-linecap="round" stroke-linejoin="round"
-                                                                    class="feather feather-file font-small-4 me-50">
-                                                                    <path
-                                                                        d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z">
-                                                                    </path>
-                                                                    <polyline points="13 2 13 9 20 9"></polyline>
-                                                                </svg>Excel
-                                                            </span>
-                                                        </button>
+                                                                <button class="btn export" tabindex="0"
+                                                                    wire:click="export('excel', 2)"
+                                                                    aria-controls="DataTables_Table_0" type="button">
+                                                                    <span>
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                            height="24" viewBox="0 0 24 24" fill="none"
+                                                                            stroke="currentColor" stroke-width="2"
+                                                                            stroke-linecap="round" stroke-linejoin="round"
+                                                                            class="feather feather-file font-small-4 me-50">
+                                                                            <path
+                                                                                d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z">
+                                                                            </path>
+                                                                            <polyline points="13 2 13 9 20 9"></polyline>
+                                                                        </svg>Excel
+                                                                    </span>
+                                                                </button>
 
-                                                        {{-- <a class="dropdown-item" href="#">Excel</a> --}}
+                                                                {{-- <a class="dropdown-item" href="#">Excel</a> --}}
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </div>
+                                                @endif
+                                            @endauth
+
 
                                             <div class="d-flex justify-content-between align-items-center mx-0 row">
                                                 <div class="col-sm-12 col-md-3">
@@ -410,12 +452,27 @@
                                                                         </a>
                                                                     @endcan
 
-                                                                    @can('updateOffer', $in_direct_offer)
-                                                                        <a href="{{ route('panel.update.offer', $in_direct_offer->id) }}"
-                                                                            class="item-edit">
-                                                                            <i class="fas fa-edit"></i>
-                                                                        </a>
-                                                                    @endcan
+                                                                    @auth
+                                                                        @if (in_array(auth()->user()->user_type, ['office', 'marketer']) && !$in_direct_offer->sale)
+                                                                            @if (auth()->id() == $in_direct_offer->user_id)
+                                                                                @can('updateOffer', $in_direct_offer)
+                                                                                    <a href="{{ route('panel.update.offer', $in_direct_offer->id) }}"
+                                                                                        class="item-edit">
+                                                                                        <i class="fas fa-edit"></i>
+                                                                                    </a>
+                                                                                @endcan
+                                                                            @endif
+                                                                        @endif
+
+                                                                        @if (in_array(auth()->user()->user_type, ['admin', 'superadmin']) && !$in_direct_offer->sale)
+                                                                            @can('updateOffer', $in_direct_offer)
+                                                                                <a href="{{ route('panel.update.offer', $in_direct_offer->id) }}"
+                                                                                    class="item-edit">
+                                                                                    <i class="fas fa-edit"></i>
+                                                                                </a>
+                                                                            @endcan
+                                                                        @endif
+                                                                    @endauth
 
                                                                     {{-- @can('changeOfferStatus', $in_direct_offer)
                                                                         <button class="btn item-edit"
@@ -461,9 +518,7 @@
                                 @endif
 
 
-
                             </div>
-
                         @endauth
                     </div>
                 </div>

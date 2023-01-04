@@ -23,7 +23,11 @@ class EditSale extends Component
     public $seller_adj = '';
     public $buyer_adj = '';
 
+    public $is_first_yes = '';
+    public $is_first_no = 'option2';
+
     public $price = 0;
+    public $deserved_amount = 0;
     public $vat = 0;
     public $saee_prc = 0;
     public $saee_price = 0;
@@ -147,7 +151,7 @@ class EditSale extends Component
     public function mount($sale_id)
     {
         $this->setData($sale_id);
-        $this->setCustomers();
+        $this->customers = Customer::get(['id', 'phone', 'name', 'nationality_id']);
     }
 
     public function render()
@@ -170,37 +174,42 @@ class EditSale extends Component
             $this->offer_code = $offer->offer_code;
             $this->neighborhood_name = $realEstate->neighborhood->name;
             $this->land_number = $realEstate->land_number;
-            $this->space = number_format($realEstate->space);
-            $this->price = number_format($realEstate->total_price);
+            $this->space = number_format($realEstate->space, 3);
+            $this->price = number_format($realEstate->total_price, 3);
             $this->check_number = $this->sale->check_number;
             $this->bank_id = $this->sale->bank_id;
 
-            $this->vat = $this->sale->vat;
+            $this->vat =  (float)$this->sale->vat;
             $this->saee_type = $this->sale->saee_prc ? 'saee_prc' : 'saee_price';
-            $this->saee_prc  = $this->sale->saee_prc;
-            $this->saee_price = number_format($this->sale->saee_price);
-            $this->total_price = number_format($realEstate->total_price);
-            $this->paid_amount = number_format($this->sale->paid_amount);
+            $this->saee_prc  = (float)$this->sale->saee_prc;
+            $this->saee_price = number_format((float)$this->sale->saee_price, 3);
+            $this->total_price = number_format((float)$realEstate->total_price, 3);
+            $this->paid_amount = number_format((float)$this->sale->paid_amount, 3);
+
+            if ($this->sale->is_first_home == 1) {
+                $this->is_first_yes = 'option1';
+                $this->is_first_no = '';
+            }
+
+            if ($this->sale->is_first_home == 2) {
+                $this->is_first_yes = '';
+                $this->is_first_no = 'option2';
+            }
+
+            $this->check = '';
+            $this->bank = '';
+            $this->cash = '';
 
             if ($this->sale->payment_method_id == 1) {
                 $this->cash = 'option1';
-                $this->check = '';
-                $this->bank = '';
-                $this->check_number = null;
             }
 
             if ($this->sale->payment_method_id == 2) {
-                $this->cash = '';
                 $this->check = 'option2';
-                $this->bank = '';
-                $this->check_number = null;
             }
 
             if ($this->sale->payment_method_id == 3) {
-                $this->cash = '';
-                $this->check = '';
                 $this->bank = 'option3';
-                $this->check_number = null;
             }
         }
 
@@ -220,19 +229,24 @@ class EditSale extends Component
             $this->customer_buyer_unit_number = $customer_buyer->unit_number;
             $this->buyer_adj = $customer_buyer->adj;
 
+            $this->customer_buyer_private = '';
+            $this->customer_buyer_public = '';
+            $this->customer_buyer_no = '';
+            $this->customer_buyer_yes = '';
+
             if ($customer_buyer->employee_type == 'public') {
                 $this->customer_buyer_public = 'option1';
-                $this->customer_buyer_private = '';
-            } else {
-                $this->customer_buyer_public = '';
+            }
+
+            if ($customer_buyer->employee_type == 'private') {
                 $this->customer_buyer_private = 'option2';
             }
 
-            if ($customer_buyer->support_eskan) {
+            if ($customer_buyer->support_eskan == 1) {
                 $this->customer_buyer_yes = 'option1';
-                $this->customer_buyer_no = '';
-            } else {
-                $this->customer_buyer_yes = '';
+            }
+
+            if ($customer_buyer->support_eskan == 0) {
                 $this->customer_buyer_no = 'option2';
             }
         }
@@ -253,62 +267,53 @@ class EditSale extends Component
             $this->customer_seller_unit_number = $customer_seller->unit_number;
             $this->seller_adj = $customer_seller->adj;
 
+            $this->customer_seller_private = '';
+            $this->customer_seller_public = '';
+            $this->customer_seller_no = '';
+            $this->customer_seller_yes = '';
+
             if ($customer_seller->employee_type == 'public') {
                 $this->customer_seller_public = 'option1';
-                $this->customer_seller_private = '';
-            } else {
-                $this->customer_seller_public = '';
+            }
+
+            if ($customer_seller->employee_type == 'private') {
                 $this->customer_seller_private = 'option2';
             }
 
-            if ($customer_seller->support_eskan) {
+            if ($customer_seller->support_eskan == 1) {
                 $this->customer_seller_yes = 'option1';
-                $this->customer_seller_no = '';
-            } else {
-                $this->customer_seller_yes = '';
+            }
+
+            if ($customer_seller->support_eskan == 0) {
                 $this->customer_seller_no = 'option2';
             }
         }
+        $this->error_message_saee_prc = '';
+        $this->success_message_vat = "";
+        $this->message_vat = '';
+        $this->success_message_saee_prc = "";
+        $this->message_paid_amount = '';
 
+        $vat_prce = number_format($this->rateCalculation($realEstate->total_price, $this->vat), 3);
+        $this->success_message_vat = "مبلغ الضريبة من سعر العقار: $vat_prce ريال سعودي";
+        $saee_prc = number_format($this->rateCalculation($realEstate->total_price, $this->saee_prc), 3);
+        $this->success_message_saee_prc = "مبلغ السعي من سعر العقار: $saee_prc ريال سعودي";
 
-        if ($this->vat > 100) {
-            $this->vat = 0;
-            $this->message_vat = "نسبة الضريبة بين 0 - 100";
-            $this->success_message_vat = '';
-        } else {
-            $num = (($realEstate->total_price * (int)$this->vat) / 100);
-            $this->success_message_vat = "مبلغ الضريبة من سعر العقار: $num ريال سعودي";
-            $this->message_vat = '';
-        }
-
-        if ($this->saee_prc > 100) {
-            $this->saee_prc = 0;
-            $this->error_message_saee_prc = 'نسبة الضريبة بين 0 - 100';
-        } else {
-            $this->error_message_saee_prc = '';
-        }
-
-        if ($this->saee_prc && $this->saee_type == 'saee_prc') {
-            $saee_prc = (($realEstate->total_price * (int)$this->saee_prc) / 100);
-            $total_price = ((($realEstate->total_price * (int)$this->vat) / 100) + $realEstate->total_price)  + $saee_prc;
-            $this->total_price = number_format($total_price, 3);
-            $numb = number_format($saee_prc, 3);
-            $this->success_message_saee_prc = "مبلغ السعي من سعر العقار: $numb ريال سعودي";
-        }
-
-        if ($this->saee_price && $this->saee_type == 'saee_price') {
-            $total_price = ((($realEstate->total_price * (int)$this->vat) / 100) + $realEstate->total_price) + $this->sale->saee_price;
-            $this->total_price = number_format($total_price, 3);
-        }
-
-        if ($this->sale->paid_amount > $total_price) {
-            $this->message_paid_amount = "يجب ان يكون المبلغ أقل أو يساوي السعر الكلي للعرض";
-            $this->still_amount = 0;
-        } else {
-            $this->message_paid_amount = '';
-            $this->still_amount = number_format(($total_price - $this->sale->paid_amount), 3);
-        }
+        $total_price = $realEstate->total_price + $vat_prce + $saee_prc + (float)$this->sale->saee_price;
+        $this->total_price = number_format($total_price, 3);
+        $still_amount = (float)$total_price - (float)$this->sale->paid_amount;
+        $this->still_amount = number_format($still_amount, 3);
     }
+
+    public function rateCalculation($amount, $rate, $plus = null)
+    {
+        if ($plus == '+') {
+            return (((float)$amount * (float)$rate) / 100) + (float)$amount;
+        }
+
+        return ((float)$amount * (float)$rate) / 100;
+    }
+
 
     public function rules()
     {
@@ -373,7 +378,7 @@ class EditSale extends Component
         }
 
         foreach ($fields as $field) {
-            $validation[$field . '.required'] = "❌ هذا الحقل مطلوب ❌";
+            $validation[$field . '.required'] = "هذا الحقل مطلوب";
         }
 
         return $validation;
@@ -477,64 +482,12 @@ class EditSale extends Component
     {
         $int_value = str_replace(',', '', $value);
         if (is_numeric($int_value)) {
-            $this->fill([$name => number_format((int)str_replace(',', '', $value))]);
+            $this->fill([$name => number_format((float)str_replace(',', '', $value))]);
         } else {
             $this->validate([$name => 'numeric'], [$name . '.numeric' => "الحقل يقبل ارقام فقط"]);
         }
 
         return $int_value;
-    }
-
-    public function calculate($propertyName, $value)
-    {
-        $saee_price = (float)$this->is_numeric('saee_price', $this->saee_price);
-        $total_price = (float)$this->is_numeric('total_price', $this->total_price);
-        $paid_amount = (float)$this->is_numeric('paid_amount', $this->paid_amount);
-        $real_estate_price = $this->offer->realEstate->total_price;
-
-        if ($propertyName == 'vat') {
-            if ($this->vat > 100) {
-                $this->vat = 0;
-                $this->message_vat = "نسبة الضريبة بين 0 - 100";
-                $this->success_message_vat = '';
-            } else {
-                if ($this->vat) {
-                    $num = (($real_estate_price * (float)$this->vat) / 100);
-                    $this->success_message_vat = "مبلغ الضريبة من سعر العقار: $num ريال سعودي";
-                    $this->message_vat = '';
-                }
-            }
-        }
-
-        if ($this->saee_prc && $this->saee_type = 'saee_prc' && $propertyName == 'saee_prc') {
-            if ($this->saee_prc > 100) {
-                $this->saee_prc = 0;
-                $this->error_message_saee_prc = 'نسبة الضريبة بين 0 - 100';
-            } else {
-                $this->error_message_saee_prc = '';
-            }
-        }
-
-        if ($this->saee_prc && $this->saee_type == 'saee_prc') {
-            $saee_prc = (($real_estate_price * (float)$this->saee_prc) / 100);
-            $total_price = ((($real_estate_price * (float)$this->vat) / 100) + $real_estate_price)  + $saee_prc;
-            $this->total_price = number_format($total_price, 3);
-            $numb = number_format($saee_prc, 3);
-            $this->success_message_saee_prc = "مبلغ السعي من سعر العقار: $numb ريال سعودي";
-        }
-
-        if ($this->saee_price && $this->saee_type == 'saee_price') {
-            $total_price = ((($real_estate_price * (float)$this->vat) / 100) + $real_estate_price) + $saee_price;
-            $this->total_price = number_format($total_price, 3);
-        }
-
-        if ($paid_amount > $total_price) {
-            $this->message_paid_amount = "يجب ان يكون المبلغ أقل أو يساوي السعر الكلي للعرض";
-            $this->still_amount = 0;
-        } else {
-            $this->message_paid_amount = '';
-            $this->still_amount = number_format(($total_price - $paid_amount), 3);
-        }
     }
 
     public function setCustomerData()
@@ -585,93 +538,7 @@ class EditSale extends Component
             $this->setCustomerSeller();
         }
 
-        if ($propertyName == 'customer_buyer_yes') {
-            $this->customer_buyer_yes = 'option1';
-            $this->customer_buyer_no = '';
-        }
-
-        if ($propertyName == 'customer_buyer_no') {
-            $this->customer_buyer_yes = '';
-            $this->customer_buyer_no = 'option2';
-        }
-
-        if ($propertyName == 'customer_seller_yes') {
-            $this->customer_seller_yes = 'option1';
-            $this->customer_seller_no = '';
-        }
-
-        if ($propertyName == 'customer_seller_no') {
-            $this->customer_seller_yes = '';
-            $this->customer_seller_no = 'option2';
-        }
-
-        if ($propertyName == 'customer_buyer_public') {
-            $this->customer_buyer_private = '';
-            $this->customer_buyer_public = 'option1';
-        }
-
-        if ($propertyName == 'customer_buyer_private') {
-            $this->customer_buyer_public = '';
-            $this->customer_buyer_private = 'option2';
-        }
-
-        if ($propertyName == 'customer_seller_public') {
-            $this->customer_seller_private = '';
-            $this->customer_seller_public = 'option1';
-        }
-
-        if ($propertyName == 'customer_seller_private') {
-            $this->customer_seller_public = '';
-            $this->customer_seller_private = 'option2';
-        }
-
-        if ($propertyName == 'cash') {
-            $this->cash = 'option1';
-            $this->check = '';
-            $this->bank = '';
-            $this->bank_id = null;
-            $this->check_number = null;
-        }
-
-        if ($propertyName == 'check') {
-            $this->cash = '';
-            $this->check = 'option2';
-            $this->bank = '';
-            $this->bank_id = null;
-        }
-
-        if ($propertyName == 'bank') {
-            $this->cash = '';
-            $this->check = '';
-            $this->bank = 'option3';
-            $this->check_number = null;
-        }
-
-        if ($propertyName == 'saee_type') {
-
-            $this->price_sub = 0;
-            $this->paid_amount = 0;
-            $this->saee_price = 0;
-            $this->total_price = 0;
-            $this->saee_prc = 0;
-
-            $this->saee_type = $value;
-            $this->emit('setSaee', $value);
-        }
-
-        if ($propertyName == "paid_amount" || $propertyName == 'saee_price' || $propertyName == 'price' || $propertyName == 'vat') {
-            $this->is_numeric($propertyName, $value);
-        }
-
-        $this->calculate($propertyName, $value);
-
         $this->validate();
-    }
-
-    public function setCustomers()
-    {
-        $customers = Customer::get(['id', 'phone', 'name', 'nationality_id']);
-        $this->customers = $customers;
     }
 
     public function update(SaleService $saleService)
@@ -695,11 +562,11 @@ class EditSale extends Component
             $data['payment_method_id'] = 1;
         }
 
-        if ($this->bank) {
+        if ($this->check) {
             $data['payment_method_id'] = 2;
         }
 
-        if ($this->check) {
+        if ($this->bank) {
             $data['payment_method_id'] = 3;
         }
 
@@ -735,10 +602,213 @@ class EditSale extends Component
             $data['customer_buyer_support_eskan'] = 0;
         }
 
+        if ($this->is_first_yes) {
+            $data['is_first_home'] = 1;
+        }
+
+        if ($this->is_first_no) {
+            $data['is_first_home'] = 2;
+        }
+
         $result = $saleService->update($this->sale->id, $data);
 
         if ($result) {
             return redirect()->route('panel.sales')->with('message', 'تم تحديث الصفقة بنجاح');
+        }
+    }
+
+    public function isFirstHome($check)
+    {
+        $this->is_first_yes = '';
+        $this->is_first_no = '';
+
+        if ($check == 'yes') {
+            $this->is_first_yes = 'option1';
+        }
+
+        if ($check == 'no') {
+            $this->is_first_no = 'option2';
+        }
+    }
+
+    public function changeSaeeType()
+    {
+        $this->price_sub = 0;
+        $this->paid_amount = 0;
+        $this->saee_price = 0;
+        $this->total_price = 0;
+        $this->saee_prc = 0;
+        $this->emit('setSaee', $this->saee_type);
+    }
+
+    public function vat()
+    {
+        $this->success_message_vat = '';
+        $this->message_vat = "";
+        $real_estate_price = (float)$this->offer->realEstate->total_price;
+        $vat = 0;
+        $saee_prc = (float)$this->saee_prc;
+        $total_price = 0;
+
+        if ($this->vat > 100) {
+            $this->vat = 0;
+            $this->message_vat = "نسبة الضريبة بين 0 - 100";
+            $this->success_message_vat = '';
+            return false;
+        }
+
+        $vat = (float)$this->vat;
+        $process = ($real_estate_price * $vat) / 100;
+        $saee_prc = ($real_estate_price * $saee_prc) / 100;
+        $total_price = $real_estate_price + $saee_prc + $process;
+
+        $result = number_format($process);
+        $this->total_price = number_format((float)$total_price);
+        $this->success_message_vat = "مبلغ الضريبة من سعر العقار: $result ريال سعودي";
+        $this->message_vat = '';
+    }
+
+    public function saeePrc()
+    {
+        $real_estate_price = (float)$this->offer->realEstate->total_price;
+        $this->error_message_saee_prc = '';
+        $this->success_message_saee_prc = '';
+        $saee_prc = (float)$this->saee_prc;
+        $total_price = 0;
+        $vat = (float)$this->vat;
+
+        if ($this->saee_prc > 100) {
+            $this->saee_prc = 0;
+            $this->error_message_saee_prc = 'نسبة الضريبة بين 0 - 100';
+            return false;
+        }
+
+        $process = ($real_estate_price * (float)$saee_prc) / 100;
+        $vat_prc = ($real_estate_price * $vat) / 100;
+
+        $total_price = $real_estate_price + $vat_prc + $process;
+        $result = number_format((float)$process);
+
+        $this->success_message_saee_prc = "مبلغ السعي من سعر العقار: $result ريال سعودي";
+        $this->total_price = number_format((float)$total_price);
+    }
+
+    public function totalPrice()
+    {
+        $this->total_price = number_format((float)$this->total_price);
+    }
+
+    public function saeePrice()
+    {
+        $real_estate_price = $this->offer->realEstate->total_price;
+        $saee_price = (float)$this->saee_price;
+        $vat = (float)$this->vat;
+        $process = ($real_estate_price * $vat) / 100;
+        $total_price = $process + $real_estate_price + $saee_price;
+        $this->total_price = number_format((float)$total_price);
+    }
+
+    public function paidAmount()
+    {
+        $total_price = $this->is_numeric('total_price', $this->total_price);
+        $paid_amount =  $this->is_numeric('paid_amount', $this->paid_amount);
+        $this->message_paid_amount = '';
+
+        if ($paid_amount > $total_price) {
+            $this->message_paid_amount = "يجب ان يكون المبلغ أقل أو يساوي السعر الكلي للعرض";
+            $this->still_amount = 0;
+            return false;
+        }
+
+        $this->still_amount = number_format((float)($total_price - $paid_amount));
+    }
+
+    public function paymentMethod($method)
+    {
+        $this->check = '';
+        $this->cash = '';
+        $this->bank = '';
+
+        if ($method == 'cash') {
+            $this->cash = 'option1';
+            $this->bank_id = null;
+            $this->check_number = null;
+        }
+
+        if ($method == 'check') {
+            $this->check = 'option2';
+            $this->bank_id = null;
+        }
+
+        if ($method == 'bank') {
+            $this->bank = 'option3';
+            $this->check_number = null;
+        }
+    }
+
+    public function customerBuyerId()
+    {
+        $this->setCustomerBuyer();
+    }
+
+    public function customerSellerId()
+    {
+        $this->setCustomerSeller();
+    }
+
+    public function customerBuyerEskan($check)
+    {
+        $this->customer_buyer_no = '';
+        $this->customer_buyer_yes = '';
+
+        if ($check == 'yes') {
+            $this->customer_buyer_yes = 'option1';
+        }
+
+        if ($check == 'no') {
+            $this->customer_buyer_no = 'option2';
+        }
+    }
+
+    public function customerSellerEskan($check)
+    {
+        $this->customer_seller_no = '';
+        $this->customer_seller_yes = '';
+
+        if ($check == 'yes') {
+            $this->customer_seller_yes = 'option1';
+        }
+
+        if ($check == 'no') {
+            $this->customer_seller_no = 'option2';
+        }
+    }
+
+    public function customerBuyerType($type)
+    {
+        $this->customer_buyer_private = '';
+        $this->customer_buyer_public = '';
+
+        if ($type == 'customer_buyer_public') {
+            $this->customer_buyer_public = 'option1';
+        }
+
+        if ($type == 'customer_buyer_private') {
+            $this->customer_buyer_private = 'option2';
+        }
+    }
+
+    public function customerSellerType($type)
+    {
+        $this->customer_seller_private = '';
+        $this->customer_seller_public = '';
+
+        if ($type == 'customer_seller_public') {
+            $this->customer_seller_public = 'option1';
+        }
+
+        if ($type == 'customer_seller_private') {
+            $this->customer_seller_private = 'option2';
         }
     }
 }

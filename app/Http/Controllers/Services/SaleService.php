@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Branch;
 use App\Models\Customer;
 use App\Models\Offer;
+use App\Models\OfferEditors;
 use App\Models\PaymentMethod;
 use App\Models\Sale;
 use Illuminate\Http\Request;
@@ -145,6 +146,7 @@ class SaleService extends Controller
             'real_estate_id' => $offer->realEstate->id,
             'order_id' => $offer->order ? $offer->order->id : null,
             'payment_method_id' => $payment_method->id,
+            'is_first_home' => $data['is_first_home'],
             'bank_id' => $data['bank_id'],
             'check_number' => $data['check_number'],
             'vat' => $data['vat'],
@@ -160,6 +162,34 @@ class SaleService extends Controller
         $sale_code = $branch->code . '-' . $sale->id . '-' . 'USR' . $user->id;
 
         $sale->update(['sale_code' => $sale_code]);
+        $sale->realEstate->update(['property_status_id' => 3]);
+
+        if ($user->user_type == 'admin' || $user->user_type == 'superadmin') {
+            $link_admin =  route('panel.user', $user->id);
+            $admin = "<a href='$link_admin'>$user->name</a>";
+            $note = "قام المدير $admin ببيع العرض";
+        }
+
+        if ($user->user_type == 'marketer') {
+            $marketer_name = getUserName($user->id);
+            $link_ma = route('panel.user', $user->id);
+            $marketer = "<a href='$link_ma'> $marketer_name</a>";
+            $note = "قام المسوق $marketer ببيع العرض";
+        }
+
+        if ($user->user_type == 'office') {
+            $office_name = getUserName($user->id);
+            $link_office = route('panel.user', $user->id);
+            $office = "<a href='$link_office'> $office_name</a>";
+            $note = "قام المكتب $office ببيع العرض";
+        }
+
+        OfferEditors::create([
+            'offer_id' => $offer->id,
+            'user_id' => $user->id,
+            'note' => $note,
+            'action' => 'sell',
+        ]);
 
         return true;
     }
@@ -177,6 +207,7 @@ class SaleService extends Controller
             'vat' => $data['vat'],
             'saee_prc' => $data['saee_prc'],
             'bank_id' => $data['bank_id'],
+            'is_first_home' => $data['is_first_home'],
             'check_number' => $data['check_number'],
             'saee_price' => $data['saee_price'],
             'tatal_req_amount' => $data['total_price'],

@@ -15,7 +15,11 @@ class PaymentMethodSeeder extends Seeder
      */
     public function run()
     {
-        $payment_methods = ['نقدا', 'شيك', 'حوالة بنكية'];
+        $payment_methods = [
+            'نقدا',
+            'شيك',
+            'حوالة بنكية'
+        ];
 
         foreach ($payment_methods as $payment_method) {
             DB::table('payment_methods')->insert([

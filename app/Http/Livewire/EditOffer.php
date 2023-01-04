@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Http\Controllers\Services\MediatorService;
 use App\Http\Controllers\Services\OfferService;
 use App\Models\City;
 use App\Models\Mediator;
@@ -15,10 +16,10 @@ class EditOffer extends Component
     use LivewireAlert;
 
     protected $listeners = ['setMediatorsIds', 'setIds', 'setEvent', 'refreshSelect2' => '$refresh'];
-    public $land_fields = ['price_by_meter', 'direction_ids', 'land_type_id', 'licensed_id', 'street_width_ids', 'interface_length_id', 'character'];
-    public $duplex_fields = ['price_by_meter',  'direction_ids', 'land_type_id', 'licensed_id', 'street_width_ids', 'interface_length_id', 'character', 'real_estate_age', 'building_type_id', 'building_status_id', 'construction_delivery_id'];
+    public $land_fields = ['price_by_meter', 'direction_ids', 'land_type_id', 'licensed_id', 'street_width_ids', 'interface_length_id', 'interface_length', 'character'];
+    public $duplex_fields = ['price_by_meter',  'direction_ids', 'land_type_id', 'licensed_id', 'street_width_ids', 'interface_length_id', 'interface_length', 'character', 'real_estate_age', 'building_type_id', 'building_status_id', 'construction_delivery_id'];
     public $condominium_fields = ['real_estate_age', 'floors_number', 'flats_number', 'stores_number', 'flat_rooms_number', 'annual_income',];
-    public $flat_fields = ['floor_number', 'real_estate_age'];
+    public $flat_fields = ['floor_number', 'real_estate_age', 'bathroom_number', 'flat_rooms_number'];
     public $chalet_fields = ['direction_ids', 'street_width_ids', 'owner_ship_type_id', 'real_estate_age', 'price'];
     public $main_fields = ['city_id', 'neighborhood_id', 'land_number',  'real_estate_statement', 'block_number', 'notes', 'space', 'property_type_id', 'mediators_ids', 'branch_id', 'total_price',];
 
@@ -43,6 +44,8 @@ class EditOffer extends Component
     public $street_width_ids = [];
     public $branch_id = 1;
     public $interface_length_id = 1;
+    public $interface_length = 0.0;
+    public $bathroom_number = 0.0;
     public $character = '';
 
     public $owner_ship_type_id = 1;
@@ -59,6 +62,10 @@ class EditOffer extends Component
     public $building_type_id = 1;
     public $building_status_id = 1;
     public $construction_delivery_id = 1;
+
+    public $name = '';
+    public $phone_number = '';
+    public $type = 'office';
 
     #Form Three
     public $yes = 'option1';
@@ -78,7 +85,6 @@ class EditOffer extends Component
     {
         $this->offer_id = $offer_id;
         $this->offer = Offer::find($offer_id);
-
         $offer = $this->offer;
         $this->city_id = $offer->realEstate->city_id;
         $this->neighborhood_id = $offer->realEstate->neighborhood_id;
@@ -96,12 +102,14 @@ class EditOffer extends Component
         $this->mediators_ids = $offer->mediators->pluck('id')->toArray();
         $this->branch_id = $offer->realEstate->branch_id;
         $this->interface_length_id = $offer->realEstate->interface_length_id;
+        $this->interface_length = $offer->realEstate->interface_length;
         $this->character  = $offer->realEstate->character;
         $this->owner_ship_type_id = $offer->realEstate->owner_ship_type_id;
         $this->real_estate_age = $offer->realEstate->real_estate_age;
         $this->price = $offer->realEstate->price;
         $this->floor_number = $offer->realEstate->floor_number;
         $this->floors_number = $offer->realEstate->floors_number;
+        $this->bathroom_number = $offer->realEstate->bathroom_number;
         $this->real_estate_statement = $offer->realEstate->real_estate_statement;
         $this->flats_number = $offer->realEstate->flats_numbers;
         $this->stores_number = $offer->realEstate->stores_number;
@@ -194,7 +202,7 @@ class EditOffer extends Component
             $this->emit('mediatorsIds', $this->mediators_ids, $this->is_direct);
         }
 
-        if ($propertyName == "space" || $propertyName == 'price_by_meter' || $propertyName == "price" || $propertyName == "annual_income") {
+        if ($propertyName == "space" || $propertyName == 'price_by_meter' || $propertyName == "price" || $propertyName == "annual_income" || $propertyName == 'real_estate_age') {
             $this->is_numeric($propertyName, $value);
         }
 
@@ -308,6 +316,7 @@ class EditOffer extends Component
         $this->floors_number = (int)str_replace(',', '', $this->floors_number);
         $this->flats_number = (int)str_replace(',', '', $this->flats_number);
         $this->stores_number = (int)str_replace(',', '', $this->stores_number);
+        $this->bathroom_number = (int)str_replace(',', '', $this->bathroom_number);
         $this->flat_rooms_number  = (int)str_replace(',', '', $this->flat_rooms_number);
         $this->annual_income = (int)str_replace(',', '', $this->annual_income);
 
@@ -365,5 +374,62 @@ class EditOffer extends Component
         if ($offer) {
             return redirect()->route('panel.offers')->with('message', 'تم تحديث العرض بنجاح');
         }
+    }
+
+    public function createMediator(MediatorService $mediatorService)
+    {
+        $data = $this->validate([
+            'name' => ['required'],
+            'phone_number' => ['required', 'unique:mediators,phone_number'],
+            'type' => ['nullable', 'in:office,individual'],
+        ], [
+            'name.required' => 'هذا الحقل مطلوب',
+            'phone_number.required' => 'هذا الحقل مطلوب',
+            'phone_number.unique' => 'رقم هاتف مستخدم، ادخل رقما مختلف',
+            'type.required' => 'هذا الحقل مطلوب',
+        ]);
+
+        $new_mediator = $mediatorService->store($data);
+
+        $mediators = Mediator::get(['id', 'name', 'phone_number'])->toArray();
+
+
+        foreach ($mediators as $key => $mediator) {
+
+            foreach ($mediator as $index => $value) {
+
+                if ($index == 'id') {
+                    if (in_array($value, $this->mediators_ids)) {
+                        $mediator['selected'] = true;
+                    }
+                }
+
+                if ($index == 'name') {
+                    $mediator['text'] = $value . ' :: ' . $mediator['phone_number'];
+                    unset($mediator['name']);
+                    $mediators[$key] = $mediator;
+                }
+            }
+        }
+
+        array_push($mediators, [
+            "id" => $new_mediator->id,
+            "selected" => true,
+            "text" =>  $new_mediator->name . '::' . $new_mediator->phone_number,
+        ]);
+
+        array_push($this->mediators_ids, $new_mediator->id);
+
+        $mediators_json = json_decode(json_encode($mediators));
+
+        $this->emit('submitMediator', $mediators_json);
+
+        $this->alert('success', '', [
+            'toast' => true,
+            'position' => 'center',
+            'timer' => 3000,
+            'text' => '👍 تم إضافة الوسيط بنجاح',
+            'timerProgressBar' => true,
+        ]);
     }
 }

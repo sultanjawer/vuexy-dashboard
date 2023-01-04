@@ -441,7 +441,8 @@
                                             <h2 class="fw-bolder mb-25">كود الاتفاقية</h2>
 
                                             <p class="card-text fw-bold mb-2">
-                                                <a class="btn text-primary fs-3" href="#">QTF-34-USR5</a>
+                                                <a class="btn text-primary fs-3"
+                                                    href="#">{{ $sale->sale_code }}</a>
                                             </p>
 
                                         </div>
