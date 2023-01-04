@@ -52,6 +52,8 @@ class OfferView extends Component
         if ($this->offer->sale) {
             if ($this->offer->sale->sale_status == 1) {
                 $this->check_sale = true;
+            } else {
+                $this->check_sale = false;
             }
         }
     }
