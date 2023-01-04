@@ -36,13 +36,6 @@ class OfferView extends Component
         $this->offer_id = $offer_id;
         $this->offer = Offer::find($offer_id);
         $this->real_estate = $this->offer->realEstate;
-
-        if ($this->offer->sale) {
-            if ($this->offer->sale->sale_status == 1) {
-                $this->check_sale = true;
-            }
-        }
-
         $this->isBookedOffer();
     }
 
@@ -54,6 +47,12 @@ class OfferView extends Component
             $this->is_booked = true;
         } else {
             $this->is_booked = false;
+        }
+
+        if ($this->offer->sale) {
+            if ($this->offer->sale->sale_status == 1) {
+                $this->check_sale = true;
+            }
         }
     }
 
@@ -257,6 +256,7 @@ class OfferView extends Component
         ]);
 
         $this->emit('refreshComponent');
+        $this->isBookedOffer();
         return true;
     }
 }
