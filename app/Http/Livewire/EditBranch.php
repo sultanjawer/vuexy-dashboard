@@ -47,7 +47,7 @@ class EditBranch extends Component
 
     public function updated($propertyName)
     {
-        $this->validateOnly($propertyName);
+        // $this->validateOnly($propertyName);
     }
 
     public function branchModal($branch_id)

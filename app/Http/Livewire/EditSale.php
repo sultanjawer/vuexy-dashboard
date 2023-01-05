@@ -184,6 +184,8 @@ class EditSale extends Component
             $this->check_number = $this->sale->check_number;
             $this->bank_id = $this->sale->bank_id;
 
+            $this->deserved_amount = (float)$this->sale->deserved_amount;
+
             $this->vat =  (float)$this->sale->vat;
             $this->saee_type = $this->sale->saee_prc ? 'saee_prc' : 'saee_price';
             $this->saee_prc  = (float)$this->sale->saee_prc;
@@ -194,11 +196,13 @@ class EditSale extends Component
             if ($this->sale->is_first_home == 1) {
                 $this->is_first_yes = 'option1';
                 $this->is_first_no = '';
+                $this->deservedAmount();
             }
 
             if ($this->sale->is_first_home == 2) {
                 $this->is_first_yes = '';
                 $this->is_first_no = 'option2';
+                $this->Vat();
             }
 
             $this->check = '';
@@ -299,12 +303,12 @@ class EditSale extends Component
         $this->success_message_saee_prc = "";
         $this->message_paid_amount = '';
 
-        $vat_prce = number_format($this->rateCalculation($realEstate->total_price, $this->vat), 3);
+        $vat_prce = $this->rateCalculation($realEstate->total_price, $this->vat);
         $this->success_message_vat = "مبلغ الضريبة من سعر العقار: $vat_prce ريال سعودي";
-        $saee_prc = number_format($this->rateCalculation($realEstate->total_price, $this->saee_prc), 3);
+        $saee_prc = $this->rateCalculation($realEstate->total_price, $this->saee_prc);
         $this->success_message_saee_prc = "مبلغ السعي من سعر العقار: $saee_prc ريال سعودي";
 
-        $total_price = $realEstate->total_price + $vat_prce + $saee_prc + (float)$this->sale->saee_price;
+        $total_price = (float)$realEstate->total_price + $vat_prce + $saee_prc + (float)$this->sale->saee_price;
         $this->total_price = number_format($total_price, 3);
         $still_amount = (float)$total_price - (float)$this->sale->paid_amount;
         $this->still_amount = number_format($still_amount, 3);
@@ -318,7 +322,6 @@ class EditSale extends Component
 
         return ((float)$amount * (float)$rate) / 100;
     }
-
 
     public function rules()
     {
@@ -542,8 +545,6 @@ class EditSale extends Component
         if ($propertyName == 'customer_seller_id') {
             $this->setCustomerSeller();
         }
-
-        $this->validate();
     }
 
     public function update(SaleService $saleService)
@@ -565,6 +566,8 @@ class EditSale extends Component
         $data['check_number'] = $this->check_number;
         $data['seller_adj'] = $this->seller_adj;
         $data['buyer_adj'] = $this->buyer_adj;
+        $data['deserved_amount'] = (float)$this->deserved_amount;
+
 
         if ($this->cash) {
             $data['payment_method_id'] = 1;
@@ -621,7 +624,7 @@ class EditSale extends Component
         $result = $saleService->update($this->sale->id, $data);
 
         if ($result) {
-            return redirect()->route('panel.sales')->with('message', 'تم تحديث الصفقة بنجاح');
+            return redirect()->route('panel.offers')->with('message', 'تم تحديث الصفقة بنجاح');
         }
     }
 
@@ -629,26 +632,32 @@ class EditSale extends Component
     {
         $this->is_first_yes = '';
         $this->is_first_no = '';
+        $this->deserved_amount = 0.0;
 
         if ($check == 'yes') {
             $this->is_first_yes = 'option1';
+            $this->vat = 0;
+            $this->deservedAmount();
+            $this->vat();
         }
 
         if ($check == 'no') {
             $this->is_first_no = 'option2';
+            $this->deserved_amount = 0.0;
+            $this->vat();
         }
     }
 
     public function deservedAmount()
     {
         $deserved_amount = (float)$this->is_numeric('deserved_amount', $this->deserved_amount);
-        $total_price = (float)$this->is_numeric('total_price', $this->total_price) - (float)$this->paid_amount;
+        $real_estate_price = (float)$this->offer->realEstate->total_price;
 
         $this->deserved_amount_mesage = '';
         $this->deserved_amount_success = '';
 
-        if ($total_price > 1000000) {
-            $deserved_amount = $total_price - 1000000;
+        if ($real_estate_price > 1000000) {
+            $deserved_amount = $real_estate_price - 1000000;
             $process  = number_format((float)(($deserved_amount * 5) / 100), 3);
             $this->deserved_amount = number_format((float)$deserved_amount, 3);
             $this->deserved_amount_mesage = "مقدار المبلغ المستحق $process ريال";
@@ -657,16 +666,6 @@ class EditSale extends Component
 
         $this->deserved_amount = 0.0;
         $this->deserved_amount_mesage = "مقدار المبلغ المستحق 0.0 ريال";
-    }
-
-    public function changeSaeeType()
-    {
-        $this->price_sub = 0;
-        $this->paid_amount = 0;
-        $this->saee_price = 0;
-        $this->total_price = 0;
-        $this->saee_prc = 0;
-        $this->emit('setSaee', $this->saee_type);
     }
 
     public function vat()
@@ -686,14 +685,26 @@ class EditSale extends Component
         }
 
         $vat = (float)$this->vat;
-        $process = ($real_estate_price * $vat) / 100;
-        $saee_prc = ($real_estate_price * $saee_prc) / 100;
-        $total_price = $real_estate_price + $saee_prc + $process;
+        $process = (float)(($real_estate_price * $vat) / 100);
+        $saee_prc = (float)(($real_estate_price * $saee_prc) / 100);
+        $total_price = (float)($real_estate_price + $saee_prc + $process);
 
-        $result = number_format($process);
-        $this->total_price = number_format((float)$total_price);
+        $result = number_format($process, 3);
+        $this->total_price = number_format($total_price, 3);
         $this->success_message_vat = "مبلغ الضريبة من سعر العقار: $result ريال سعودي";
         $this->message_vat = '';
+        $this->deservedAmount();
+        $this->paidAmount();
+    }
+
+    public function changeSaeeType()
+    {
+        $this->price_sub = 0;
+        $this->paid_amount = 0;
+        $this->saee_price = 0;
+        $this->total_price = 0;
+        $this->saee_prc = 0;
+        $this->emit('setSaee', $this->saee_type);
     }
 
     public function saeePrc()
@@ -719,6 +730,7 @@ class EditSale extends Component
 
         $this->success_message_saee_prc = "مبلغ السعي من سعر العقار: $result ريال سعودي";
         $this->total_price = number_format((float)$total_price);
+        $this->paidAmount();
     }
 
     public function totalPrice()
@@ -734,6 +746,7 @@ class EditSale extends Component
         $process = ($real_estate_price * $vat) / 100;
         $total_price = $process + $real_estate_price + $saee_price;
         $this->total_price = number_format((float)$total_price);
+        $this->paidAmount();
     }
 
     public function paidAmount()

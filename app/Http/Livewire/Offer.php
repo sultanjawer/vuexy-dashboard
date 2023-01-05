@@ -72,7 +72,9 @@ class Offer extends Component
                 $collection = ModelsOffer::data()->filters($this->filters)->where('offer_type_id', 1)->reorder($this->sort_field, $this->sort_direction);
             } else {
                 $ids = $user->branches->pluck('id')->toArray();
-                $collection = ModelsOffer::data()->filters($this->filters)->whereIn('id', $ids)->where('offer_type_id', 1)->reorder($this->sort_field, $this->sort_direction);
+                $collection = ModelsOffer::data()->with('realEstate.branch')->whereHas('realEstate.branch', function ($query) use ($ids) {
+                    $query->whereIn('id', $ids);
+                })->filters($this->filters)->where('offer_type_id', 1)->reorder($this->sort_field, $this->sort_direction);
             }
 
             if ($this->rows_number == 'all') {
@@ -162,6 +164,7 @@ class Offer extends Component
 
         $this->paginate_ids = $direct_offers->pluck('id')->toArray();
         $this->in_paginate_ids = $in_direct_offers->pluck('id')->toArray();
+
 
         return view('livewire.offer', [
             'direct_offers' => $direct_offers,

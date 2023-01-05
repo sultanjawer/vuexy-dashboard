@@ -162,7 +162,10 @@
                                                 <th class="sorting {{ $oo_style_sort_direction }}"
                                                     wire:click="oo_sortBy('property_type_id')" tabindex="0"
                                                     rowspan="1" colspan="1">نوع العقار</th>
-                                                <th rowspan="1" colspan="1">صاحب الطلب</th>
+                                                @if (in_array(auth()->user()->user_type, ['superadmin', 'admin', 'marketer']))
+                                                    <th rowspan="1" colspan="1">صاحب الطلب</th>
+                                                @endif
+
                                                 <th class="sorting {{ $oo_style_sort_direction }}"
                                                     wire:click="oo_sortBy('city_id')" tabindex="0" rowspan="1"
                                                     colspan="1">المدينة </th>
@@ -514,7 +517,9 @@
                                                 <th class="sorting {{ $os_style_sort_direction }}"
                                                     wire:click="os_sortBy('property_type_id')" tabindex="0"
                                                     rowspan="1" colspan="1">نوع العقار</th>
-                                                <th rowspan="1" colspan="1">صاحب الطلب</th>
+                                                @if (in_array(auth()->user()->user_type, ['superadmin', 'admin', 'marketer']))
+                                                    <th rowspan="1" colspan="1">صاحب الطلب</th>
+                                                @endif
 
                                                 <th class="sorting {{ $os_style_sort_direction }}"
                                                     wire:click="os_sortBy('city_id')" tabindex="0" rowspan="1"

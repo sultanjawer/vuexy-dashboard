@@ -41,8 +41,7 @@ class CreateMediator extends Component
 
     public function updated($propertyName)
     {
-        $this->validateOnly($propertyName);
-        $this->validate();
+        // $this->validateOnly($propertyName);
     }
 
     public function store(MediatorService $mediatorService)

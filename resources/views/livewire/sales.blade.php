@@ -256,10 +256,24 @@
                                                                     </a>
                                                                 @endif
 
-                                                                @if (auth()->user()->can('updateSale', App\Models\Sale::class))
-                                                                    <a href="{{ route('panel.update.sale', $sale->id) }}">
-                                                                        <i class="fas fa-edit"></i>
-                                                                    </a>
+                                                                @if (in_array(auth()->user()->user_type, ['office', 'marketer']) && !$sale->offer)
+                                                                    @if (auth()->id() == $sale->user_id)
+                                                                        @if (auth()->user()->can('updateSale', App\Models\Sale::class))
+                                                                            <a
+                                                                                href="{{ route('panel.update.sale', $sale->id) }}">
+                                                                                <i class="fas fa-edit"></i>
+                                                                            </a>
+                                                                        @endif
+                                                                    @endif
+                                                                @endif
+
+                                                                @if (in_array(auth()->user()->user_type, ['admin', 'superadmin']) && !$sale->offer)
+                                                                    @if (auth()->user()->can('updateSale', App\Models\Sale::class))
+                                                                        <a
+                                                                            href="{{ route('panel.update.sale', $sale->id) }}">
+                                                                            <i class="fas fa-edit"></i>
+                                                                        </a>
+                                                                    @endif
                                                                 @endif
 
                                                                 {{-- @if (auth()->user()->can('cancelSale', App\Models\Sale::class))
@@ -271,6 +285,7 @@
                                                                 @endif --}}
 
                                                             @endauth
+
 
                                                         </div>
                                                     </td>

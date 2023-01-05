@@ -212,7 +212,7 @@ class EditOffer extends Component
             $this->total_price = number_format((int)str_replace(',', '', $price_by_meter * $space));
         }
 
-        $this->validateOnly($propertyName);
+        // $this->validateOnly($propertyName);
     }
 
     public function getFields()

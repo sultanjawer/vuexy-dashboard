@@ -3,10 +3,8 @@
     <div class="header-navbar-shadow" wire:ignore.self></div>
     <div class="content-wrapper container-xxl p-0" wire:ignore.self>
 
-
         <div class="content-header row" wire:ignore.self></div>
         <div class="content-body" wire:ignore.self>
-
             <section id="dashboard-analytics">
                 <div class="row match-height">
                     <div class="col-lg-4 col-12">
@@ -40,7 +38,7 @@
                                         @if (!$check_sale)
                                             <a href="javascript:;"
                                                 class="btn bg-light-success mt-2 waves-effect waves-float waves-light"
-                                                data-bs-target="#addReservation" wire:click='reservationData'
+                                                data-bs-target="#addReservation" wire:click='reservationData' wire:
                                                 data-bs-toggle="modal">
                                                 @if (!$is_booked)
                                                     حجز
@@ -63,20 +61,42 @@
                                         @endauth
 
                                         @if ($check_sale)
-                                            <a href="{{ route('panel.sale', $offer->sale->id) }}"
-                                                class="btn bg-light-info mt-1 waves-effect waves-float waves-light">
-                                                تفاصيل الاتفاقية
-                                            </a>
+
+                                            @if (in_array(auth()->user()->user_type, ['office', 'marketer']) && $offer->sale)
+                                                @if (auth()->id() == $offer->sale->user_id)
+                                                    @if (auth()->user()->can('updateSale', App\Models\Sale::class))
+                                                        <a href="{{ route('panel.sale', $offer->sale->id) }}"
+                                                            class="btn bg-light-info mt-1 waves-effect waves-float waves-light">
+                                                            تفاصيل الاتفاقية
+                                                        </a>
+
+                                                        <a href="#"
+                                                            class="btn bg-light-danger mt-1 waves-effect waves-float waves-light"
+                                                            wire:click="cancelSale">
+                                                            إلغاء صفقة البيع
+                                                        </a>
+                                                    @endif
+                                                @endif
+                                            @endif
+
+                                            @if (in_array(auth()->user()->user_type, ['admin', 'superadmin']) && $offer->sale)
+                                                @if (auth()->user()->can('updateSale', App\Models\Sale::class))
+                                                    <a href="{{ route('panel.sale', $offer->sale->id) }}"
+                                                        class="btn bg-light-info mt-1 waves-effect waves-float waves-light">
+                                                        تفاصيل الاتفاقية
+                                                    </a>
+
+                                                    <a href="#"
+                                                        class="btn bg-light-danger mt-1 waves-effect waves-float waves-light"
+                                                        wire:click="cancelSale">
+                                                        إلغاء صفقة البيع
+                                                    </a>
+                                                @endif
+                                            @endif
 
                                             <a href="#"
                                                 class="btn bg-light-danger mt-1 waves-effect waves-float waves-light">
                                                 تم البيع
-                                            </a>
-
-                                            <a href="#"
-                                                class="btn bg-light-danger mt-1 waves-effect waves-float waves-light"
-                                                wire:click="cancelSale">
-                                                إلغاء صفقة البيع
                                             </a>
                                         @endif
 
@@ -86,7 +106,6 @@
                                                 بيع
                                             </a>
                                         @endif
-
 
                                     </div>
 

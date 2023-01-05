@@ -102,6 +102,7 @@
                     </div>
 
                     <div class="row">
+
                         <div class="col-md-6 mb-1">
                             <label class="form-label">سعر العقار</label>
                             <div class="input-group input-group-merge" wire:ignore.self>
@@ -114,26 +115,79 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6 mb-1">
-                            <label class="form-label">الضريبة</label>
-                            <div class="input-group input-group-merge" wire:ignore.self>
-                                <input type="number" class="form-control" step="0.01" min="0" max="100"
-                                    placeholder="الضريبة" wire:change="vat('vat')" wire:model='vat'>
-                                <span class="input-group-text">%</span>
+                    </div>
+
+                    <div class="content-header mb-2">
+                        <h2 class="fw-bolder mb-75">حساب الضريبة</h2>
+                    </div>
+
+                    <div class="row">
+
+
+                        @if (in_array($offer->realEstate->property_type_id, [2, 3, 4, 5]))
+                            <div class="col-md-6 mb-1">
+                                <label class="form-label"> هل مسكن اول</label>
+                                <div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" wire:change="isFirstHome('yes')"
+                                            wire:model='is_first_yes' id="inlineRadio1" value="option1">
+                                        <label class="form-check-label" for="inlineRadio3">نعم</label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio"
+                                            wire:change="isFirstHome('no')" wire:model='is_first_no'
+                                            id="inlineRadio2" value="option2">
+                                        <label class="form-check-label" for="inlineRadio4">لا</label>
+                                    </div>
+                                </div>
                             </div>
-                            @error('vat')
-                                <small class="text-danger">{{ $message }}</small>
-                            @enderror
+                        @endif
 
-                            @if ($message_vat)
-                                <small class="text-danger">{{ $message_vat }}</small>
+                        @if (in_array($offer->realEstate->property_type_id, [2, 3, 4, 5]))
+                            @if ($is_first_yes)
+                                <div class="col-md-6 mb-1">
+                                    <label class="form-label">المبلغ المستحق</label>
+                                    <div class="input-group input-group-merge" wire:ignore.self>
+                                        <input type="text" step="0.01" class="form-control "
+                                            placeholder="المبلغ المستحق" wire:change="deservedAmount"
+                                            wire:model='deserved_amount' />
+                                    </div>
+
+                                    @if ($deserved_amount_mesage)
+                                        <small class="text-success">{{ $deserved_amount_mesage }}</small>
+                                    @endif
+
+                                    @error('deserved_amount')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
                             @endif
+                        @endif
 
-                            @if ($success_message_vat)
-                                <small class="text-success">{{ $success_message_vat }}</small>
-                            @endif
+                        @if (!$is_first_yes)
+                            <div class="col-md-6 mb-1">
+                                <label class="form-label">الضريبة</label>
+                                <div class="input-group input-group-merge" wire:ignore.self>
+                                    <input type="number" class="form-control" step="0.01" min="0"
+                                        max="100" placeholder="الضريبة" wire:change="vat('vat')"
+                                        wire:model='vat'>
+                                    <span class="input-group-text">%</span>
+                                </div>
+                                @error('vat')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
 
-                        </div>
+                                @if ($message_vat)
+                                    <small class="text-danger">{{ $message_vat }}</small>
+                                @endif
+
+                                @if ($success_message_vat)
+                                    <small class="text-success">{{ $success_message_vat }}</small>
+                                @endif
+
+                            </div>
+                        @endif
 
                     </div>
 
@@ -259,31 +313,6 @@
                             @enderror
                         </div>
 
-                        @if (in_array($offer->realEstate->property_type_id, [2, 3, 4, 5]))
-                            <div class="col-md-6 mb-1">
-                                <label class="form-label"> هل مسكن اول</label>
-                                <div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio"
-                                            wire:change="isFirstHome('yes')" wire:model='is_first_yes'
-                                            id="inlineRadio1" value="option1">
-                                        <label class="form-check-label" for="inlineRadio3">نعم</label>
-                                    </div>
-
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio"
-                                            wire:change="isFirstHome('no')" wire:model='is_first_no'
-                                            id="inlineRadio2" value="option2">
-                                        <label class="form-check-label" for="inlineRadio4">لا</label>
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
-
-                    </div>
-
-
-                    <div class="row">
                         @if ($check)
                             <div class="col-md-6 mb-1">
                                 <label class="form-label">رقم الشيك</label>
@@ -311,28 +340,11 @@
                             @enderror
                         @endif
 
-                        @if (in_array($offer->realEstate->property_type_id, [2, 3, 4, 5]))
-                            @if ($is_first_yes)
-                                <div class="col-md-6 mb-1">
-                                    <label class="form-label">المبلغ المستحق</label>
-                                    <div class="input-group input-group-merge" wire:ignore.self>
-                                        <input type="text" step="0.01" class="form-control "
-                                            placeholder="المبلغ المستحق" wire:change="deservedAmount"
-                                            wire:model='deserved_amount' />
-                                    </div>
-
-                                    @if ($deserved_amount_mesage)
-                                        <small class="text-success">{{ $deserved_amount_mesage }}</small>
-                                    @endif
-
-                                    @error('deserved_amount')
-                                        <small class="text-danger">{{ $message }}</small>
-                                    @enderror
-                                </div>
-                            @endif
-                        @endif
 
                     </div>
+
+
+
 
                     <div class="d-flex justify-content-between mt-2">
                         <button class="btn btn-outline-secondary btn-prev" disabled>
@@ -707,8 +719,8 @@
                     <div class="row">
                         <div class="col-md-6 mb-1">
                             <label class="form-label">رقم المبنى</label>
-                            <input type="number" class="form-control " wire:model='customer_seller_building_number'
-                                placeholder="رقم المبنى" />
+                            <input type="number" class="form-control" wire:input="customerSellerBuildingNumber"
+                                wire:model='customer_seller_building_number' placeholder="رقم المبنى" />
                             @error('customer_seller_building_number')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror

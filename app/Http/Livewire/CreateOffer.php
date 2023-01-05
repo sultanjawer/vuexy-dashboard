@@ -119,7 +119,6 @@ class CreateOffer extends Component
         $this->emit('neighborhoods', $neighborhoods_json, $this->neighborhood_id);
     }
 
-
     public function hydrate()
     {
         $this->emit('select2', $this->mediators_ids);
@@ -194,7 +193,7 @@ class CreateOffer extends Component
             $this->total_price = number_format((int)str_replace(',', '', $price_by_meter * $space));
         }
 
-        $this->validateOnly($propertyName);
+        // $this->validateOnly($propertyName);
     }
 
     public function getFields()

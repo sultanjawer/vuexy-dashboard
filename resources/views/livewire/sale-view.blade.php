@@ -27,16 +27,34 @@
                                     <div class="my-auto flex-fill col-sm-6">
                                         <h4 class="card-title mb-25">معلومات العقار</h4>
                                         <div class="d-flex">
+
                                             <div>
-                                                <a class="  btn btn-sm bg-light-warning waves-effect waves-float waves-light"
-                                                    href="{{ route('panel.update.sale', $sale->id) }}">تعديل
-                                                    الاتفاقية</a>
+                                                @if (in_array(auth()->user()->user_type, ['office', 'marketer']) && $sale->offer)
+                                                    @if (auth()->id() == $sale->user_id)
+                                                        @if (auth()->user()->can('updateSale', App\Models\Sale::class))
+                                                            <a class="  btn btn-sm bg-light-warning waves-effect waves-float waves-light"
+                                                                href="{{ route('panel.update.sale', $sale->id) }}">تعديل
+                                                                الاتفاقية</a>
+                                                        @endif
+                                                    @endif
+                                                @endif
+
+                                                @if (in_array(auth()->user()->user_type, ['admin', 'superadmin']) && $sale->offer)
+                                                    @if (auth()->user()->can('updateSale', App\Models\Sale::class))
+                                                        <a class="  btn btn-sm bg-light-warning waves-effect waves-float waves-light"
+                                                            href="{{ route('panel.update.sale', $sale->id) }}">تعديل
+                                                            الاتفاقية</a>
+                                                    @endif
+                                                @endif
                                             </div>
+
+
                                             <div class="ms-1">
                                                 <a href="javascript:;"
                                                     class=" btn btn-sm bg-light-info waves-effect waves-float waves-light"
                                                     data-bs-target="#showPDF" data-bs-toggle="modal">السعي</a>
                                             </div>
+
                                         </div>
                                     </div>
                                 </div>

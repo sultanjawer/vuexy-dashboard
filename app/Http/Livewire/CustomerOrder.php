@@ -162,7 +162,7 @@ class CustomerOrder extends Component
             $this->avaliable_amount = number_format((int)str_replace(',', '', $this->avaliable_amount));
         }
 
-        $this->validateOnly($propertyName);
+        // $this->validateOnly($propertyName);
     }
 
     public function store(OrderService $orderService)

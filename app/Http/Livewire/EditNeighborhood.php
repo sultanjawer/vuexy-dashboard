@@ -38,7 +38,7 @@ class EditNeighborhood extends Component
 
     public function updated($propertyName)
     {
-        $this->validateOnly($propertyName);
+        // $this->validateOnly($propertyName);
     }
 
     public function neighborhoodModal($neighborhood_id)

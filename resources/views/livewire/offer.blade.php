@@ -118,7 +118,9 @@
                                                         wire:click="sortBy('id')" tabindex="0" rowspan="1"
                                                         colspan="1" aria-sort="ascending">كود العرض</th>
                                                     <th>نوع العقار</th>
-                                                    <th>صاحب العرض</th>
+                                                    @if (in_array(auth()->user()->user_type, ['superadmin', 'admin', 'marketer']))
+                                                        <th>صاحب العرض</th>
+                                                    @endif
                                                     <th>بيان العقار</th>
                                                     <th>المدينة</th>
                                                     <th>الحي</th>
@@ -182,7 +184,6 @@
                                                                 @endif
                                                             </td>
                                                         @endif
-
 
                                                         <td>{{ $direct_offer->realEstate->real_estate_statement }}</td>
                                                         <td>{{ getCityName($direct_offer->realEstate->city_id) }}</td>
@@ -367,6 +368,9 @@
                                                             colspan="1" aria-sort="ascending">كود العرض</th>
                                                         <th>نوع العقار</th>
                                                         <th>بيان العقار</th>
+                                                        @if (in_array(auth()->user()->user_type, ['superadmin', 'admin', 'marketer']))
+                                                            <th>صاحب العرض</th>
+                                                        @endif
                                                         <th>المدينة</th>
                                                         <th>الحي</th>
                                                         <th>السعر</th>
@@ -417,6 +421,22 @@
                                                             </td>
                                                             <td>{{ $in_direct_offer->realEstate->real_estate_statement }}
                                                             </td>
+
+                                                            @if (in_array(auth()->user()->user_type, ['superadmin', 'admin', 'marketer']))
+                                                                <td>
+                                                                    @if (getUser($direct_offer->user_id)->user_type == 'marketer')
+                                                                        {{ 'المسوق ' . $direct_offer->user->name }}
+                                                                    @endif
+
+                                                                    @if (getUser($direct_offer->user_id)->user_type == 'office')
+                                                                        {{ 'المكتب ' . $direct_offer->user->name }}
+                                                                    @endif
+
+                                                                    @if (in_array(getUser($direct_offer->user_id)->user_type, ['admin', 'superadmin']))
+                                                                        {{ 'المدير ' . $direct_offer->user->name }}
+                                                                    @endif
+                                                                </td>
+                                                            @endif
 
                                                             <td>{{ getCityName($in_direct_offer->realEstate->city_id) }}
                                                             </td>

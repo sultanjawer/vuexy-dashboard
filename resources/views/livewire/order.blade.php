@@ -160,7 +160,9 @@
 
                                                 <th rowspan="1" colspan="1">التاريخ</th>
                                                 <th rowspan="1" colspan="1">نوع العقار</th>
-                                                <th rowspan="1" colspan="1">صاحب الطلب</th>
+                                                @if (in_array(auth()->user()->user_type, ['superadmin', 'admin', 'marketer']))
+                                                    <th rowspan="1" colspan="1">صاحب الطلب</th>
+                                                @endif
                                                 <th rowspan="1" colspan="1">المدينة</th>
                                                 <th rowspan="1" colspan="1">اسم العميل</th>
                                                 <th rowspan="1" colspan="1">الميزانية</th>
@@ -221,6 +223,7 @@
                                                             </span>
                                                         @endif
                                                     </td>
+
 
                                                     @if (in_array(auth()->user()->user_type, ['superadmin', 'admin', 'marketer']))
                                                         <td>
@@ -486,6 +489,9 @@
                                                             colspan="1">التاريخ</th>
                                                         <th class="sorting" tabindex="0" rowspan="1"
                                                             colspan="1">نوع العقار</th>
+                                                        @if (in_array(auth()->user()->user_type, ['superadmin', 'admin', 'marketer']))
+                                                            <th rowspan="1" colspan="1">صاحب الطلب</th>
+                                                        @endif
                                                         <th class="sorting" tabindex="0" rowspan="1"
                                                             colspan="1">المدينة</th>
                                                         <th class="sorting" tabindex="0" rowspan="1"
@@ -551,6 +557,23 @@
                                                                     </span>
                                                                 @endif
                                                             </td>
+
+                                                            @if (in_array(auth()->user()->user_type, ['superadmin', 'admin', 'marketer']))
+                                                                <td>
+                                                                    @if (getUser($order->user_id)->user_type == 'marketer')
+                                                                        {{ 'المسوق ' . $order->user->name }}
+                                                                    @endif
+
+                                                                    @if (getUser($order->user_id)->user_type == 'office')
+                                                                        {{ 'المكتب ' . $order->user->name }}
+                                                                    @endif
+
+                                                                    @if (in_array(getUser($order->user_id)->user_type, ['admin', 'superadmin']))
+                                                                        {{ 'المدير ' . $order->user->name }}
+                                                                    @endif
+                                                                </td>
+                                                            @endif
+
 
                                                             <td>
                                                                 <span class="badge bg-dark">

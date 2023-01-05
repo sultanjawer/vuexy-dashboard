@@ -64,7 +64,7 @@ class CreateSale extends Component
     public $customer_buyer_phone = "";
     public $customer_buyer_email = "";
     public $customer_buyer_id_number = "";
-    public $customer_buyer_nationality = "";
+    public $customer_buyer_nationality = 3;
     public $customer_buyer_city_name = "";
     public $customer_buyer_employee_type = "";
     public $customer_buyer_support_eskan = "";
@@ -87,7 +87,7 @@ class CreateSale extends Component
     public $customer_seller_phone = "";
     public $customer_seller_email = "";
     public $customer_seller_id_number = "";
-    public $customer_seller_nationality = "";
+    public $customer_seller_nationality = 3;
     public $customer_seller_city_name = "";
     public $customer_seller_employee_type = "";
     public $customer_seller_support_eskan = "";
@@ -144,7 +144,6 @@ class CreateSale extends Component
         'customer_seller_zip_code',
         'customer_seller_addtional_number',
         'customer_seller_unit_number',
-
     ];
 
     public function mount($offer_id)
@@ -286,13 +285,11 @@ class CreateSale extends Component
             }
 
             $this->emit('message_buyer', 'لقد تم جلب بيانات العميل بنجاح 👍✅', true);
-            $this->validate();
         } else {
             $this->customer_buyer_phone = $this->customer_buyer_id;
             $this->emit('message_buyer', '‼️ بيانات العميل غير موجودة، ولكن سيتم إعتماد البيانات المدخلة للعميل، يرجى إدخال جميع الحقول ‼️', false);
             $this->customer_buyer_private = '';
             $this->customer_buyer_public = 'option1';
-            $this->validate();
         }
     }
 
@@ -332,13 +329,11 @@ class CreateSale extends Component
             }
 
             $this->emit('message_seller', 'لقد تم جلب بيانات العميل بنجاح 👍✅', true);
-            $this->validate();
         } else {
             $this->customer_buyer_phone = $this->customer_buyer_id;
             $this->emit('message_seller', '‼️ بيانات العميل غير موجودة، ولكن سيتم إعتماد البيانات المدخلة للعميل، يرجى إدخال جميع الحقول ‼️', false);
             $this->customer_buyer_private = '';
             $this->customer_buyer_public = 'option1';
-            $this->validate();
         }
     }
 
@@ -364,8 +359,6 @@ class CreateSale extends Component
         if ($propertyName == 'customer_seller_id') {
             $this->setCustomerSeller();
         }
-
-        $this->validate();
     }
 
     public function render()
@@ -392,6 +385,7 @@ class CreateSale extends Component
         $data['check_number'] = $this->check_number;
         $data['seller_adj'] = $this->seller_adj;
         $data['buyer_adj'] = $this->buyer_adj;
+        $data['deserved_amount'] = (float)$this->deserved_amount;
 
         if ($this->cash) {
             $data['payment_method_id'] = 1;
@@ -448,7 +442,7 @@ class CreateSale extends Component
         $result =  $saleService->store($data);
 
         if ($result) {
-            return redirect()->route('panel.sales')->with('message', '👍 تم تحديث المبيعات بنجاح');
+            return redirect()->route('panel.offers')->with('message', '👍 تم تحديث المبيعات بنجاح');
         }
     }
 
@@ -460,35 +454,28 @@ class CreateSale extends Component
 
         if ($check == 'yes') {
             $this->is_first_yes = 'option1';
+            $this->vat = 0;
             $this->deservedAmount();
+            $this->vat();
         }
 
         if ($check == 'no') {
             $this->is_first_no = 'option2';
             $this->deserved_amount = 0.0;
+            $this->vat();
         }
-    }
-
-    public function changeSaeeType()
-    {
-        $this->price_sub = 0;
-        $this->paid_amount = 0;
-        $this->saee_price = 0;
-        $this->total_price = 0;
-        $this->saee_prc = 0;
-        $this->emit('setSaee', $this->saee_type);
     }
 
     public function deservedAmount()
     {
         $deserved_amount = (float)$this->is_numeric('deserved_amount', $this->deserved_amount);
-        $total_price = (float)$this->is_numeric('total_price', $this->total_price) - (float)$this->paid_amount;
+        $real_estate_price = (float)$this->offer->realEstate->total_price;
 
         $this->deserved_amount_mesage = '';
         $this->deserved_amount_success = '';
 
-        if ($total_price > 1000000) {
-            $deserved_amount = $total_price - 1000000;
+        if ($real_estate_price > 1000000) {
+            $deserved_amount = $real_estate_price - 1000000;
             $process  = number_format((float)(($deserved_amount * 5) / 100), 3);
             $this->deserved_amount = number_format((float)$deserved_amount, 3);
             $this->deserved_amount_mesage = "مقدار المبلغ المستحق $process ريال";
@@ -525,6 +512,17 @@ class CreateSale extends Component
         $this->success_message_vat = "مبلغ الضريبة من سعر العقار: $result ريال سعودي";
         $this->message_vat = '';
         $this->deservedAmount();
+        $this->paidAmount();
+    }
+
+    public function changeSaeeType()
+    {
+        $this->price_sub = 0;
+        $this->paid_amount = 0;
+        $this->saee_price = 0;
+        $this->total_price = 0;
+        $this->saee_prc = 0;
+        $this->emit('setSaee', $this->saee_type);
     }
 
     public function saeePrc()
@@ -551,6 +549,7 @@ class CreateSale extends Component
         $this->success_message_saee_prc = "مبلغ السعي من سعر العقار: $result ريال سعودي";
         $this->total_price = number_format($total_price, 3);
         $this->deservedAmount();
+        $this->paidAmount();
     }
 
     public function totalPrice()
@@ -568,6 +567,7 @@ class CreateSale extends Component
         $total_price = $process + $real_estate_price + $saee_price;
         $this->total_price = number_format((float)$total_price, 3);
         $this->deservedAmount();
+        $this->paidAmount();
     }
 
     public function paidAmount()
@@ -677,5 +677,9 @@ class CreateSale extends Component
         if ($type == 'customer_seller_private') {
             $this->customer_seller_private = 'option2';
         }
+    }
+
+    public function customerSellerBuildingNumber()
+    {
     }
 }
