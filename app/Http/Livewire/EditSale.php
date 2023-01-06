@@ -706,6 +706,7 @@ class EditSale extends Component
 
         $this->success_message_saee_prc = "مبلغ السعي من سعر العقار: $result ريال سعودي";
         $this->is_numeric('total_price', $total_price);
+        $this->is_numeric('saee_prc', $saee_prc);
         $this->paidAmount();
     }
 
@@ -722,6 +723,7 @@ class EditSale extends Component
         $process = ($real_estate_price * $vat) / 100;
         $total_price = $process + $real_estate_price + $saee_price;
         $this->is_numeric('total_price', $total_price);
+        $this->is_numeric('saee_price', $saee_price);
         $this->paidAmount();
     }
 
