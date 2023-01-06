@@ -26,6 +26,7 @@ class EditSale extends Component
     public $is_first_yes = '';
     public $is_first_no = 'option2';
 
+    public $vat_prce;
     public $price = 0;
     public $deserved_amount = 0;
     public $vat = 0;
@@ -40,6 +41,7 @@ class EditSale extends Component
     public $message_vat = '';
     public $deserved_amount_mesage = '';
     public $success_message_vat = '';
+    public $deserved_amount_success = '';
     public $message_paid_amount = '';
     public $success_message_saee_prc = '';
     public $error_message_saee_prc = '';
@@ -49,6 +51,8 @@ class EditSale extends Component
     public $offer;
     public $order;
     public $offer_id;
+    public $sale;
+    public $sale_code;
 
     public $customer_seller = "";
     public $customer_buyer = "";
@@ -179,8 +183,9 @@ class EditSale extends Component
             $this->offer_code = $offer->offer_code;
             $this->neighborhood_name = $realEstate->neighborhood->name;
             $this->land_number = $realEstate->land_number;
-            $this->space = number_format($realEstate->space, 3);
-            $this->price = number_format($realEstate->total_price, 3);
+            $this->is_numeric('space', $realEstate->space);
+            $this->is_numeric('price', $realEstate->total_price);
+
             $this->check_number = $this->sale->check_number;
             $this->bank_id = $this->sale->bank_id;
 
@@ -188,10 +193,10 @@ class EditSale extends Component
 
             $this->vat =  (float)$this->sale->vat;
             $this->saee_type = $this->sale->saee_prc ? 'saee_prc' : 'saee_price';
-            $this->saee_prc  = (float)$this->sale->saee_prc;
-            $this->saee_price = number_format((float)$this->sale->saee_price, 3);
-            $this->total_price = number_format((float)$realEstate->total_price, 3);
-            $this->paid_amount = number_format((float)$this->sale->paid_amount, 3);
+            $this->is_numeric('paid_amount', $this->sale->paid_amount);
+            $this->is_numeric('total_price', $this->sale->total_price);
+            $this->is_numeric('saee_price', $this->sale->saee_price);
+            $this->is_numeric('saee_prc', $this->sale->saee_prc);
 
             if ($this->sale->is_first_home == 1) {
                 $this->is_first_yes = 'option1';
@@ -303,15 +308,15 @@ class EditSale extends Component
         $this->success_message_saee_prc = "";
         $this->message_paid_amount = '';
 
-        $vat_prce = $this->rateCalculation($realEstate->total_price, $this->vat);
+        $vat_prce = $this->is_numeric('vat_prce', $this->rateCalculation($realEstate->total_price, $this->vat));
         $this->success_message_vat = "مبلغ الضريبة من سعر العقار: $vat_prce ريال سعودي";
-        $saee_prc = $this->rateCalculation($realEstate->total_price, $this->saee_prc);
+        $saee_prc = $this->is_numeric('saee_prc', $this->rateCalculation($realEstate->total_price, $this->saee_prc));
         $this->success_message_saee_prc = "مبلغ السعي من سعر العقار: $saee_prc ريال سعودي";
 
         $total_price = (float)$realEstate->total_price + $vat_prce + $saee_prc + (float)$this->sale->saee_price;
-        $this->total_price = number_format($total_price, 3);
+        $this->is_numeric('total_price', $total_price);
         $still_amount = (float)$total_price - (float)$this->sale->paid_amount;
-        $this->still_amount = number_format($still_amount, 3);
+        $this->is_numeric('still_amount', $still_amount);
     }
 
     public function rateCalculation($amount, $rate, $plus = null)
@@ -488,52 +493,23 @@ class EditSale extends Component
 
     public function is_numeric($name, $value)
     {
-        $int_value = str_replace(',', '', $value);
-        if (is_numeric($int_value)) {
-            $this->fill([$name => number_format((float)str_replace(',', '', $value))]);
+        $string_value = str_replace(',', '', $value);
+        $float_value = (float)$string_value;
+        $after_comma = explode('.', $string_value);
+        $count = 0;
+
+        if (array_key_exists(1, $after_comma)) {
+            foreach ($after_comma as $num) {
+                $count = $count + 1;
+            }
+        }
+
+        if (is_numeric($string_value)) {
+            $this->fill([$name => number_format($float_value, $count)]);
         } else {
             $this->validate([$name => 'numeric'], [$name . '.numeric' => "الحقل يقبل ارقام فقط"]);
         }
-
-        return $int_value;
-    }
-
-    public function setCustomerData()
-    {
-        $customer = Customer::find($this->customer_id);
-
-        if ($customer) {
-            $this->customer = $customer;
-            $this->customer_name = $this->customer->name;
-            $this->customer_phone = $this->customer->phone;
-            $this->customer_email = $this->customer->email;
-            $this->customer_id_number = $this->customer->nationality_id;
-            $this->customer_nationality = $this->customer->nationality ? $this->customer->nationality->name : null;
-            $this->customer_city_name = $this->customer->city_id;
-            $this->building_number = $this->customer->building_number;
-            $this->street_name = $this->customer->street_name;
-            $this->neighborhood = $this->customer->neighborhood_name;
-            $this->zip_code = $this->customer->zip_code;
-            $this->customer_support_eskan = $this->customer->support_eskan;
-            $this->addtional_number = $this->customer->addtional_number;
-            $this->unit_number = $this->customer->unit_number;
-
-            if ($this->customer->employee_type == 'public') {
-                $this->public = 'option1';
-                $this->private = '';
-            } else {
-                $this->public = '';
-                $this->private = 'option2';
-            }
-            $this->emit('message', 'لقد تم جلب بيانات العميل بنجاح 👍✅', true);
-            $this->validate();
-        } else {
-            $this->customer_phone = $this->customer_id;
-            $this->emit('message', '‼️ بيانات العميل غير موجودة، ولكن سيتم إعتماد البيانات المدخلة للعميل، يرجى إدخال جميع الحقول ‼️', false);
-            $this->private = '';
-            $this->public = 'option1';
-            $this->validate();
-        }
+        return $float_value;
     }
 
     public function updated($propertyName, $value)
@@ -549,10 +525,10 @@ class EditSale extends Component
 
     public function update(SaleService $saleService)
     {
-        $this->paid_amount = (int)str_replace(',', '', $this->paid_amount);
-        $this->saee_price = (int)str_replace(',', '', $this->saee_price);
-        $this->price = (int)str_replace(',', '', $this->price);
-        $this->total_price = (int)str_replace(',', '', $this->total_price);
+        $this->paid_amount = (float)str_replace(',', '', $this->paid_amount);
+        $this->saee_price = (float)str_replace(',', '', $this->saee_price);
+        $this->price = (float)str_replace(',', '', $this->price);
+        $this->total_price = (float)str_replace(',', '', $this->total_price);
         $this->vat = (float)str_replace(',', '', $this->vat);
         $this->saee_prc = (float)str_replace(',', '', $this->saee_prc);
         $this->deserved_amount = (float)str_replace(',', '', $this->deserved_amount);
