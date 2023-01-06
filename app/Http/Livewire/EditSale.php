@@ -635,7 +635,7 @@ class EditSale extends Component
         if ($real_estate_price > 1000000) {
             $deserved_amount = $real_estate_price - 1000000;
             $process  = number_format((float)(($deserved_amount * 5) / 100), 3);
-            $this->deserved_amount = number_format((float)$deserved_amount, 3);
+            $this->is_numeric('deserved_amount', $deserved_amount);
             $this->deserved_amount_mesage = "مقدار المبلغ المستحق $process ريال";
             return true;
         }
@@ -665,8 +665,8 @@ class EditSale extends Component
         $saee_prc = (float)(($real_estate_price * $saee_prc) / 100);
         $total_price = (float)($real_estate_price + $saee_prc + $process);
 
-        $result = number_format($process, 3);
-        $this->total_price = number_format($total_price, 3);
+        $result = $this->is_numeric('total_price', $process);
+        $this->is_numeric('total_price', $total_price);
         $this->success_message_vat = "مبلغ الضريبة من سعر العقار: $result ريال سعودي";
         $this->message_vat = '';
         $this->deservedAmount();
@@ -702,16 +702,16 @@ class EditSale extends Component
         $vat_prc = ($real_estate_price * $vat) / 100;
 
         $total_price = $real_estate_price + $vat_prc + $process;
-        $result = number_format((float)$process);
+        $result = $this->is_numeric('total_price', $process);
 
         $this->success_message_saee_prc = "مبلغ السعي من سعر العقار: $result ريال سعودي";
-        $this->total_price = number_format((float)$total_price);
+        $this->is_numeric('total_price', $total_price);
         $this->paidAmount();
     }
 
     public function totalPrice()
     {
-        $this->total_price = number_format((float)$this->total_price);
+        $this->is_numeric('total_price', $this->total_price);
     }
 
     public function saeePrice()
@@ -721,7 +721,7 @@ class EditSale extends Component
         $vat = (float)$this->vat;
         $process = ($real_estate_price * $vat) / 100;
         $total_price = $process + $real_estate_price + $saee_price;
-        $this->total_price = number_format((float)$total_price);
+        $this->is_numeric('total_price', $total_price);
         $this->paidAmount();
     }
 
@@ -737,7 +737,8 @@ class EditSale extends Component
             return false;
         }
 
-        $this->still_amount = number_format((float)($total_price - $paid_amount));
+        $still_amount = (float)($total_price - $paid_amount);
+        $this->is_numeric('still_amount', $still_amount);
     }
 
     public function paymentMethod($method)
