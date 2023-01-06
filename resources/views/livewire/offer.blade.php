@@ -424,16 +424,16 @@
 
                                                             @if (in_array(auth()->user()->user_type, ['superadmin', 'admin', 'marketer']))
                                                                 <td>
-                                                                    @if (getUser($direct_offer->user_id)->user_type == 'marketer')
-                                                                        {{ 'المسوق ' . $direct_offer->user->name }}
+                                                                    @if (getUser($in_direct_offer->user_id)->user_type == 'marketer')
+                                                                        {{ 'المسوق ' . $in_direct_offer->user->name }}
                                                                     @endif
 
-                                                                    @if (getUser($direct_offer->user_id)->user_type == 'office')
-                                                                        {{ 'المكتب ' . $direct_offer->user->name }}
+                                                                    @if (getUser($in_direct_offer->user_id)->user_type == 'office')
+                                                                        {{ 'المكتب ' . $in_direct_offer->user->name }}
                                                                     @endif
 
-                                                                    @if (in_array(getUser($direct_offer->user_id)->user_type, ['admin', 'superadmin']))
-                                                                        {{ 'المدير ' . $direct_offer->user->name }}
+                                                                    @if (in_array(getUser($in_direct_offer->user_id)->user_type, ['admin', 'superadmin']))
+                                                                        {{ 'المدير ' . $in_direct_offer->user->name }}
                                                                     @endif
                                                                 </td>
                                                             @endif
