@@ -52,7 +52,7 @@
                                             <div class="ms-1">
                                                 <a href="javascript:;"
                                                     class=" btn btn-sm bg-light-info waves-effect waves-float waves-light"
-                                                    data-bs-target="#showPDF" data-bs-toggle="modal">السعي</a>
+                                                    data-bs-target="#showPDF" data-bs-toggle="modal">العربون</a>
                                             </div>
 
                                         </div>
