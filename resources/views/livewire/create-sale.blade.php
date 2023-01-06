@@ -194,7 +194,7 @@
                     <div class="row">
                         <div class="col-md-6 mb-1" wire:ignore.self>
                             <label class="form-label">السعي</label>
-                            <select class="form-control" wire:change="changeSaeeType" wire:model='saee_type'
+                            <select class="form-control" wire:input="changeSaeeType" wire:model='saee_type'
                                 wire:ignore.self>
                                 <option value="saee_prc">نسبة</option>
                                 <option value="saee_price">سعر</option>
