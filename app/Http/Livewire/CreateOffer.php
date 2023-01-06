@@ -156,7 +156,7 @@ class CreateOffer extends Component
             }
 
             if ($field == "real_estate_statement") {
-                $validation[$field] = ['unique:real_estates,block_number', 'nullable'];
+                $validation[$field] = ['nullable'];
                 continue;
             }
 
