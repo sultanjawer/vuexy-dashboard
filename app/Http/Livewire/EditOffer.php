@@ -15,12 +15,12 @@ class EditOffer extends Component
 {
     use LivewireAlert;
 
-    protected $listeners = ['setMediatorsIds', 'setIds', 'setEvent', 'refreshSelect2' => '$refresh'];
+    protected $listeners = ['setMediatorsIds', 'setIds', 'setNeiborhoods', 'refreshSelect2' => '$refresh'];
     public $land_fields = ['price_by_meter', 'direction_ids', 'land_type_id', 'licensed_id', 'street_width_ids', 'interface_length_id', 'interface_length', 'character'];
     public $duplex_fields = ['price_by_meter',  'direction_ids', 'land_type_id', 'licensed_id', 'street_width_ids', 'interface_length_id', 'interface_length', 'character', 'real_estate_age', 'building_type_id', 'building_status_id', 'construction_delivery_id'];
     public $condominium_fields = ['real_estate_age', 'floors_number', 'flats_number', 'stores_number', 'flat_rooms_number', 'annual_income',];
     public $flat_fields = ['floor_number', 'real_estate_age', 'bathroom_number', 'flat_rooms_number'];
-    public $chalet_fields = ['direction_ids', 'street_width_ids', 'owner_ship_type_id', 'real_estate_age', 'price'];
+    public $chalet_fields = ['direction_ids', 'street_width_ids', 'owner_ship_type_id', 'real_estate_age'];
     public $main_fields = ['city_id', 'neighborhood_id', 'land_number',  'real_estate_statement', 'block_number', 'notes', 'space', 'property_type_id', 'mediators_ids', 'branch_id', 'total_price',];
 
     #Form One
@@ -50,7 +50,6 @@ class EditOffer extends Component
 
     public $owner_ship_type_id = 1;
     public $real_estate_age;
-    public $price = 0;
 
     public $floor_number = 0;
     public $floors_number = 0;
@@ -106,7 +105,6 @@ class EditOffer extends Component
         $this->character  = $offer->realEstate->character;
         $this->owner_ship_type_id = $offer->realEstate->owner_ship_type_id;
         $this->real_estate_age = $offer->realEstate->real_estate_age;
-        $this->price = $offer->realEstate->price;
         $this->floor_number = $offer->realEstate->floor_number;
         $this->floors_number = $offer->realEstate->floors_number;
         $this->bathroom_number = $offer->realEstate->bathroom_number;
@@ -120,7 +118,7 @@ class EditOffer extends Component
         $this->construction_delivery_id = $offer->realEstate->construction_delivery_id;
         $this->yes = $offer->offer_type_id == 1 ? $this->yes = 'option1' : $this->no = 'option2';
         $this->is_direct = $offer->offer_type_id == 1 ? true : false;
-        $this->setEvent();
+        $this->setNeiborhoods();
     }
 
     public function setIds()
@@ -132,7 +130,7 @@ class EditOffer extends Component
         $this->emit('setids', $array, $this->is_direct);
     }
 
-    public function setEvent()
+    public function setNeiborhoods()
     {
         $this->city = City::find($this->city_id);
         $neighborhoods = $this->city->neighborhoods()->get(['id', 'name'])->toArray();
@@ -157,6 +155,26 @@ class EditOffer extends Component
         $this->emit('neighborhoods', $neighborhoods_json, $this->neighborhood_id);
     }
 
+    public function isDirectOffer($check)
+    {
+        $this->no = '';
+        $this->yes = '';
+
+        if ($check == 'yes') {
+            $this->yes = 'option1';
+            $this->is_direct = true;
+            $this->emit('mediators-show', $this->is_direct);
+            $this->emit('mediatorsIds', $this->mediators_ids, $this->is_direct);
+        }
+
+        if ($check == 'no') {
+            $this->no = 'option2';
+            $this->is_direct = false;
+            $this->emit('mediators-show', $this->is_direct);
+            $this->emit('mediatorsIds', $this->mediators_ids, $this->is_direct);
+        }
+    }
+
     public function hydrate()
     {
         $this->emit('select2', $this->mediators_ids);
@@ -169,50 +187,70 @@ class EditOffer extends Component
 
     public function is_numeric($name, $value)
     {
-        $int_value = str_replace(',', '', $value);
-        if (is_numeric($int_value)) {
-            $this->fill([$name => number_format((int)str_replace(',', '', $value))]);
+        $string_value = str_replace(',', '', $value);
+        $float_value = (float)$string_value;
+        $after_comma = explode('.', $string_value);
+        $count = 0;
+
+        if (array_key_exists(1, $after_comma)) {
+            foreach ($after_comma as $num) {
+                $count = $count + 1;
+            }
+        }
+
+        if (is_numeric($string_value)) {
+            $this->fill([$name => number_format($float_value, $count)]);
         } else {
             $this->validate([$name => 'numeric'], [$name . '.numeric' => "الحقل يقبل ارقام فقط"]);
         }
+        return $float_value;
+    }
 
-        return $int_value;
+    public function changePropertyType()
+    {
+        $this->space = 0;
+        $this->price_by_meter = 0;
+        $this->total_price = 0;
     }
 
     public function updated($propertyName, $value)
     {
-
         if ($propertyName == 'city_id') {
-            $this->setEvent();
+            $this->setNeiborhoods();
         }
 
-        if ($propertyName == 'yes') {
-            $this->yes = 'option1';
-            $this->no = '';
-            $this->is_direct = true;
-            $this->emit('mediators-show', $this->is_direct);
-            $this->emit('mediatorsIds', $this->mediators_ids, $this->is_direct);
+        if ($propertyName == 'property_type_id') {
+            $this->changePropertyType();
         }
 
-        if ($propertyName == 'no') {
-            $this->yes = '';
-            $this->no = 'option2';
-            $this->is_direct = false;
-            $this->emit('mediators-show', $this->is_direct);
-            $this->emit('mediatorsIds', $this->mediators_ids, $this->is_direct);
-        }
+        $this->validateOnly($propertyName);
+    }
 
-        if ($propertyName == "space" || $propertyName == 'price_by_meter' || $propertyName == "price" || $propertyName == "annual_income" || $propertyName == 'real_estate_age') {
-            $this->is_numeric($propertyName, $value);
-        }
+    public function space()
+    {
+        $space = $this->is_numeric('space', $this->space);
+        $price_by_meter = $this->is_numeric('price_by_meter', $this->price_by_meter);
 
-        if ($this->price_by_meter && $this->space) {
-            $space = $this->is_numeric('space', $this->space);
-            $price_by_meter = $this->is_numeric('price_by_meter', $this->price_by_meter);
-            $this->total_price = number_format((int)str_replace(',', '', $price_by_meter * $space));
+        if ($space && $price_by_meter) {
+            $total_price = $space * $price_by_meter;
+            $this->is_numeric('total_price', $total_price);
         }
+    }
 
-        // $this->validateOnly($propertyName);
+    public function priceByMeter()
+    {
+        $space = $this->is_numeric('space', $this->space);
+        $price_by_meter = $this->is_numeric('price_by_meter', $this->price_by_meter);
+
+        if ($space && $price_by_meter) {
+            $total_price = $space * $price_by_meter;
+            $this->is_numeric('total_price', $total_price);
+        }
+    }
+
+    public function totalPrice()
+    {
+        $this->is_numeric('total_price', $this->total_price);
     }
 
     public function getFields()
@@ -267,6 +305,21 @@ class EditOffer extends Component
                 continue;
             }
 
+            if ($field == "real_estate_age") {
+                $validation[$field] = ['numeric', 'required'];
+                continue;
+            }
+
+            if ($field == "interface_length") {
+                $validation[$field] = ['numeric', 'required'];
+                continue;
+            }
+
+            if ($field == "annual_income") {
+                $validation[$field] = ['numeric', 'required'];
+                continue;
+            }
+
             $validation[$field] = ['required'];
         }
 
@@ -294,6 +347,25 @@ class EditOffer extends Component
                 continue;
             }
 
+            if ($field == "interface_length") {
+                $validation[$field . '.numeric'] = 'الحقل يقبل ارقام فقط';
+                $validation[$field . '.required'] = 'هذا الحقل مطلوب';
+                continue;
+            }
+
+            if ($field == "real_estate_age") {
+                $validation[$field . '.numeric'] = 'الحقل يقبل ارقام فقط';
+                $validation[$field . '.required'] = 'هذا الحقل مطلوب';
+                continue;
+            }
+
+
+            if ($field == "annual_income") {
+                $validation[$field . '.numeric'] = 'الحقل يقبل ارقام فقط';
+                $validation[$field . '.required'] = 'هذا الحقل مطلوب';
+                continue;
+            }
+
             $validation[$field . '.required'] = 'هذا الحقل مطلوب';
         }
 
@@ -302,23 +374,21 @@ class EditOffer extends Component
 
     public function render()
     {
-        $this->setEvent();
         return view('livewire.edit-offer');
     }
 
     public function update(OfferService $offerService)
     {
-        $this->price_by_meter = (int)str_replace(',', '', $this->price_by_meter);
-        $this->total_price = (int)str_replace(',', '', $this->total_price);
-        $this->price = (int)str_replace(',', '', $this->price);
-        $this->space = (int)str_replace(',', '', $this->space);
+        $this->price_by_meter = (float)str_replace(',', '', $this->price_by_meter);
+        $this->total_price = (float)str_replace(',', '', $this->total_price);
+        $this->space = (float)str_replace(',', '', $this->space);
         $this->floor_number = (int)str_replace(',', '', $this->floor_number);
         $this->floors_number = (int)str_replace(',', '', $this->floors_number);
         $this->flats_number = (int)str_replace(',', '', $this->flats_number);
         $this->stores_number = (int)str_replace(',', '', $this->stores_number);
         $this->bathroom_number = (int)str_replace(',', '', $this->bathroom_number);
         $this->flat_rooms_number  = (int)str_replace(',', '', $this->flat_rooms_number);
-        $this->annual_income = (int)str_replace(',', '', $this->annual_income);
+        $this->annual_income = (float)str_replace(',', '', $this->annual_income);
 
         if (!$this->is_direct) {
             if (!$this->mediators_ids) {

@@ -5,7 +5,6 @@
         <div class="content-header row" wire:ignore.self>
         </div>
 
-
         <div class="content-body" wire:ignore.self>
             <div class="auth-wrapper auth-cover" wire:ignore.self>
                 <div class="auth-inner row m-0" wire:ignore.self>
@@ -63,7 +62,7 @@
 
                                 <div class="bs-stepper-header px-0" role="tablist" wire:ignore.self>
 
-                                    <div class="step first-step" role="tab">
+                                    <div class="step first-step" role="tab" wire:ignore.self>
                                         <button type="button" class="step-trigger" wire:ignore.self>
                                             <span
                                                 class="bs-stepper-box
@@ -93,7 +92,7 @@
                                     </div>
 
                                     <div class="step second-step " role="tab" wire:ignore.self>
-                                        <button type="button" class="step-trigger">
+                                        <button type="button" class="step-trigger" wire:ignore.self>
                                             <span
                                                 class="bs-stepper-box
                                                 @if ($errors->has('land_type_id') ||
@@ -173,7 +172,6 @@
                                                 <label class="form-label">الحى</label>
                                                 <select class="js-select2-neighborhood select2 form-select"
                                                     wire:model='neighborhood_id'>
-
                                                 </select>
                                                 @error('neighborhood_id')
                                                     <small class="text-danger">{{ $message }}</small>
@@ -186,15 +184,16 @@
                                             <div class="col-md-6 mb-1">
                                                 <label class="form-label">رقم الأرض</label>
                                                 <input type="text" class="form-control" placeholder="رقم الأرض"
-                                                    wire:model='land_number'>
+                                                    wire:model.debounce.1s='land_number'>
                                                 @error('land_number')
                                                     <small class="text-danger">{{ $message }}</small>
                                                 @enderror
                                             </div>
+
                                             <div class="col-md-6 mb-1">
                                                 <label class="form-label">رقم البلوك</label>
                                                 <input type="text" class="form-control" placeholder="رقم البلوك"
-                                                    wire:model='block_number'>
+                                                    wire:model.debounce.1s='block_number'>
                                                 @error('block_number')
                                                     <small class="text-danger">{{ $message }}</small>
                                                 @enderror
@@ -205,7 +204,8 @@
                                             <div class="col-md-6 mb-1">
                                                 <label class="form-label">بيان العقار</label>
                                                 <input type="text" class="form-control"
-                                                    placeholder="أدخل بيان العقار" wire:model='real_estate_statement'>
+                                                    placeholder="أدخل بيان العقار"
+                                                    wire:model.debounce.1s='real_estate_statement'>
                                                 @error('real_estate_statement')
                                                     <small class="text-danger">{{ $message }}</small>
                                                 @enderror
@@ -252,7 +252,9 @@
                                                 <div class="col-md-6 mb-1">
                                                     <label class="form-label">المساحة</label>
                                                     <div class="input-group input-group-merge">
-                                                        <input type="text" class="form-control" wire:model='space'
+                                                        <input type="text" class="form-control"
+                                                            wire:input.debounce.1s="space"
+                                                            wire:model.debounce.1s='space' step="0.01"
                                                             placeholder="المساحة">
                                                         <span class="input-group-text">متر</span>
                                                     </div>
@@ -267,7 +269,7 @@
                                                 <div class="col-md-6 mb-1 ">
                                                     <label class="form-label" for="price">عدد الأدوار</label>
                                                     <div class="input-group input-group-merge">
-                                                        <input type="number" wire:model='floors_number'
+                                                        <input type="number" wire:model.debounce.1s='floors_number'
                                                             class="form-control" placeholder="عدد الأدوار">
                                                     </div>
                                                     @error('floors_number')
@@ -278,7 +280,7 @@
                                                 <div class="col-md-6 mb-1">
                                                     <label class="form-label" for="price">عدد الشقق</label>
                                                     <div class="input-group input-group-merge">
-                                                        <input type="number" wire:model='flats_number'
+                                                        <input type="number" wire:model.debounce.1s='flats_number'
                                                             class="form-control" placeholder="عدد الشقق">
                                                     </div>
                                                     @error('flats_number')
@@ -291,7 +293,7 @@
                                                 <div class="col-md-6 mb-1 condominium-extra-stores-number">
                                                     <label class="form-label" for="price">عدد المحلات</label>
                                                     <div class="input-group input-group-merge">
-                                                        <input type="number" wire:model='stores_number'
+                                                        <input type="number" wire:model.debounce.1s='stores_number'
                                                             class="form-control" placeholder="عدد المحلات">
                                                     </div>
                                                     @error('stores_number')
@@ -302,7 +304,7 @@
                                                 <div class="col-md-6 mb-1 condominium-extra-bathroom-number">
                                                     <label class="form-label" for="price">عدد دورات المياه</label>
                                                     <div class="input-group input-group-merge">
-                                                        <input type="number" wire:model='bathroom_number'
+                                                        <input type="number" wire:model.debounce.1s='bathroom_number'
                                                             class="form-control" placeholder="عدد المحلات">
                                                     </div>
                                                     @error('bathroom_number')
@@ -313,7 +315,8 @@
                                                 <div class="col-md-6 mb-1 condominium-extra-flat-rooms">
                                                     <label class="form-label" for="price">عدد غرف الشقة</label>
                                                     <div class="input-group input-group-merge">
-                                                        <input type="number" wire:model='flat_rooms_number'
+                                                        <input type="number"
+                                                            wire:model.debounce.1s='flat_rooms_number'
                                                             class="form-control" placeholder="عدد غرف الشقة">
                                                     </div>
                                                     @error('flat_rooms_number')
@@ -327,7 +330,8 @@
                                                 <div class="col-md-6 mb-1 price-by-meter" wire:ignore.self>
                                                     <label class="form-label">السعر بالمتر</label>
                                                     <div class="input-group input-group-merge">
-                                                        <input type="text" wire:model='price_by_meter'
+                                                        <input type="text" wire:model.debounce.1s='price_by_meter'
+                                                            wire:input.debounce.1s="priceByMeter" step="0.01"
                                                             class="form-control" placeholder="السعر بالمتر">
                                                         <span class="input-group-text">ريال</span>
                                                     </div>
@@ -339,9 +343,10 @@
                                                 <div class="col-md-6 mb-1 total-price" wire:ignore.self>
                                                     <label class="form-label" for="price">السعر بالكامل</label>
                                                     <div class="input-group input-group-merge">
-                                                        <input type="text" wire:model='total_price'
-                                                            class="form-control total-price-input" placeholder="0.0"
-                                                            wire:ignore.self>
+                                                        <input type="text" class="form-control total-price-input"
+                                                            placeholder="0.0" wire:model.debounce.1s='total_price'
+                                                            wire:input.debounce.1s="totalPrice('total_price')"
+                                                            step="0.01" wire:ignore.self>
                                                         <span class="input-group-text">ريال</span>
                                                     </div>
                                                     @error('total_price')
@@ -352,8 +357,10 @@
                                                 <div class="col-md-6 mb-1 real-estate-age" wire:ignore.self>
                                                     <label class="form-label">عمر العقار</label>
                                                     <div class="input-group input-group-merge">
-                                                        <input type="number" wire:model='real_estate_age'
+                                                        <input type="text" wire:model.debounce.1s='real_estate_age'
                                                             class="form-control" placeholder="عمر العقار">
+                                                        <span class="input-group-text">عاما</span>
+
                                                     </div>
                                                     @error('real_estate_age')
                                                         <small class="text-danger">{{ $message }}</small>
@@ -426,7 +433,7 @@
                                                     <label class="form-label">الحرف او
                                                         المجاور</label>
                                                     <div class="input-group input-group-merge">
-                                                        <input type="text" wire:model='character'
+                                                        <input type="text" wire:model.debounce.1s='character'
                                                             class="form-control" placeholder="الحرف او المجاور">
                                                     </div>
                                                     @error('character')
@@ -437,25 +444,13 @@
                                                 <div class="col-md-6 mb-1 interface-length-div-hide" wire:ignore.self>
                                                     <label class="form-label">طول الواجهة</label>
                                                     <div class="input-group input-group-merge">
-                                                        <input type="number" step="0.01"
-                                                            wire:model='interface_length' class="form-control"
-                                                            placeholder="طول الواجهة">
+                                                        <input type="text" step="0.01"
+                                                            wire:model.debounce.1s='interface_length'
+                                                            class="form-control" placeholder="طول الواجهة">
                                                     </div>
                                                     @error('interface_length')
                                                         <small class="text-danger">{{ $message }}</small>
                                                     @enderror
-
-                                                    {{-- <select class="js-select2-interface-length select2 form-select"
-                                                        wire:model='interface_length_id'>
-                                                        @foreach (getInterfaceLengths() as $interface_length)
-                                                            <option value="{{ $interface_length->id }}" selected>
-                                                                {{ $interface_length->id }}</option>
-                                                        @endforeach
-                                                    </select>
-
-                                                    @error('interface_length_id')
-                                                        <small class="text-danger">{{ $message }}</small>
-                                                    @enderror --}}
                                                 </div>
 
                                                 <div class="col-md-6 mb-1 building-type" wire:ignore>
@@ -510,18 +505,6 @@
                                                     @enderror
                                                 </div>
 
-                                                {{-- <div class="col-md-6 mb-1 price" wire:ignore.self>
-                                                    <label class="form-label">السعر</label>
-                                                    <div class="input-group input-group-merge">
-                                                        <input type="text" wire:model='price' class="form-control"
-                                                            placeholder="السعر">
-                                                        <span class="input-group-text">ريال</span>
-                                                    </div>
-                                                    @error('price')
-                                                        <small class="text-danger">{{ $message }}</small>
-                                                    @enderror
-                                                </div> --}}
-
                                                 <div class="col-md-6 mb-1 owner-ship-type" wire:ignore>
                                                     <label class="form-label">نوع الملكية</label>
                                                     <select class="js-select2-owner-ship-type select2 form-select"
@@ -539,7 +522,7 @@
                                                 <div class="col-md-6 mb-1 floor-number" wire:ignore.self>
                                                     <label class="form-label" for="price">رقم الطابق</label>
                                                     <div class="input-group input-group-merge">
-                                                        <input type="number" wire:model='floor_number'
+                                                        <input type="number" wire:model.debounce.1s='floor_number'
                                                             class="form-control" placeholder="رقم الطابق">
                                                     </div>
                                                     @error('floor_number')
@@ -549,7 +532,7 @@
 
                                                 <div class="col-md-6 mb-1 notes" wire:ignore.self>
                                                     <label class="form-label">ملاحظات</label>
-                                                    <textarea class="form-control" wire:model='notes' rows="3" placeholder="ملاحظات"></textarea>
+                                                    <textarea class="form-control" wire:model.debounce.1s='notes' rows="3" placeholder="ملاحظات"></textarea>
                                                     @error('notes')
                                                         <small class="text-danger">{{ $message }}</small>
                                                     @enderror
@@ -558,7 +541,7 @@
                                                 <div class="col-md-6 mb-1 condominium-extra" wire:ignore.self>
                                                     <label class="form-label" for="price">الدخل السنوي</label>
                                                     <div class="input-group input-group-merge">
-                                                        <input type="text" wire:model='annual_income'
+                                                        <input type="text" wire:model.debounce.1s='annual_income'
                                                             class="form-control" placeholder="الدخل السنوي">
                                                     </div>
                                                     @error('annual_income')
@@ -620,7 +603,8 @@
                                                             <div class="form-check form-check-inline" wire:ignore.self>
                                                                 <input class="form-check-input" type="radio"
                                                                     name="inlineRadioOptions" id="inlineRadio1"
-                                                                    value="option1" wire:model='yes'>
+                                                                    value="option1" wire:input="isDirectOffer('yes')"
+                                                                    wire:model='yes'>
                                                                 <label class="form-check-label" for="inlineRadio1"
                                                                     wire:ignore.self>
                                                                     نعم</label>
@@ -628,7 +612,8 @@
                                                             <div class="form-check form-check-inline" wire:ignore.self>
                                                                 <input class="form-check-input" type="radio"
                                                                     name="inlineRadioOptions" id="inlineRadio2"
-                                                                    value="option2" wire:model='no' wire:ignore.self>
+                                                                    value="option2" wire:input="isDirectOffer('no')"
+                                                                    wire:model='no' wire:ignore.self>
                                                                 <label class="form-check-label"
                                                                     for="inlineRadio2">لا</label>
                                                             </div>
@@ -705,7 +690,10 @@
                                             <button class="btn btn-success" wire:click="store" wire:ignore>
                                                 <i data-feather="check" class="align-middle me-sm-25 me-0"></i>
                                                 <span class="align-middle d-sm-inline-block d-none">حفظ</span>
+                                                <span class="spinner-border spinner-border-sm" wire:loading
+                                                    role="status" aria-hidden="true"></span>
                                             </button>
+
                                         </div>
 
                                     </div>
@@ -738,7 +726,8 @@
 
                         <div class="col-12 col-md-6" wire:ignore.self>
                             <label class="form-label">اسم الوسيط</label>
-                            <input type="text" wire:model='name' class="form-control" placeholder="اسم الوسيط" />
+                            <input type="text" wire:model.debounce.1s='name' class="form-control"
+                                placeholder="اسم الوسيط" />
                             @error('name')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -747,7 +736,7 @@
                         {{--
                         <div class="col-12 col-md-6" wire:ignore.self>
                             <label class="form-label">كود الوسيط</label>
-                            <input type="text" wire:model='code' disabled class="form-control"
+                            <input type="text" wire:model.debounce.1s='code' disabled class="form-control"
                                 placeholder="example: 1011" />
                             @error('code')
                                 <small class="text-danger">{{ $message }}</small>
@@ -757,8 +746,8 @@
 
                         <div class="col-12 col-md-6" wire:ignore.self>
                             <label class="form-label">رقم الجوال</label>
-                            <input type="tel" wire:model='phone_number' maxlength="10" class="form-control"
-                                placeholder="رقم الجوال" />
+                            <input type="tel" wire:model.debounce.1s='phone_number' maxlength="10"
+                                class="form-control" placeholder="رقم الجوال" />
                             @error('phone_number')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -1074,17 +1063,12 @@
                 });
 
                 window.livewire.on('mediators-show', (is_direct) => {
-
                     if (is_direct) {
                         $(".mediators").hide();
                     }
 
                     if (!is_direct) {
                         $(".mediators").show();
-                        $('.js-select2-multi').select2({
-                            placeholder: 'اختار الوسطاء',
-                            closeOnSelect: true
-                        });
                     }
 
                 });

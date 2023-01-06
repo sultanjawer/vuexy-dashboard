@@ -241,7 +241,8 @@
                             <label class="form-label">السعر الكلى</label>
                             <div class="input-group input-group-merge"wire:ignore.self>
                                 <input type="text" class="form-control " placeholder="السعر الكلى"
-                                    wire:change="totalPrice('total_price')" wire:model='total_price' disabled />
+                                    wire:change="totalPrice('total_price')" wire:model.debounce.1s='total_price'
+                                    disabled />
                                 <span class="input-group-text" wire:ignore.self>ريال</span>
                             </div>
 
@@ -326,7 +327,7 @@
                             </div>
                         @endif
 
-                        @if ($bank)
+                        @if ($bank || $check)
                             <div class="col-md-6 mb-1">
                                 <label class="form-label">البنك</label>
                                 <select class="form-control select2" wire:model='bank_id'>
@@ -340,11 +341,7 @@
                             @enderror
                         @endif
 
-
                     </div>
-
-
-
 
                     <div class="d-flex justify-content-between mt-2">
                         <button class="btn btn-outline-secondary btn-prev" disabled>
@@ -367,7 +364,7 @@
                     <div class="row">
                         <div class="col-md-6 mb-1">
                             <label class="form-label">صفة العميل المشتري</label>
-                            <input type="text" class="form-control " wire:model='buyer_adj'
+                            <input type="text" class="form-control " wire:model.debounce.1s='buyer_adj'
                                 placeholder="صفة العميل المشتري" />
                             @error('buyer_adj')
                                 <small class="text-danger">{{ $message }}</small>
@@ -396,7 +393,7 @@
                     <div class="row">
                         <div class="col-md-6 mb-1">
                             <label class="form-label">الاسم</label>
-                            <input type="text" class="form-control " wire:model='customer_buyer_name'
+                            <input type="text" class="form-control " wire:model.debounce.1s='customer_buyer_name'
                                 placeholder="الاسم" />
                             @error('customer_buyer_name')
                                 <small class="text-danger">{{ $message }}</small>
@@ -405,7 +402,7 @@
 
                         <div class="col-md-6 mb-1">
                             <label class="form-label">رقم الجوال</label>
-                            <input type="text" class="form-control " wire:model='customer_buyer_phone'
+                            <input type="text" class="form-control " wire:model.debounce.1s='customer_buyer_phone'
                                 placeholder="رقم الجوال" />
                             @error('customer_buyer_phone')
                                 <small class="text-danger">{{ $message }}</small>
@@ -416,7 +413,7 @@
                     <div class="row">
                         <div class="col-md-6 mb-1">
                             <label class="form-label">البريد الالكترونى</label>
-                            <input type="email" class="form-control " wire:model='customer_buyer_email'
+                            <input type="email" class="form-control " wire:model.debounce.1s='customer_buyer_email'
                                 placeholder="البريد الالكترونى" />
                             @error('customer_buyer_email')
                                 <small class="text-danger">{{ $message }}</small>
@@ -425,8 +422,8 @@
 
                         <div class="col-md-6 mb-1">
                             <label class="form-label">رقم الهوية</label>
-                            <input type="text" class="form-control " wire:model='customer_buyer_id_number'
-                                placeholder="رقم الهوية" />
+                            <input type="text" class="form-control "
+                                wire:model.debounce.1s='customer_buyer_id_number' placeholder="رقم الهوية" />
                             @error('customer_buyer_id_number')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -464,16 +461,17 @@
                             <label class="form-label">موظف</label>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio"
-                                    wire:change="customerBuyerType('public')" wire:model='customer_buyer_public'
-                                    id="inlineRadio1" value="option1">
+                                    wire:change="customerBuyerType('public')"
+                                    wire:model.debounce.1s='customer_buyer_public' id="inlineRadio1" value="option1">
                                 <label class="form-check-label" for="inlineRadio1">قطاع
                                     عام</label>
                             </div>
 
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio"
-                                    wire:change="customerBuyerType('private')" wire:model='customer_buyer_private'
-                                    id="inlineRadio2" value="option2">
+                                    wire:change="customerBuyerType('private')"
+                                    wire:model.debounce.1s='customer_buyer_private' id="inlineRadio2"
+                                    value="option2">
                                 <label class="form-check-label" for="inlineRadio2">خاص</label>
                             </div>
                         </div>
@@ -482,14 +480,14 @@
                             <label class="form-label">هل مدعوم من الإسكان </label>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio"
-                                    wire:change="customerBuyerEskan('yes')" wire:model='customer_buyer_yes'
-                                    id="inlineRadio1" value="option1">
+                                    wire:change="customerBuyerEskan('yes')"
+                                    wire:model.debounce.1s='customer_buyer_yes' id="inlineRadio1" value="option1">
                                 <label class="form-check-label" for="inlineRadio1">نعم</label>
                             </div>
 
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" wire:change="customerBuyerEskan('no')"
-                                    wire:model='customer_buyer_no' id="inlineRadio2" value="option2">
+                                    wire:model.debounce.1s='customer_buyer_no' id="inlineRadio2" value="option2">
                                 <label class="form-check-label" for="inlineRadio2">لا</label>
                             </div>
                         </div>
@@ -503,8 +501,8 @@
                     <div class="row">
                         <div class="col-md-6 mb-1">
                             <label class="form-label">رقم المبنى</label>
-                            <input type="number" class="form-control " wire:model='customer_buyer_building_number'
-                                placeholder="رقم المبنى" />
+                            <input type="number" class="form-control "
+                                wire:model.debounce.1s='customer_buyer_building_number' placeholder="رقم المبنى" />
                             @error('customer_buyer_building_number')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -512,8 +510,8 @@
 
                         <div class="col-md-6 mb-1">
                             <label class="form-label">اسم الشارع</label>
-                            <input type="text" class="form-control " wire:model='customer_buyer_street_name'
-                                placeholder="اسم الشارع" />
+                            <input type="text" class="form-control "
+                                wire:model.debounce.1s='customer_buyer_street_name' placeholder="اسم الشارع" />
                             @error('customer_buyer_street_name')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -523,8 +521,8 @@
                     <div class="row">
                         <div class="col-md-6 mb-1">
                             <label class="form-label">اسم الحي</label>
-                            <input type="text" class="form-control " wire:model='customer_buyer_neighborhood'
-                                placeholder="اسم الحي" />
+                            <input type="text" class="form-control "
+                                wire:model.debounce.1s='customer_buyer_neighborhood' placeholder="اسم الحي" />
                             @error('customer_buyer_neighborhood')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -532,8 +530,8 @@
 
                         <div class="col-md-6 mb-1">
                             <label class="form-label">الرمز البريدي</label>
-                            <input type="text" class="form-control " wire:model='customer_buyer_zip_code'
-                                placeholder="الرمز البريدي" />
+                            <input type="text" class="form-control "
+                                wire:model.debounce.1s='customer_buyer_zip_code' placeholder="الرمز البريدي" />
                             @error('customer_buyer_zip_code')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -543,7 +541,8 @@
                     <div class="row">
                         <div class="col-md-6 mb-1">
                             <label class="form-label">الرقم الاضافي</label>
-                            <input type="number" class="form-control " wire:model='customer_buyer_addtional_number'
+                            <input type="number" class="form-control "
+                                wire:model.debounce.1s='customer_buyer_addtional_number'
                                 placeholder="الرقم الاضافي" />
                             @error('customer_buyer_addtional_number')
                                 <small class="text-danger">{{ $message }}</small>
@@ -552,8 +551,8 @@
 
                         <div class="col-md-6 mb-1">
                             <label class="form-label">رقم الوحدة</label>
-                            <input type="text" class="form-control " wire:model='customer_buyer_unit_number'
-                                placeholder="رقم الوحدة" />
+                            <input type="text" class="form-control "
+                                wire:model.debounce.1s='customer_buyer_unit_number' placeholder="رقم الوحدة" />
                             @error('customer_buyer_unit_number')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -584,7 +583,7 @@
                     <div class="row">
                         <div class="col-md-6 mb-1">
                             <label class="form-label">صفة العميل المشتري</label>
-                            <input type="text" class="form-control " wire:model='seller_adj'
+                            <input type="text" class="form-control " wire:model.debounce.1s='seller_adj'
                                 placeholder="صفة العميل البائع" />
                             @error('seller_adj')
                                 <small class="text-danger">{{ $message }}</small>
@@ -613,7 +612,7 @@
                     <div class="row">
                         <div class="col-md-6 mb-1">
                             <label class="form-label">الاسم</label>
-                            <input type="text" class="form-control " wire:model='customer_seller_name'
+                            <input type="text" class="form-control " wire:model.debounce.1s='customer_seller_name'
                                 placeholder="الاسم" />
                             @error('customer_seller_name')
                                 <small class="text-danger">{{ $message }}</small>
@@ -622,8 +621,8 @@
 
                         <div class="col-md-6 mb-1">
                             <label class="form-label">رقم الجوال</label>
-                            <input type="text" class="form-control " wire:model='customer_seller_phone'
-                                placeholder="رقم الجوال" />
+                            <input type="text" class="form-control "
+                                wire:model.debounce.1s='customer_seller_phone' placeholder="رقم الجوال" />
                             @error('customer_seller_phone')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -633,8 +632,8 @@
                     <div class="row">
                         <div class="col-md-6 mb-1">
                             <label class="form-label">البريد الالكترونى</label>
-                            <input type="email" class="form-control " wire:model='customer_seller_email'
-                                placeholder="البريد الالكترونى" />
+                            <input type="email" class="form-control "
+                                wire:model.debounce.1s='customer_seller_email' placeholder="البريد الالكترونى" />
                             @error('customer_seller_email')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -642,8 +641,8 @@
 
                         <div class="col-md-6 mb-1">
                             <label class="form-label">رقم الهوية</label>
-                            <input type="text" class="form-control " wire:model='customer_seller_id_number'
-                                placeholder="رقم الهوية" />
+                            <input type="text" class="form-control "
+                                wire:model.debounce.1s='customer_seller_id_number' placeholder="رقم الهوية" />
                             @error('customer_seller_id_number')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -681,15 +680,17 @@
                             <label class="form-label">موظف</label>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio"
-                                    wire:change="customerSellerType('private')" wire:model='customer_seller_public'
-                                    id="inlineRadio1" value="option1">
+                                    wire:change="customerSellerType('private')"
+                                    wire:model.debounce.1s='customer_seller_public' id="inlineRadio1"
+                                    value="option1">
                                 <label class="form-check-label" for="inlineRadio1">قطاع
                                     عام</label>
                             </div>
 
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" wire:model='customer_seller_private'
-                                    id="inlineRadio2" value="option2">
+                                <input class="form-check-input" type="radio"
+                                    wire:model.debounce.1s='customer_seller_private' id="inlineRadio2"
+                                    value="option2">
                                 <label class="form-check-label" for="inlineRadio2">خاص</label>
                             </div>
                         </div>
@@ -698,14 +699,14 @@
                             <label class="form-label">هل مدعوم من الإسكان </label>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio"
-                                    wire:change="customerSellerEskan('yes')" wire:model='customer_seller_yes'
-                                    id="inlineRadio1" value="option1">
+                                    wire:change="customerSellerEskan('yes')"
+                                    wire:model.debounce.1s='customer_seller_yes' id="inlineRadio1" value="option1">
                                 <label class="form-check-label" for="inlineRadio1">نعم</label>
                             </div>
 
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" wire:model='customer_seller_no'
-                                    id="inlineRadio2" value="option2">
+                                <input class="form-check-input" type="radio"
+                                    wire:model.debounce.1s='customer_seller_no' id="inlineRadio2" value="option2">
                                 <label class="form-check-label" for="inlineRadio2">لا</label>
                             </div>
                         </div>
@@ -719,8 +720,8 @@
                     <div class="row">
                         <div class="col-md-6 mb-1">
                             <label class="form-label">رقم المبنى</label>
-                            <input type="number" class="form-control" wire:input="customerSellerBuildingNumber"
-                                wire:model='customer_seller_building_number' placeholder="رقم المبنى" />
+                            <input type="number" class="form-control"
+                                wire:model.debounce.1s='customer_seller_building_number' placeholder="رقم المبنى" />
                             @error('customer_seller_building_number')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -728,8 +729,8 @@
 
                         <div class="col-md-6 mb-1">
                             <label class="form-label">اسم الشارع</label>
-                            <input type="text" class="form-control " wire:model='customer_seller_street_name'
-                                placeholder="اسم الشارع" />
+                            <input type="text" class="form-control "
+                                wire:model.debounce.1s='customer_seller_street_name' placeholder="اسم الشارع" />
                             @error('customer_seller_street_name')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -739,8 +740,8 @@
                     <div class="row">
                         <div class="col-md-6 mb-1">
                             <label class="form-label">اسم الحي</label>
-                            <input type="text" class="form-control " wire:model='customer_seller_neighborhood'
-                                placeholder="اسم الحي" />
+                            <input type="text" class="form-control "
+                                wire:model.debounce.1s='customer_seller_neighborhood' placeholder="اسم الحي" />
                             @error('customer_seller_neighborhood')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -748,8 +749,8 @@
 
                         <div class="col-md-6 mb-1">
                             <label class="form-label">الرمز البريدي</label>
-                            <input type="text" class="form-control " wire:model='customer_seller_zip_code'
-                                placeholder="الرمز البريدي" />
+                            <input type="text" class="form-control "
+                                wire:model.debounce.1s='customer_seller_zip_code' placeholder="الرمز البريدي" />
                             @error('customer_seller_zip_code')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -759,7 +760,8 @@
                     <div class="row">
                         <div class="col-md-6 mb-1">
                             <label class="form-label">الرقم الاضافي</label>
-                            <input type="number" class="form-control " wire:model='customer_seller_addtional_number'
+                            <input type="number" class="form-control "
+                                wire:model.debounce.1s='customer_seller_addtional_number'
                                 placeholder="الرقم الاضافي" />
                             @error('customer_seller_addtional_number')
                                 <small class="text-danger">{{ $message }}</small>
@@ -768,8 +770,8 @@
 
                         <div class="col-md-6 mb-1">
                             <label class="form-label">رقم الوحدة</label>
-                            <input type="text" class="form-control " wire:model='customer_seller_unit_number'
-                                placeholder="رقم الوحدة" />
+                            <input type="text" class="form-control "
+                                wire:model.debounce.1s='customer_seller_unit_number' placeholder="رقم الوحدة" />
                             @error('customer_seller_unit_number')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -784,6 +786,8 @@
                         <button class="btn btn-success btn-submit " wire:click='store' wire:ignore.self>
                             <i data-feather="check" class="align-middle me-sm-25 me-0"></i>
                             <span class="align-middle d-sm-inline-block d-none">حفظ</span>
+                            <span class="spinner-border spinner-border-sm" wire:loading role="status"
+                                aria-hidden="true"></span>
                         </button>
                     </div>
                 </div>

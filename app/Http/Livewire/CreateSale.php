@@ -339,15 +339,23 @@ class CreateSale extends Component
 
     public function is_numeric($name, $value)
     {
-        $int_value = str_replace(',', '', $value);
-        if (is_numeric($int_value)) {
-            $process = (float)str_replace(',', '', $value);
-            $this->fill([$name => number_format($process, 3)]);
+        $string_value = str_replace(',', '', $value);
+        $float_value = (float)$string_value;
+        $after_comma = explode('.', $string_value);
+        $count = 0;
+
+        if (array_key_exists(1, $after_comma)) {
+            foreach ($after_comma as $num) {
+                $count = $count + 1;
+            }
+        }
+
+        if (is_numeric($string_value)) {
+            $this->fill([$name => number_format($float_value, $count)]);
         } else {
             $this->validate([$name => 'numeric'], [$name . '.numeric' => "الحقل يقبل ارقام فقط"]);
         }
-
-        return $int_value;
+        return $float_value;
     }
 
     public function updated($propertyName, $value)
@@ -677,9 +685,5 @@ class CreateSale extends Component
         if ($type == 'customer_seller_private') {
             $this->customer_seller_private = 'option2';
         }
-    }
-
-    public function customerSellerBuildingNumber()
-    {
     }
 }

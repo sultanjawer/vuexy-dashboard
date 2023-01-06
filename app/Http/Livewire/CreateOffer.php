@@ -18,7 +18,7 @@ class CreateOffer extends Component
     public $duplex_fields = ['price_by_meter', 'direction_ids', 'land_type_id', 'licensed_id', 'street_width_ids', 'interface_length_id', 'interface_length', 'character', 'real_estate_age', 'building_type_id', 'building_status_id', 'construction_delivery_id'];
     public $condominium_fields = ['real_estate_age', 'floors_number', 'flats_number', 'stores_number', 'flat_rooms_number', 'annual_income',];
     public $flat_fields = ['floor_number', 'real_estate_age', 'bathroom_number', 'flat_rooms_number'];
-    public $chalet_fields = ['direction_ids', 'street_width_ids', 'owner_ship_type_id', 'real_estate_age', 'price'];
+    public $chalet_fields = ['direction_ids', 'street_width_ids', 'owner_ship_type_id', 'real_estate_age'];
     public $main_fields = ['city_id', 'neighborhood_id', 'land_number', 'real_estate_statement', 'block_number', 'notes', 'space', 'property_type_id', 'mediators_ids', 'branch_id', 'total_price',];
 
     public $property_types = ['land', 'duplex', 'condominium', 'flat', 'chalet'];
@@ -50,7 +50,6 @@ class CreateOffer extends Component
 
     public $owner_ship_type_id = 1;
     public $real_estate_age;
-    public $price = 0;
 
     public $floor_number = 0;
     public $floors_number = 0;
@@ -93,40 +92,9 @@ class CreateOffer extends Component
         $this->mediators = getMediators();
     }
 
-    public function setNeiborhoods()
-    {
-        $this->city = City::find($this->city_id);
-        $neighborhoods = $this->city->neighborhoods()->get(['id', 'name'])->toArray();
-
-        foreach ($neighborhoods as $key => $neighborhood) {
-
-            foreach ($neighborhood as $index => $value) {
-
-                if ($this->neighborhood_id == $value) {
-                    $neighborhood['selected'] = true;
-                }
-
-                if ($index == 'name') {
-                    $neighborhood['text'] = $value;
-                    unset($neighborhood['name']);
-                    $neighborhoods[$key] = $neighborhood;
-                }
-            }
-        }
-
-        $neighborhoods_json = json_decode(json_encode($neighborhoods));
-
-        $this->emit('neighborhoods', $neighborhoods_json, $this->neighborhood_id);
-    }
-
     public function hydrate()
     {
         $this->emit('select2', $this->mediators_ids);
-    }
-
-    public function render()
-    {
-        return view('livewire.create-offer');
     }
 
     public function setMediatorsIds()
@@ -134,66 +102,9 @@ class CreateOffer extends Component
         $this->emit('refreshSelect2');
     }
 
-    public function is_numeric($name, $value)
+    public function render()
     {
-        $int_value = str_replace(',', '', $value);
-        if (is_numeric($int_value)) {
-            $this->fill([$name => number_format((int)str_replace(',', '', $value))]);
-        } else {
-            $this->validate([$name => 'numeric'], [$name . '.numeric' => "الحقل يقبل ارقام فقط"]);
-        }
-
-        return $int_value;
-    }
-
-    public function updated($propertyName, $value)
-    {
-        if ($propertyName == 'city_id') {
-            $this->city = City::find($value);
-            $neighborhoods = $this->city->neighborhoods()->get(['id', 'name'])->toArray();
-
-            foreach ($neighborhoods as $key => $neighborhood) {
-
-                foreach ($neighborhood as $index => $value) {
-                    if ($index == 'name') {
-                        $neighborhood['text'] = $value;
-                        unset($neighborhood['name']);
-                        $neighborhoods[$key] = $neighborhood;
-                    }
-                }
-            }
-
-            $neighborhoods_json = json_decode(json_encode($neighborhoods));
-
-            $this->emit('neighborhoods', $neighborhoods_json);
-        }
-
-        if ($propertyName == 'yes') {
-            $this->yes = 'option1';
-            $this->no = '';
-            $this->is_direct = true;
-            $this->emit('mediators-show', $this->is_direct);
-        }
-
-
-        if ($propertyName == 'no') {
-            $this->yes = '';
-            $this->no = 'option2';
-            $this->is_direct = false;
-            $this->emit('mediators-show', $this->is_direct);
-        }
-
-        if ($propertyName == "space" || $propertyName == 'price_by_meter' || $propertyName == "price" || $propertyName == "annual_income" || $propertyName == 'real_estate_age') {
-            $this->is_numeric($propertyName, $value);
-        }
-
-        if ($this->price_by_meter && $this->space) {
-            $space = $this->is_numeric('space', $this->space);
-            $price_by_meter = $this->is_numeric('price_by_meter', $this->price_by_meter);
-            $this->total_price = number_format((int)str_replace(',', '', $price_by_meter * $space));
-        }
-
-        // $this->validateOnly($propertyName);
+        return view('livewire.create-offer');
     }
 
     public function getFields()
@@ -226,6 +137,7 @@ class CreateOffer extends Component
         $validation = [];
 
         foreach ($fields as $field) {
+
             if ($field == "mediators_ids") {
                 if (!$this->is_direct) {
                     $validation[$field] = ['required'];
@@ -248,6 +160,21 @@ class CreateOffer extends Component
                 continue;
             }
 
+            if ($field == "real_estate_age") {
+                $validation[$field] = ['numeric', 'required'];
+                continue;
+            }
+
+            if ($field == "interface_length") {
+                $validation[$field] = ['numeric', 'required'];
+                continue;
+            }
+
+            if ($field == "annual_income") {
+                $validation[$field] = ['numeric', 'required'];
+                continue;
+            }
+
             $validation[$field] = ['required'];
         }
 
@@ -266,16 +193,31 @@ class CreateOffer extends Component
 
             if ($field == "land_number") {
                 $validation[$field . '.unique'] = 'رقم الأرض موجود بالفعل';
-                $validation[$field . '.required'] = 'هذا الحقل مطلوب';
                 continue;
             }
 
             if ($field == "block_number") {
                 $validation[$field . '.unique'] = 'رقم الأرض موجود بالفعل';
+                continue;
+            }
+
+            if ($field == "interface_length") {
+                $validation[$field . '.numeric'] = 'الحقل يقبل ارقام فقط';
                 $validation[$field . '.required'] = 'هذا الحقل مطلوب';
                 continue;
             }
 
+            if ($field == "real_estate_age") {
+                $validation[$field . '.numeric'] = 'الحقل يقبل ارقام فقط';
+                $validation[$field . '.required'] = 'هذا الحقل مطلوب';
+                continue;
+            }
+
+            if ($field == "annual_income") {
+                $validation[$field . '.numeric'] = 'الحقل يقبل ارقام فقط';
+                $validation[$field . '.required'] = 'هذا الحقل مطلوب';
+                continue;
+            }
 
             $validation[$field . '.required'] = 'هذا الحقل مطلوب';
         }
@@ -283,12 +225,123 @@ class CreateOffer extends Component
         return $validation;
     }
 
+    public function isDirectOffer($check)
+    {
+        $this->no = '';
+        $this->yes = '';
+
+        if ($check == 'yes') {
+            $this->yes = 'option1';
+            $this->is_direct = true;
+            $this->emit('mediators-show', $this->is_direct);
+        }
+
+        if ($check == 'no') {
+            $this->no = 'option2';
+            $this->is_direct = false;
+            $this->emit('mediators-show', $this->is_direct);
+        }
+    }
+
+    public function setNeiborhoods()
+    {
+        $this->city = City::find($this->city_id);
+        $neighborhoods = $this->city->neighborhoods()->get(['id', 'name'])->toArray();
+
+        foreach ($neighborhoods as $key => $neighborhood) {
+
+            foreach ($neighborhood as $index => $value) {
+
+                if ($this->neighborhood_id == $value) {
+                    $neighborhood['selected'] = true;
+                }
+
+                if ($index == 'name') {
+                    $neighborhood['text'] = $value;
+                    unset($neighborhood['name']);
+                    $neighborhoods[$key] = $neighborhood;
+                }
+            }
+        }
+
+        $neighborhoods_json = json_decode(json_encode($neighborhoods));
+
+        $this->emit('neighborhoods', $neighborhoods_json, $this->neighborhood_id);
+    }
+
+    public function updated($propertyName, $value)
+    {
+        if ($propertyName == 'city_id') {
+            $this->setNeiborhoods();
+        }
+
+        if ($propertyName == 'property_type_id') {
+            $this->changePropertyType();
+        }
+
+        $this->validateOnly($propertyName);
+    }
+
+    public function is_numeric($name, $value)
+    {
+        $string_value = str_replace(',', '', $value);
+        $float_value = (float)$string_value;
+        $after_comma = explode('.', $string_value);
+        $count = 0;
+
+        if (array_key_exists(1, $after_comma)) {
+            foreach ($after_comma as $num) {
+                $count = $count + 1;
+            }
+        }
+
+        if (is_numeric($string_value)) {
+            $this->fill([$name => number_format($float_value, $count)]);
+        } else {
+            $this->validate([$name => 'numeric'], [$name . '.numeric' => "الحقل يقبل ارقام فقط"]);
+        }
+        return $float_value;
+    }
+
+    public function changePropertyType()
+    {
+        $this->space = 0;
+        $this->price_by_meter = 0;
+        $this->total_price = 0;
+    }
+
+    public function space()
+    {
+        $space = $this->is_numeric('space', $this->space);
+        $price_by_meter = $this->is_numeric('price_by_meter', $this->price_by_meter);
+
+        if ($space && $price_by_meter) {
+            $total_price = $space * $price_by_meter;
+            $this->is_numeric('total_price', $total_price);
+        }
+    }
+
+    public function priceByMeter()
+    {
+        $space = $this->is_numeric('space', $this->space);
+        $price_by_meter = $this->is_numeric('price_by_meter', $this->price_by_meter);
+
+        if ($space && $price_by_meter) {
+            $total_price = $space * $price_by_meter;
+            $this->is_numeric('total_price', $total_price);
+        }
+    }
+
+    public function totalPrice()
+    {
+        $this->is_numeric('total_price', $this->total_price);
+    }
+
     public function store(OfferService $offerService)
     {
-        $this->price_by_meter = (int)str_replace(',', '', $this->price_by_meter);
-        $this->total_price = (int)str_replace(',', '', $this->total_price);
-        $this->price = (int)str_replace(',', '', $this->price);
-        $this->space = (int)str_replace(',', '', $this->space);
+        $this->price_by_meter = (float)str_replace(',', '', $this->price_by_meter);
+        $this->total_price = (float)str_replace(',', '', $this->total_price);
+        $this->space = (float)str_replace(',', '', $this->space);
         $this->floor_number = (int)str_replace(',', '', $this->floor_number);
         $this->floors_number = (int)str_replace(',', '', $this->floors_number);
         $this->flats_number = (int)str_replace(',', '', $this->flats_number);
