@@ -51,7 +51,6 @@ class PDFChangeTitle extends Command
 
         if ($return_var === 0) {
             // The command was successful
-            dd($output);
         } else {
             // There was an error
             dd($command2, "Error: $return_var", $output);
