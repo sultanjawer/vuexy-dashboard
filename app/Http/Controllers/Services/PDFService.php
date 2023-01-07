@@ -62,8 +62,10 @@ class PDFService extends Controller
     {
         $fillable = array_merge($this->fillable, $data);
 
+        $this->updateInfo($code);
+
         $original_pdf = public_path() . '/pdfs/madar.pdf';
-        $temp_path = public_path() . '/assets/pdfjs/web/madar.pdf';
+        $temp_path = public_path() . '/assets/pdfjs/web/madar_edited_title.pdf';
 
         $pdf = new Pdf($original_pdf, [
             'locale' => 'ar_SA.utf8',
@@ -77,9 +79,6 @@ class PDFService extends Controller
         $result = $pdf->fillForm($fillable)
             ->needAppearances()
             ->saveAs($temp_path);
-
-        $this->updateInfo($code);
-
 
         if ($result === false) {
             dd($pdf->getError());
