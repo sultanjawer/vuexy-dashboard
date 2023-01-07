@@ -16,6 +16,8 @@ class SaleView extends Component
     public $pdf_path;
     public $pdf_path_amount;
     public $last_update_time;
+    public $paid_amount = 0;
+
 
     public function mount($sale_id)
     {
@@ -125,7 +127,7 @@ class SaleView extends Component
             'sale_code' => $sale->sale_code,
             'customer_buyer_name' => $customer_buyer->name,
             'customer_seller_name' => $customer_seller->name,
-            'paid_amount' => number_format((float)$sale->paid_amount, 3),
+            'paid_amount' => $this->is_numeric('paid_amount', $sale->paid_amount)  . "  ريال فقط لاغير ",
             'check_number' => "شيك " . $sale->check_number,
             'real_estate_data_1' => $real_estate_data_1,
             'real_estate_data_2' => $real_estate_data_2,
@@ -185,6 +187,27 @@ class SaleView extends Component
     {
         $path = public_path('assets/pdfjs/web/madar_platform.pdf');
         return $pDFService->exportPdf($path, $this->sale->sale_code);
+    }
+
+    public function is_numeric($name, $value)
+    {
+        $string_value = str_replace(',', '', $value);
+        $float_value = (float)$string_value;
+        $after_comma = explode('.', $string_value);
+        $count = 0;
+
+        if (array_key_exists(1, $after_comma)) {
+            foreach ($after_comma as $num) {
+                $count = $count + 1;
+            }
+        }
+
+        if (is_numeric($string_value)) {
+            $this->fill([$name => number_format($float_value, $count)]);
+        } else {
+            $this->validate([$name => 'numeric'], [$name . '.numeric' => "الحقل يقبل ارقام فقط"]);
+        }
+        return $float_value;
     }
 
     public function downloadAmount(PDFService $pDFService)
