@@ -208,7 +208,7 @@
                                     max="100" placeholder="السعي" wire:change="saeePrc('saee_prc')"
                                     wire:model='saee_prc'>
                                 <span class="input-group-text">%</span>
-                                <span class="input-group-text spinner-border spinner-border-sm" wire:loading
+                                <span class="spinner-border spinner-border-sm" wire:loading
                                     role="status" aria-hidden="true"></span>
                             </div>
 
