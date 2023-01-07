@@ -65,7 +65,6 @@ class PDFService extends Controller
         $original_pdf = public_path() . '/pdfs/madar.pdf';
         $temp_path = public_path() . '/assets/pdfjs/web/madar.pdf';
 
-
         $pdf = new Pdf($original_pdf, [
             'locale' => 'ar_SA.utf8',
             'procEnv' => [

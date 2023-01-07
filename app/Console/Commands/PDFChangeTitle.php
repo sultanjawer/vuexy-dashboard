@@ -41,6 +41,8 @@ class PDFChangeTitle extends Command
         $file = str_replace($search, $replace, $file);
         file_put_contents($metadata_file_path, $file);
 
+        exec("pdftk $pdf_file_path update_info $metadata_file_path output $pdf_file_path");
+
         $this->info('PDF info updated successfully!');
     }
 }
