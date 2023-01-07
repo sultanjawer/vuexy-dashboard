@@ -121,13 +121,13 @@ class SaleView extends Component
         $real_estate_data_2 = " " . $sale->sale_code;
         $real_estate_data_3 =  " تخص " . $add . " والمتبقي " . $sale->paid_amount . " ريال";
         $real_estate_data_t = "دفعة رقم (1): " . "مجموع ماتم دفعه حتى تاريخه " . $sale->paid_amount . " ريال";
-
+        $this->is_numeric('paid_amount', $sale->paid_amount);
         $data_deposit = [
             'sale_date' => $sale->created_at->format('Y-m-d'),
             'sale_code' => $sale->sale_code,
             'customer_buyer_name' => $customer_buyer->name,
             'customer_seller_name' => $customer_seller->name,
-            'paid_amount' => $this->is_numeric('paid_amount', $sale->paid_amount)  . "  ريال فقط لاغير ",
+            'paid_amount' =>    "  ريال فقط لاغير  " . $this->paid_amount,
             'check_number' => "شيك " . $sale->check_number,
             'real_estate_data_1' => $real_estate_data_1,
             'real_estate_data_2' => $real_estate_data_2,
