@@ -41,7 +41,9 @@ class PDFChangeTitle extends Command
         $file = str_replace($search, $replace, $file);
         file_put_contents($metadata_file_path, $file);
 
-        exec("pdftk $pdf_file_path update_info $metadata_file_path output $pdf_file_path");
+        $pdf_live = public_path() . '/assets/pdfjs/web/madar.pdf';
+
+        exec("pdftk $pdf_live update_info $metadata_file_path output $pdf_live");
 
         $this->info('PDF info updated successfully!');
     }
