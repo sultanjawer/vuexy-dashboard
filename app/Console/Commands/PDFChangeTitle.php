@@ -52,7 +52,7 @@ class PDFChangeTitle extends Command
             dd($output);
         } else {
             // There was an error
-            dd("Error: $return_var");
+            dd("Error: $return_var", $output);
         }
 
 
