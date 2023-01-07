@@ -17,7 +17,7 @@ class SaleView extends Component
     public $pdf_path_amount;
     public $last_update_time;
     public $paid_amount = 0;
-
+    public $space = 0;
 
     public function mount($sale_id)
     {
@@ -96,32 +96,35 @@ class SaleView extends Component
         $customer_buyer = Customer::find($sale->customer_buyer_id);
         $customer_seller = Customer::find($sale->customer_seller_id);
         $realEstate = $sale->realEstate;
+        $this->is_numeric('paid_amount', $sale->paid_amount);
+        $this->is_numeric('space', $realEstate->space);
+
 
         if ($realEstate->property_type_id == 1) {
-            $add = "أرض " . $realEstate->space . "م " .  "ب" . $realEstate->city->name . ' ' . $realEstate->character;
+            $add = "أرض " . $this->space . "م " .  "ب" . $realEstate->city->name . ' ' . $realEstate->character;
         }
 
         if ($realEstate->property_type_id == 2) {
-            $add = "دبلكس " . $realEstate->buildingStatus->name . " " . $realEstate->space . "م " .  "ب" . $realEstate->city->name . ' ' . $realEstate->character;
+            $add = "دبلكس " . $realEstate->buildingStatus->name . " " . $this->space . "م " .  "ب" . $realEstate->city->name . ' ' . $realEstate->character;
         }
 
         if ($realEstate->property_type_id == 3) {
-            $add = "عمارة " . $realEstate->space . "م " .  "ب" . $realEstate->city->name . ' ' . $realEstate->floors_number . 'طوابق';
+            $add = "عمارة " . $this->space . "م " .  "ب" . $realEstate->city->name . ' ' . $realEstate->floors_number . 'طوابق';
         }
 
         if ($realEstate->property_type_id == 4) {
-            $add = "شقة " . $realEstate->space . "م " .  "ب" . $realEstate->city->name . ' ' . $realEstate->flat_rooms_number . ' غرف';
+            $add = "شقة " . $this->space . "م " .  "ب" . $realEstate->city->name . ' ' . $realEstate->flat_rooms_number . ' غرف';
         }
 
         if ($realEstate->property_type_id == 5) {
-            $add = "شاليه " . $realEstate->space . "م " .  "ب" . $realEstate->city->name;
+            $add = "شاليه " . $this->space . "م " .  "ب" . $realEstate->city->name;
         }
 
         $real_estate_data_1 = "دفعة اتفاقية حجز رقم";
         $real_estate_data_2 = " " . $sale->sale_code;
-        $real_estate_data_3 =  " تخص " . $add . " والمتبقي " . $sale->paid_amount . " ريال";
-        $real_estate_data_t = "دفعة رقم (1): " . "مجموع ماتم دفعه حتى تاريخه " . $sale->paid_amount . " ريال";
-        $this->is_numeric('paid_amount', $sale->paid_amount);
+        $real_estate_data_3 =  " تخص " . $add . " والمتبقي " . $this->paid_amount . " ريال";
+        $real_estate_data_t = "دفعة رقم (1): " . "مجموع ماتم دفعه حتى تاريخه " . $this->paid_amount . " ريال";
+
         $data_deposit = [
             'sale_date' => $sale->created_at->format('Y-m-d'),
             'sale_code' => $sale->sale_code,
