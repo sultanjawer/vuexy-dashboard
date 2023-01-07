@@ -44,8 +44,9 @@ class PDFChangeTitle extends Command
         $output = array();
         $return_var = 0;
 
-        $pdf_live = public_path() . '/assets/pdfjs/web/madar_edited_title.pdf';
-        $command2 = "pdftk {$pdf_file_path} update_info {$metadata_file_path} output {$pdf_live}";
+        $pdf_live = public_path() . '/assets/pdfjs/web/madar.pdf';
+        $pdf_output = public_path() . '/assets/pdfjs/web/madar_platform.pdf';
+        $command2 = "pdftk {$pdf_live} update_info {$metadata_file_path} output {$pdf_output}";
 
         exec($command2, $output, $return_var);
 

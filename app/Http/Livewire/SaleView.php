@@ -81,8 +81,8 @@ class SaleView extends Component
         ];
 
         $pDFService = new PDFService();
-        $this->pdf_path = $pDFService->writePdf($data, $sale->sale_code);
-        $this->pdf_path = asset('assets/pdfjs/web/viewer.html?file=madar_edited_title.pdf');
+        $pDFService->writePdf($data, $sale->sale_code);
+        $this->pdf_path = asset('assets/pdfjs/web/viewer.html?file=madar_platform.pdf');
     }
 
     public function render()
@@ -131,7 +131,7 @@ class SaleView extends Component
 
     public function download(PDFService $pDFService)
     {
-        $path = public_path('assets/pdfjs/web/madar_edited_title.pdf');
+        $path = public_path('assets/pdfjs/web/madar_platform.pdf');
         return $pDFService->exportPdf($path, $this->sale->sale_code);
     }
 }
