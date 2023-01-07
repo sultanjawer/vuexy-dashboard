@@ -464,10 +464,18 @@
                                             </p>
 
                                         </div>
-                                        <button type="button"
-                                            class="btn btn-primary waves-effect waves-float waves-light"
-                                            wire:click="download">تحميل صفقة
-                                            البيع</button>
+
+                                        <div class="demo-inline-spacing">
+                                            <div class="spinner-border text-primary" role="status" wire:loading>
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                            <button type="button"
+                                                class="btn btn-primary waves-effect waves-float waves-light"
+                                                wire:click="download">تحميل صفقة
+                                                البيع</button>
+                                        </div>
+
+
                                     </div>
 
                                     <div class="col-sm-6 col-12 d-flex justify-content-between flex-column text-end order-sm-2 order-1"
