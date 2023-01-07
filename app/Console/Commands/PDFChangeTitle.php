@@ -28,16 +28,11 @@ class PDFChangeTitle extends Command
     public function handle()
     {
         $pdf_file_path = $this->argument('input');
-        $pdf_live = public_path() . '/assets/pdfjs/web/madar.pdf';
-
         $metadata_file_path = $this->argument('output');
 
-        $command = "pdftk {$pdf_live} dump_data output {$metadata_file_path}";
+        $command = "pdftk {$pdf_file_path} dump_data output {$metadata_file_path}";
 
-        $output = array();
-        $return_var = 0;
-
-        exec($command, $output, $return_var);
+        exec($command);
 
         $search = '80067 &#1571;&#1578;&#1601;&#1575;&#1602;&#1610;&#1577; &#1581;&#1580;&#1586; &#1585;&#1602;&#1605;.pdf';
         $replace =  $this->argument('title');
@@ -48,15 +43,18 @@ class PDFChangeTitle extends Command
 
         $output = array();
         $return_var = 0;
-        dd("pdftk {$pdf_live} update_info {$metadata_file_path} output {$pdf_live}");
-        exec("pdftk {$pdf_live} update_info {$metadata_file_path} output {$pdf_live}", $output, $return_var);
+
+        $pdf_live = public_path() . '/assets/pdfjs/web/madar_edited_title.pdf';
+        $command2 = "pdftk {$pdf_file_path} update_info {$metadata_file_path} output {$pdf_live}";
+
+        exec($command2, $output, $return_var);
 
         if ($return_var === 0) {
             // The command was successful
             dd($output);
         } else {
             // There was an error
-            dd("Error: $return_var", $output);
+            dd($command2, "Error: $return_var", $output);
         }
 
 
