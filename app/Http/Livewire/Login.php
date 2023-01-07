@@ -160,7 +160,7 @@ class Login extends Component
         }
     }
 
-    public function updated($propertyName)
+    public function updated($propertyName, $value)
     {
         $_05 =  mb_substr($this->login_phone_email, 0, 2);
         if ($_05 == '05') {
@@ -168,7 +168,9 @@ class Login extends Component
         } else {
             $this->max_len = 50;
         }
-
+        if ($propertyName == 'login_phone_email') {
+            $this->login_phone_email = trim($value);
+        }
         $this->validateOnly($propertyName);
     }
 

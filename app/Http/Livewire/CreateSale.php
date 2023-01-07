@@ -40,6 +40,9 @@ class CreateSale extends Component
     public $success_message_saee_prc = '';
     public $error_message_saee_prc = '';
 
+    public $customer_buyer_nationality_type = '';
+    public $customer_seller_nationality_type = '';
+
     #Recieved Offer
     public $offer;
     public $order;
@@ -130,6 +133,7 @@ class CreateSale extends Component
         'customer_buyer_zip_code',
         'customer_buyer_addtional_number',
         'customer_buyer_unit_number',
+        'customer_buyer_nationality_type',
 
         #Customer Seller
         'customer_seller_name',
@@ -144,6 +148,7 @@ class CreateSale extends Component
         'customer_seller_zip_code',
         'customer_seller_addtional_number',
         'customer_seller_unit_number',
+        'customer_seller_nationality_type',
     ];
 
     public function mount($offer_id)
@@ -267,6 +272,7 @@ class CreateSale extends Component
             $this->customer_buyer_support_eskan = $this->customer_buyer->support_eskan;
             $this->customer_buyer_addtional_number = $this->customer_buyer->addtional_number;
             $this->customer_buyer_unit_number = $this->customer_buyer->unit_number;
+            $this->customer_buyer_nationality_type = $this->customer_buyer->nationality_type;
 
             if ($this->customer_buyer->employee_type == 'public') {
                 $this->customer_buyer_public = 'option1';
@@ -311,6 +317,7 @@ class CreateSale extends Component
             $this->customer_seller_support_eskan = $this->customer_seller->support_eskan;
             $this->customer_seller_addtional_number = $this->customer_seller->addtional_number;
             $this->customer_seller_unit_number = $this->customer_seller->unit_number;
+            $this->customer_seller_nationality_type = $this->customer_seller->nationality_type;
 
             if ($this->customer_seller->employee_type == 'public') {
                 $this->customer_seller_public = 'option1';
@@ -367,6 +374,8 @@ class CreateSale extends Component
         if ($propertyName == 'customer_seller_id') {
             $this->setCustomerSeller();
         }
+
+        $this->validateOnly($propertyName);
     }
 
     public function render()
@@ -471,6 +480,19 @@ class CreateSale extends Component
             $this->is_first_no = 'option2';
             $this->deserved_amount = 0.0;
             $this->vat();
+        }
+    }
+
+
+    public function customerIdType($propertyName)
+    {
+        $value = $this->{$propertyName};
+        if ($propertyName == 'customer_seller_id_number') {
+            $this->{$propertyName} = $this->is_numeric($propertyName, $value);
+        }
+
+        if ($propertyName == 'customer_buyer_id_number') {
+            $this->{$propertyName} =  $this->is_numeric($propertyName, $value);
         }
     }
 

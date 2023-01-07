@@ -118,15 +118,18 @@
                                                         wire:click="sortBy('id')" tabindex="0" rowspan="1"
                                                         colspan="1" aria-sort="ascending">كود العرض</th>
                                                     <th>نوع العقار</th>
+
                                                     @if (in_array(auth()->user()->user_type, ['superadmin', 'admin', 'marketer']))
                                                         <th>صاحب العرض</th>
                                                     @endif
+
                                                     <th>بيان العقار</th>
                                                     <th>المدينة</th>
                                                     <th>الحي</th>
                                                     <th>السعر</th>
                                                     <th>الفرع</th>
-                                                    <th>الحالة</th>
+                                                    <th>حالة العقار</th>
+                                                    <th>حالة العرض</th>
                                                     <th>تحكم</th>
                                                 </tr>
                                             </thead>
@@ -212,6 +215,14 @@
                                                         </td>
 
                                                         <td>
+                                                            @if ($direct_offer->status == 1)
+                                                                <span class="badge bg-success">نشط</span>
+                                                            @else
+                                                                <span class="badge bg-danger"> غير نشط</span>
+                                                            @endif
+                                                        </td>
+
+                                                        <td>
                                                             <div class="d-inline-flex">
 
                                                                 @can('showOffer', $direct_offer)
@@ -222,18 +233,8 @@
                                                                 @endcan
 
                                                                 @auth
-                                                                    @if (in_array(auth()->user()->user_type, ['office', 'marketer']) && !$direct_offer->sale)
-                                                                        @if (auth()->id() == $direct_offer->user_id)
-                                                                            @can('updateOffer', $direct_offer)
-                                                                                <a href="{{ route('panel.update.offer', $direct_offer->id) }}"
-                                                                                    class="item-edit">
-                                                                                    <i class="fas fa-edit"></i>
-                                                                                </a>
-                                                                            @endcan
-                                                                        @endif
-                                                                    @endif
-
-                                                                    @if (in_array(auth()->user()->user_type, ['admin', 'superadmin']) && !$direct_offer->sale)
+                                                                    @if ((auth()->id() == $direct_offer->user_id && !$direct_offer->sale) ||
+                                                                        in_array(auth()->user()->user_type, ['admin', 'superadmin']))
                                                                         @can('updateOffer', $direct_offer)
                                                                             <a href="{{ route('panel.update.offer', $direct_offer->id) }}"
                                                                                 class="item-edit">
@@ -241,15 +242,18 @@
                                                                             </a>
                                                                         @endcan
                                                                     @endif
-                                                                @endauth
 
-                                                                {{--
-                                                                @can('changeOfferStatus', $direct_offer)
-                                                                    <button class="btn item-edit"
-                                                                        style="padding:0;color:#EA5455 ">
-                                                                        <i class="fas fa-trash-alt"></i>
-                                                                    </button>
-                                                                @endcan --}}
+
+                                                                    @if (auth()->id() == $direct_offer->user_id || in_array(auth()->user()->user_type, ['admin', 'superadmin']))
+                                                                        @can('changeOfferStatus', $direct_offer)
+                                                                            <button class="btn item-edit"
+                                                                                style="padding:0;color:#EA5455"
+                                                                                wire:click="changeOfferStatus({{ $direct_offer->id }})">
+                                                                                <i class="fas fa-trash-alt"></i>
+                                                                            </button>
+                                                                        @endcan
+                                                                    @endif
+                                                                @endauth
 
                                                             </div>
                                                         </td>
@@ -375,7 +379,8 @@
                                                         <th>الحي</th>
                                                         <th>السعر</th>
                                                         <th>الفرع</th>
-                                                        <th>الحالة</th>
+                                                        <th>حالة العقار</th>
+                                                        <th>حالة العرض</th>
                                                         <th>تحكم</th>
                                                     </tr>
                                                 </thead>
@@ -464,7 +469,16 @@
                                                             </td>
 
                                                             <td>
+                                                                @if ($in_direct_offer->status == 1)
+                                                                    <span class="badge bg-success">نشط</span>
+                                                                @else
+                                                                    <span class="badge bg-danger"> غير نشط</span>
+                                                                @endif
+                                                            </td>
+
+                                                            <td>
                                                                 <div class="d-inline-flex">
+
                                                                     @can('showOffer', $in_direct_offer)
                                                                         <a href="{{ route('panel.offer', $in_direct_offer->id) }}"
                                                                             class="item-view">
@@ -473,18 +487,8 @@
                                                                     @endcan
 
                                                                     @auth
-                                                                        @if (in_array(auth()->user()->user_type, ['office', 'marketer']) && !$in_direct_offer->sale)
-                                                                            @if (auth()->id() == $in_direct_offer->user_id)
-                                                                                @can('updateOffer', $in_direct_offer)
-                                                                                    <a href="{{ route('panel.update.offer', $in_direct_offer->id) }}"
-                                                                                        class="item-edit">
-                                                                                        <i class="fas fa-edit"></i>
-                                                                                    </a>
-                                                                                @endcan
-                                                                            @endif
-                                                                        @endif
-
-                                                                        @if (in_array(auth()->user()->user_type, ['admin', 'superadmin']) && !$in_direct_offer->sale)
+                                                                        @if ((auth()->id() == $in_direct_offer->user_id && !$in_direct_offer->sale) ||
+                                                                            in_array(auth()->user()->user_type, ['admin', 'superadmin']))
                                                                             @can('updateOffer', $in_direct_offer)
                                                                                 <a href="{{ route('panel.update.offer', $in_direct_offer->id) }}"
                                                                                     class="item-edit">
@@ -492,14 +496,19 @@
                                                                                 </a>
                                                                             @endcan
                                                                         @endif
+
+
+                                                                        @if (auth()->id() == $in_direct_offer->user_id || in_array(auth()->user()->user_type, ['admin', 'superadmin']))
+                                                                            @can('changeOfferStatus', $in_direct_offer)
+                                                                                <button class="btn item-edit"
+                                                                                    style="padding:0;color:#EA5455"
+                                                                                    wire:click="changeOfferStatus({{ $in_direct_offer->id }})">
+                                                                                    <i class="fas fa-trash-alt"></i>
+                                                                                </button>
+                                                                            @endcan
+                                                                        @endif
                                                                     @endauth
 
-                                                                    {{-- @can('changeOfferStatus', $in_direct_offer)
-                                                                        <button class="btn item-edit"
-                                                                            style="padding:0;color:#EA5455 ">
-                                                                            <i class="fas fa-trash-alt"></i>
-                                                                        </button>
-                                                                    @endcan --}}
                                                                 </div>
                                                             </td>
 

@@ -46,6 +46,9 @@ class EditSale extends Component
     public $success_message_saee_prc = '';
     public $error_message_saee_prc = '';
 
+    public $customer_buyer_nationality_type = '';
+    public $customer_seller_nationality_type = '';
+
 
     #Recieved Offer
     public $offer;
@@ -136,6 +139,7 @@ class EditSale extends Component
         'customer_buyer_zip_code',
         'customer_buyer_addtional_number',
         'customer_buyer_unit_number',
+        'customer_buyer_nationality_type',
 
         #Customer Seller
         'customer_seller_name',
@@ -150,6 +154,7 @@ class EditSale extends Component
         'customer_seller_zip_code',
         'customer_seller_addtional_number',
         'customer_seller_unit_number',
+        'customer_seller_nationality_type',
 
     ];
 
@@ -242,6 +247,7 @@ class EditSale extends Component
             $this->customer_buyer_addtional_number = $customer_buyer->addtional_number;
             $this->customer_buyer_unit_number = $customer_buyer->unit_number;
             $this->buyer_adj = $customer_buyer->adj;
+            $this->customer_buyer_nationality_type = $customer_buyer->nationality_type;
 
             $this->customer_buyer_private = '';
             $this->customer_buyer_public = '';
@@ -280,6 +286,8 @@ class EditSale extends Component
             $this->customer_seller_addtional_number = $customer_seller->addtional_number;
             $this->customer_seller_unit_number = $customer_seller->unit_number;
             $this->seller_adj = $customer_seller->adj;
+            $this->customer_seller_nationality_type = $customer_seller->nationality_type;
+
 
             $this->customer_seller_private = '';
             $this->customer_seller_public = '';
@@ -302,6 +310,7 @@ class EditSale extends Component
                 $this->customer_seller_no = 'option2';
             }
         }
+
         $this->error_message_saee_prc = '';
         $this->success_message_vat = "";
         $this->message_vat = '';
@@ -416,6 +425,7 @@ class EditSale extends Component
             $this->customer_buyer_addtional_number = $this->customer_buyer->addtional_number;
             $this->customer_buyer_unit_number = $this->customer_buyer->unit_number;
             $this->buyer_adj = $this->customer_buyer->adj;
+            $this->customer_buyer_nationality_type = $this->customer_buyer->nationality_type;
 
             if ($this->customer_buyer->employee_type == 'public') {
                 $this->customer_buyer_public = 'option1';
@@ -463,6 +473,8 @@ class EditSale extends Component
             $this->customer_seller_addtional_number = $this->customer_seller->addtional_number;
             $this->customer_seller_unit_number = $this->customer_seller->unit_number;
             $this->seller_adj = $this->customer_seller->adj;
+            $this->customer_seller_nationality_type = $this->customer_seller->nationality_type;
+
 
             if ($this->customer_seller->employee_type == 'public') {
                 $this->customer_seller_public = 'option1';
@@ -520,6 +532,14 @@ class EditSale extends Component
 
         if ($propertyName == 'customer_seller_id') {
             $this->setCustomerSeller();
+        }
+
+        if ($propertyName == 'customer_seller_id_number') {
+            $this->is_numeric($propertyName, $value);
+        }
+
+        if ($propertyName == 'customer_buyer_id_number') {
+            $this->is_numeric($propertyName, $value);
         }
     }
 

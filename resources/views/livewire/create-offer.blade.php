@@ -693,7 +693,6 @@
                                                 <span class="spinner-border spinner-border-sm" wire:loading
                                                     role="status" aria-hidden="true"></span>
                                             </button>
-
                                         </div>
 
                                     </div>

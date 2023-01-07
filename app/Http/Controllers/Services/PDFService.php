@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Services;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Response;
 use mikehaertl\pdftk\Pdf;
 
@@ -70,24 +71,41 @@ class PDFService extends Controller
             'procEnv' => [
                 'LANG' => 'ar_SA.utf-8',
             ],
-            // 'command' => 'C:\Program Files (x86)\PDFtk\bin\pdftk.exe',
-            // 'useExec' => true,
+            'command' => 'C:\Program Files (x86)\PDFtk\bin\pdftk.exe',
+            'useExec' => true,
         ]);
 
         $result = $pdf->fillForm($fillable)
             ->needAppearances()
             ->saveAs($temp_path);
 
+        $this->updateInfo([
+            'title' => 'The PDF TK Tester'
+        ]);
+
 
         if ($result === false) {
             dd($pdf->getError());
         }
 
-        return asset('madar.pdf');
+        $path = asset('madar.pdf');
+        return $path;
     }
 
     public function exportPdf($file_path, $name)
     {
         return Response::download($file_path, $name . '.pdf', ['Content-Type: application/pdf']);
+    }
+
+    public function updateInfo($title)
+    {
+        $path_text_file = public_path() . '/assets/pdfjs/web/pdf_metadata.txt';
+        $path_pdf = public_path() . '/assets/pdfjs/web/madar.pdf';
+
+        Artisan::call('pdf:update-info', [
+            'input' => $path_pdf,
+            'output' => $path_text_file,
+            'title' => 'QTF-10-USR2'
+        ]);
     }
 }

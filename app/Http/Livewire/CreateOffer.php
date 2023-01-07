@@ -146,12 +146,12 @@ class CreateOffer extends Component
             }
 
             if ($field == "land_number") {
-                $validation[$field] = ['unique:real_estates,land_number', 'nullable'];
+                $validation[$field] = ['nullable'];
                 continue;
             }
 
             if ($field == "block_number") {
-                $validation[$field] = ['unique:real_estates,block_number', 'nullable'];
+                $validation[$field] = ['nullable'];
                 continue;
             }
 
@@ -190,16 +190,6 @@ class CreateOffer extends Component
         $validation = [];
 
         foreach ($fields as $field) {
-
-            if ($field == "land_number") {
-                $validation[$field . '.unique'] = 'رقم الأرض موجود بالفعل';
-                continue;
-            }
-
-            if ($field == "block_number") {
-                $validation[$field . '.unique'] = 'رقم الأرض موجود بالفعل';
-                continue;
-            }
 
             if ($field == "interface_length") {
                 $validation[$field . '.numeric'] = 'الحقل يقبل ارقام فقط';

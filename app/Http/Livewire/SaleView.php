@@ -41,7 +41,7 @@ class SaleView extends Component
             #First Customer
             'customer_buyer_adj' => $customer_buyer->adj,
             'customer_buyer_name' => $customer_buyer->name,
-            'customer_buyer_id_type' => "لا اعلم",
+            'customer_buyer_id_type' => $customer_buyer->nationality_type,
             'customer_buyer_id_number' => $customer_buyer->nationality_id,
             'customer_buyer_nationality' => $customer_buyer->nationality->name,
             'customer_buyer_phone' => $customer_buyer->phone,
@@ -55,7 +55,7 @@ class SaleView extends Component
             #Second Customer
             'customer_seller_adj' => $customer_seller->adj,
             'customer_seller_name' => $customer_seller->name,
-            'customer_seller_id_type' => "لا اعلم",
+            'customer_seller_id_type' => $customer_seller->nationality_type,
             'customer_seller_id_number' => $customer_seller->nationality_id,
             'customer_seller_nationality' => $customer_seller->nationality->name,
             'customer_seller_phone' => $customer_seller->phone,

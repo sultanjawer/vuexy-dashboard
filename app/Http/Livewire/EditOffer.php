@@ -291,12 +291,12 @@ class EditOffer extends Component
             }
 
             if ($field == "land_number") {
-                $validation[$field] = ['unique:real_estates,land_number,' . $this->offer->id, 'nullable'];
+                $validation[$field] = ['nullable'];
                 continue;
             }
 
             if ($field == "block_number") {
-                $validation[$field] = ['unique:real_estates,block_number,' . $this->offer->id, 'nullable'];
+                $validation[$field] = ['nullable'];
                 continue;
             }
 
@@ -336,13 +336,11 @@ class EditOffer extends Component
         foreach ($fields as $field) {
 
             if ($field == "land_number") {
-                $validation[$field . '.unique'] = 'رقم الأرض موجود بالفعل';
                 $validation[$field . '.required'] = 'هذا الحقل مطلوب';
                 continue;
             }
 
             if ($field == "block_number") {
-                $validation[$field . '.unique'] = 'رقم الأرض موجود بالفعل';
                 $validation[$field . '.required'] = 'هذا الحقل مطلوب';
                 continue;
             }

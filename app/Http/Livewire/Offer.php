@@ -15,6 +15,7 @@ class Offer extends Component
     use LivewireAlert;
 
     protected $paginationTheme = 'bootstrap';
+    protected $listeners = ['refreshComponent' => '$refresh'];
     public $rows_number = 10;
     public $in_rows_number = 10;
     public $search = '';
@@ -203,5 +204,26 @@ class Offer extends Component
 
             return $excel;
         }
+    }
+
+    public function changeOfferStatus($offer_id)
+    {
+        $branch = ModelsOffer::find($offer_id);
+
+        if ($branch->status == 1) {
+            $branch->update(['status' => 2]);
+        } else {
+            $branch->update(['status' => 1]);
+        }
+
+        $this->emit('refreshComponent');
+
+        $this->alert('success', '', [
+            'toast' => true,
+            'position' => 'center',
+            'timer' => 6000,
+            'text' => 'تم تغيير حالة العرض بنجاح',
+            'timerProgressBar' => true,
+        ]);
     }
 }

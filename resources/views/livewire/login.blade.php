@@ -3,7 +3,7 @@
         <div class="mb-1">
             <label class="form-label" for="login-phone">رقم الجوال او الايميل</label>
             <input class="form-control" dir="ltr" maxlength="{{ $max_len }}" type="text"
-                wire:model="login_phone_email" placeholder="example@gmail.com or 0599916672" autofocus=""
+                wire:model.debounce.1s="login_phone_email" placeholder="example@gmail.com or 0599916672" autofocus=""
                 tabindex="1" />
             @error('login_phone_email')
                 <small class="text-danger">{{ $message }}</small>
@@ -19,7 +19,7 @@
             </div>
 
             <div class="input-group input-group-merge form-password-toggle">
-                <input class="form-control form-control-merge" type="password" wire:model="login_password"
+                <input class="form-control form-control-merge" type="password" wire:model.debounce.1s="login_password"
                     placeholder="password" tabindex="2" />
                 <span class="input-group-text cursor-pointer">
                     <i data-feather="eye"></i>
@@ -45,8 +45,8 @@
 
             <div class="mb-1">
                 <label class="form-label">كود التفعيل</label>
-                <input type="text" dir="ltr" maxlength="6" wire:model='verification_code' class="form-control"
-                    aria-describedby="name" autofocus="" tabindex="1" />
+                <input type="text" dir="ltr" maxlength="6" wire:model.debounce.1s='verification_code'
+                    class="form-control" aria-describedby="name" autofocus="" tabindex="1" />
 
                 @if ($user->verification_code)
                     @if ($user->verification_code == $verification_code)

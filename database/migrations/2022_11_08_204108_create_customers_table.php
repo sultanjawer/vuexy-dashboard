@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('employer_id')->nullable(); #employee name
             $table->string('employer_name')->nullable(); #employee name
             $table->unsignedBigInteger('nationality_id')->nullable(); #nationality id
+            $table->string('nationality_type')->nullable(); #nationality id
             $table->bigInteger('NID')->nullable(); #NID
             $table->integer('city_id')->nullable();
             $table->unsignedBigInteger('building_number')->nullable();

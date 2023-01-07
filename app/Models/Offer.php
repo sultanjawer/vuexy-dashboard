@@ -19,6 +19,7 @@ class Offer extends Model
         'who_add',
         'who_edit',
         'who_cancel',
+        'status',
         // 'mediators_ids',
         'booking_ids',
     ];
@@ -85,6 +86,7 @@ class Offer extends Model
             'who_add',
             'who_edit',
             'who_cancel',
+            'status',
             // 'mediators_ids',
             'booking_ids',
         ]);

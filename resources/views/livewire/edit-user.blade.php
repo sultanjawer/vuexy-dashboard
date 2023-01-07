@@ -74,17 +74,6 @@
 
                         </div>
 
-                        {{-- <div class="col-md-6 mb-1">
-                            <label class="form-label" for="password">كلمة المرور</label>
-                            <div class="input-group input-group-merge form-password-toggle">
-                                <input type="password" class="form-control" placeholder="كلمة المرور"
-                                    wire:model='password' />
-                                <span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
-                            </div>
-                            @error('password')
-                                <small class="text-danger">{{ $message }}</small>
-                            @enderror
-                        </div> --}}
                     </div>
 
                     <div class="d-flex justify-content-between mt-2">
@@ -191,41 +180,40 @@
                                         </tr>
                                     @endif
 
+                                    @if (in_array($user_type, ['admin', 'superadmin', 'marketer']))
+                                        <tr>
+                                            <td class="text-nowrap fw-bolder">الطلبات</td>
+                                            <td>
+                                                <div class="d-flex">
+                                                    <div class="form-check me-3 me-lg-5">
+                                                        <input class="form-check-input" type="checkbox"
+                                                            wire:model='can_show_order'>
+                                                        <label class="form-check-label"> رؤية </label>
+                                                    </div>
 
-                                    <tr>
-                                        <td class="text-nowrap fw-bolder">الطلبات</td>
-                                        <td>
-                                            <div class="d-flex">
-                                                <div class="form-check me-3 me-lg-5">
-                                                    <input class="form-check-input" type="checkbox"
-                                                        wire:model='can_show_order'>
-                                                    <label class="form-check-label"> رؤية </label>
+                                                    <div class="form-check me-3 me-lg-5">
+                                                        <input class="form-check-input" type="checkbox"
+                                                            wire:model='can_create_order'>
+                                                        <label class="form-check-label" for="canAdd"> اضافة </label>
+                                                    </div>
+
+                                                    <div class="form-check me-3 me-lg-5">
+                                                        <input class="form-check-input" type="checkbox"
+                                                            wire:model='can_edit_order'>
+                                                        <label class="form-check-label" for="canEdit"> تعديل
+                                                        </label>
+                                                    </div>
+
+                                                    <div class="form-check me-3 me-lg-5">
+                                                        <input class="form-check-input" type="checkbox"
+                                                            wire:model='can_change_order_status'>
+                                                        <label class="form-check-label" for="canCancel">إلغاء</label>
+                                                    </div>
+
                                                 </div>
-
-                                                <div class="form-check me-3 me-lg-5">
-                                                    <input class="form-check-input" type="checkbox"
-                                                        wire:model='can_create_order'>
-                                                    <label class="form-check-label" for="canAdd"> اضافة </label>
-                                                </div>
-
-                                                <div class="form-check me-3 me-lg-5">
-                                                    <input class="form-check-input" type="checkbox"
-                                                        wire:model='can_edit_order'>
-                                                    <label class="form-check-label" for="canEdit"> تعديل
-                                                    </label>
-                                                </div>
-
-                                                <div class="form-check me-3 me-lg-5">
-                                                    <input class="form-check-input" type="checkbox"
-                                                        wire:model='can_change_order_status'>
-                                                    <label class="form-check-label" for="canCancel">إلغاء</label>
-                                                </div>
-
-                                            </div>
-                                        </td>
-                                    </tr>
-
-
+                                            </td>
+                                        </tr>
+                                    @endif
 
                                     <tr>
                                         <td class="text-nowrap fw-bolder">العروض</td>
@@ -345,6 +333,8 @@
                         <button class="btn btn-success" wire:click="update">
                             <i data-feather="check" class="align-middle me-sm-25 me-0"></i>
                             <span class="align-middle d-sm-inline-block d-none">حفظ</span>
+                            <span class="spinner-border spinner-border-sm" wire:loading role="status"
+                                aria-hidden="true"></span>
                         </button>
                     </div>
 

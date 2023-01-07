@@ -26,6 +26,8 @@ return new class extends Migration
             $table->integer('who_add')->nullable(); #
             $table->integer('who_edit')->nullable(); #
             $table->integer('who_cancel')->nullable(); #
+
+            $table->enum('status', [1, 2])->nullable();
             // $table->json('mediators_ids'); #
             $table->json('booking_ids'); #
 

@@ -356,18 +356,6 @@
                         <h2 class="fw-bolder mb-75">بيانات العميل المشتري</h2>
                     </div>
 
-
-                    <div class="row">
-                        <div class="col-md-6 mb-1">
-                            <label class="form-label">صفة العميل المشتري</label>
-                            <input type="text" class="form-control " wire:model.debounce.1s='buyer_adj'
-                                placeholder="صفة العميل المشتري" />
-                            @error('buyer_adj')
-                                <small class="text-danger">{{ $message }}</small>
-                            @enderror
-                        </div>
-                    </div>
-
                     <div class="row" wire:ignore>
 
                         <div class="col-md-12 mb-1">
@@ -408,10 +396,10 @@
 
                     <div class="row">
                         <div class="col-md-6 mb-1">
-                            <label class="form-label">البريد الالكترونى</label>
-                            <input type="email" class="form-control " wire:model.debounce.1s='customer_buyer_email'
-                                placeholder="البريد الالكترونى" />
-                            @error('customer_buyer_email')
+                            <label class="form-label">نوع الهوية</label>
+                            <input type="text" class="form-control "
+                                wire:model.debounce.1s='customer_buyer_nationality_type' placeholder="نوع الهوية" />
+                            @error('customer_buyer_nationality_type')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
@@ -421,6 +409,26 @@
                             <input type="text" class="form-control "
                                 wire:model.debounce.1s='customer_buyer_id_number' placeholder="رقم الهوية" />
                             @error('customer_buyer_id_number')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-1">
+                            <label class="form-label">البريد الالكترونى</label>
+                            <input type="email" class="form-control " wire:model.debounce.1s='customer_buyer_email'
+                                placeholder="البريد الالكترونى" />
+                            @error('customer_buyer_email')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-6 mb-1">
+                            <label class="form-label">صفة العميل المشتري</label>
+                            <input type="text" class="form-control " wire:model.debounce.1s='buyer_adj'
+                                placeholder="صفة العميل المشتري" />
+                            @error('buyer_adj')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
@@ -575,18 +583,6 @@
                         <h2 class="fw-bolder mb-75">بيانات العميل البائع</h2>
                     </div>
 
-
-                    <div class="row">
-                        <div class="col-md-6 mb-1">
-                            <label class="form-label">صفة العميل البائع</label>
-                            <input type="text" class="form-control " wire:model.debounce.1s='seller_adj'
-                                placeholder="صفة العميل البائع" />
-                            @error('seller_adj')
-                                <small class="text-danger">{{ $message }}</small>
-                            @enderror
-                        </div>
-                    </div>
-
                     <div class="row" wire:ignore>
 
                         <div class="col-md-12 mb-1">
@@ -627,10 +623,10 @@
 
                     <div class="row">
                         <div class="col-md-6 mb-1">
-                            <label class="form-label">البريد الالكترونى</label>
-                            <input type="email" class="form-control "
-                                wire:model.debounce.1s='customer_seller_email' placeholder="البريد الالكترونى" />
-                            @error('customer_seller_email')
+                            <label class="form-label">نوع الهوية</label>
+                            <input type="text" class="form-control "
+                                wire:model.debounce.1s='customer_seller_nationality_type' placeholder="نوع الهوية" />
+                            @error('customer_seller_nationality_type')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
@@ -640,6 +636,27 @@
                             <input type="text" class="form-control "
                                 wire:model.debounce.1s='customer_seller_id_number' placeholder="رقم الهوية" />
                             @error('customer_seller_id_number')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-6 mb-1">
+                            <label class="form-label">البريد الالكترونى</label>
+                            <input type="email" class="form-control "
+                                wire:model.debounce.1s='customer_seller_email' placeholder="البريد الالكترونى" />
+                            @error('customer_seller_email')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-6 mb-1">
+                            <label class="form-label">صفة العميل البائع</label>
+                            <input type="text" class="form-control " wire:model.debounce.1s='seller_adj'
+                                placeholder="صفة العميل البائع" />
+                            @error('seller_adj')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>

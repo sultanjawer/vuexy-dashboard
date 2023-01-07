@@ -21,6 +21,7 @@ class OfferService extends Controller
             'who_add' => auth()->id(),
             'who_edit' => null,
             'who_cancel' => null,
+            'status' => 1,
             'booking_ids' => [], #
             'real_estate_id' => $real_estate->id, #
         ]);
