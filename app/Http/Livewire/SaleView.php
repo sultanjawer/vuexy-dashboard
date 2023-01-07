@@ -128,7 +128,7 @@ class SaleView extends Component
         $data_deposit = [
             'sale_date' => $sale->created_at->format('Y-m-d'),
             'sale_code' => $sale->sale_code,
-            'customer_buyer_name' => $sale->who_receive,
+            'customer_buyer_name' => $customer_buyer->name,
             'customer_seller_name' => $sale->who_receive,
             'paid_amount' =>    "مبلغ  " .  $this->paid_amount . "   ريال فقط لا غير",
             'check_number' => "شيك " . $sale->check_number,
