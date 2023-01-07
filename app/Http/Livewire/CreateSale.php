@@ -403,6 +403,8 @@ class CreateSale extends Component
         $data['seller_adj'] = $this->seller_adj;
         $data['buyer_adj'] = $this->buyer_adj;
         $data['deserved_amount'] = (float)$this->deserved_amount;
+        $data['customer_buyer_support_eskan'] = 1;
+        $data['customer_seller_support_eskan'] = 1;
 
         if ($this->cash) {
             $data['payment_method_id'] = 1;
