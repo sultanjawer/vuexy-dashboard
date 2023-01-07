@@ -58,7 +58,7 @@ class PDFService extends Controller
         'customer_seller_name' => "",
     ];
 
-    public function writePdf($data)
+    public function writePdf($data, $code)
     {
         $fillable = array_merge($this->fillable, $data);
 
@@ -79,7 +79,7 @@ class PDFService extends Controller
             ->needAppearances()
             ->saveAs($temp_path);
 
-        $this->updateInfo('title');
+        $this->updateInfo($code);
 
 
         if ($result === false) {
@@ -98,12 +98,12 @@ class PDFService extends Controller
     public function updateInfo($title)
     {
         $path_text_file = public_path() . '/assets/pdfjs/web/pdf_metadata.txt';
-        $path_pdf = public_path() . '/assets/pdfjs/web/madar.pdf';
+        $path_pdf = public_path() . '/pdfs/madar.pdf';
 
         Artisan::call('pdf:update-info', [
             'input' => $path_pdf,
             'output' => $path_text_file,
-            'title' => 'QTF-10-USR2'
+            'title' => $title
         ]);
     }
 }

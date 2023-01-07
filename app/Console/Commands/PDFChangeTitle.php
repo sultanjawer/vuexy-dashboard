@@ -34,12 +34,12 @@ class PDFChangeTitle extends Command
 
         exec($command);
 
-        // $search = 'old_string';
-        // $replace =  $this->argument('title');
+        $search = '80067 &#1571;&#1578;&#1601;&#1575;&#1602;&#1610;&#1577; &#1581;&#1580;&#1586; &#1585;&#1602;&#1605;.pdf';
+        $replace =  $this->argument('title');
 
-        // $file = file_get_contents($metadata_file_path);
-        // $file = str_replace($search, $replace, $file);
-        // file_put_contents('pdf_metadata.txt', $file);
+        $file = file_get_contents($metadata_file_path);
+        $file = str_replace($search, $replace, $file);
+        file_put_contents('pdf_metadata.txt', $file);
 
         $this->info('PDF info updated successfully!');
     }
