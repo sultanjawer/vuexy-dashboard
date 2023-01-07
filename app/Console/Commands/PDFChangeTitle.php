@@ -39,15 +39,6 @@ class PDFChangeTitle extends Command
 
         exec($command, $output, $return_var);
 
-        if ($return_var === 0) {
-            // The command was successful
-            dd($output, '444');
-        } else {
-            // There was an error
-            dd("Error: $return_var", $output, '456');
-        }
-
-
         $search = '80067 &#1571;&#1578;&#1601;&#1575;&#1602;&#1610;&#1577; &#1581;&#1580;&#1586; &#1585;&#1602;&#1605;.pdf';
         $replace =  $this->argument('title');
 
@@ -57,6 +48,7 @@ class PDFChangeTitle extends Command
 
         $output = array();
         $return_var = 0;
+        dd("pdftk {$pdf_live} update_info {$metadata_file_path} output {$pdf_live}");
         exec("pdftk {$pdf_live} update_info {$metadata_file_path} output {$pdf_live}", $output, $return_var);
 
         if ($return_var === 0) {
