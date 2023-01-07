@@ -14,12 +14,14 @@ class SaleView extends Component
     public $sale_id;
     public $sale;
     public $pdf_path;
+    public $pdf_path_amount;
     public $last_update_time;
 
     public function mount($sale_id)
     {
         $this->sale_id = $sale_id;
         $this->setData($sale_id);
+        $this->setPaidAmountData($sale_id);
     }
 
     public function setData($sale_id)
@@ -32,7 +34,7 @@ class SaleView extends Component
 
         $obj = new Arabic('Numbers');
 
-        $data = [
+        $data_sale = [
             'sale_created_at' => (string)$this->sale->created_at->format('Y-m-d'),
             'sale_code' => $this->sale->sale_code,
             'city_name' => $realEstate->city->name,
@@ -81,8 +83,59 @@ class SaleView extends Component
         ];
 
         $pDFService = new PDFService();
-        $pDFService->writePdf($data, $sale->sale_code);
+        $pDFService->writePdf($data_sale, $sale->sale_code);
         $this->pdf_path = asset('assets/pdfjs/web/viewer.html?file=madar_platform.pdf');
+    }
+
+    public function setPaidAmountData($sale_id)
+    {
+        $sale = Sale::with(['offer', 'order', 'customer', 'realEstate'])->find($sale_id);
+        $this->sale = $sale;
+        $customer_buyer = Customer::find($sale->customer_buyer_id);
+        $customer_seller = Customer::find($sale->customer_seller_id);
+        $realEstate = $sale->realEstate;
+
+        if ($realEstate->property_type_id == 1) {
+            $add = "أرض " . $realEstate->space . "م " .  "ب" . $realEstate->city->name . ' ' . $realEstate->character;
+        }
+
+        if ($realEstate->property_type_id == 2) {
+            $add = "دبلكس " . $realEstate->buildingStatus->name . " " . $realEstate->space . "م " .  "ب" . $realEstate->city->name . ' ' . $realEstate->character;
+        }
+
+        if ($realEstate->property_type_id == 3) {
+            $add = "عمارة " . $realEstate->space . "م " .  "ب" . $realEstate->city->name . ' ' . $realEstate->floors_number . 'طوابق';
+        }
+
+        if ($realEstate->property_type_id == 4) {
+            $add = "شقة " . $realEstate->space . "م " .  "ب" . $realEstate->city->name . ' ' . $realEstate->flat_rooms_number . ' غرف';
+        }
+
+        if ($realEstate->property_type_id == 5) {
+            $add = "شاليه " . $realEstate->space . "م " .  "ب" . $realEstate->city->name;
+        }
+
+        $real_estate_data_1 = "دفعة اتفاقية حجز رقم";
+        $real_estate_data_2 = " " . $sale->sale_code;
+        $real_estate_data_3 =  " تخص " . $add . " والمتبقي " . $sale->paid_amount . " ريال";
+        $real_estate_data_t = "دفعة رقم (1): " . "مجموع ماتم دفعه حتى تاريخه " . $sale->paid_amount . " ريال";
+
+        $data_deposit = [
+            'sale_date' => $sale->created_at->format('Y-m-d'),
+            'sale_code' => $sale->sale_code,
+            'customer_buyer_name' => $customer_buyer->name,
+            'customer_seller_name' => $customer_seller->name,
+            'paid_amount' => number_format((float)$sale->paid_amount, 3),
+            'check_number' => "شيك " . $sale->check_number,
+            'real_estate_data_1' => $real_estate_data_1,
+            'real_estate_data_2' => $real_estate_data_2,
+            'real_estate_data_3' => $real_estate_data_3,
+            'real_estate_data_t' => $real_estate_data_t,
+        ];
+
+        $pDFService = new PDFService();
+        $pDFService->writePdfAmount($data_deposit, $sale->sale_code);
+        $this->pdf_path_amount = asset('assets/pdfjs/web/viewer.html?file=deposit.pdf');
     }
 
     public function render()
@@ -128,10 +181,15 @@ class SaleView extends Component
         }
     }
 
-
     public function download(PDFService $pDFService)
     {
         $path = public_path('assets/pdfjs/web/madar_platform.pdf');
+        return $pDFService->exportPdf($path, $this->sale->sale_code);
+    }
+
+    public function downloadAmount(PDFService $pDFService)
+    {
+        $path = public_path('assets/pdfjs/web/madar_platform_amount.pdf');
         return $pDFService->exportPdf($path, $this->sale->sale_code);
     }
 }

@@ -10,7 +10,6 @@ use mikehaertl\pdftk\Pdf;
 
 class PDFService extends Controller
 {
-
     protected $fillable =  [
         'sale_created_at' => "",
         'sale_code' => "",
@@ -70,8 +69,8 @@ class PDFService extends Controller
             'procEnv' => [
                 'LANG' => 'ar_SA.utf-8',
             ],
-            'command' => 'C:\Program Files (x86)\PDFtk\bin\pdftk.exe',
-            'useExec' => true,
+            // 'command' => 'C:\Program Files (x86)\PDFtk\bin\pdftk.exe',
+            // 'useExec' => true,
         ]);
 
         $result = $pdf->fillForm($fillable)
@@ -85,6 +84,35 @@ class PDFService extends Controller
         }
 
         $path = asset('madar_platform.pdf');
+        return $path;
+    }
+
+    public function writePdfAmount($data, $code)
+    {
+        $fillable = $data;
+
+        $original_pdf = public_path() . '/pdfs/deposit.pdf';
+        $temp_path = public_path() . '/assets/pdfjs/web/deposit.pdf';
+
+        $pdf = new Pdf($original_pdf, [
+            'locale' => 'ar_SA.utf8',
+            'procEnv' => [
+                'LANG' => 'ar_SA.utf-8',
+            ],
+
+            // 'command' => 'C:\Program Files (x86)\PDFtk\bin\pdftk.exe',
+            // 'useExec' => true,
+        ]);
+
+        $result = $pdf->fillForm($fillable)
+            ->needAppearances()
+            ->saveAs($temp_path);
+
+        if ($result === false) {
+            dd($pdf->getError());
+        }
+
+        $path = asset('deposit.pdf');
         return $path;
     }
 

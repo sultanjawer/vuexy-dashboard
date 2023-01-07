@@ -1105,7 +1105,7 @@
                                 aria-label="Close"></button>
                         </div>
                         <div class="modal-body pb-5 px-sm-5 pt-50">
-                            <iframe src="assets/upload/QTF-SELL1011-USR9-R2.pdf" width="100%" height="570px">
+                            <iframe id="pdf-frame" src="{{ $pdf_path_amount }}" width="100%" height="570px">
                             </iframe>
                         </div>
                     </div>
