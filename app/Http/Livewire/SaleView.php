@@ -120,8 +120,7 @@ class SaleView extends Component
             $add = "شاليه " . $this->space . "م " .  "ب" . $realEstate->city->name;
         }
 
-        $real_estate_data = "دفعة اتفاقية حجز رقم  " . $sale->sale_code . "   تخص   " . $add . " والمتبقي " . $this->paid_amount . " ريال";
-        $real_estate_data_1 = "دفعة اتفاقية حجز رقم";
+        $real_estate_data_1 = "دفعة اتفاقية حجز رقم ";
         $real_estate_data_2 = " " . $sale->sale_code;
         $real_estate_data_3 =  "   تخص   " . $add . " والمتبقي " . $this->paid_amount . " ريال";
         $real_estate_data_t = "دفعة رقم (1): " . "مجموع ماتم دفعه حتى تاريخه " . $this->paid_amount . " ريال";
@@ -133,7 +132,6 @@ class SaleView extends Component
             'customer_seller_name' => $sale->who_receive,
             'paid_amount' =>    "مبلغ  " .  $this->paid_amount . "   ريال فقط لا غير",
             'check_number' => "شيك " . $sale->check_number,
-            'real_estate_data' => $real_estate_data,
             'real_estate_data_1' => $real_estate_data_1,
             'real_estate_data_2' => $real_estate_data_2,
             'real_estate_data_3' => $real_estate_data_3,
