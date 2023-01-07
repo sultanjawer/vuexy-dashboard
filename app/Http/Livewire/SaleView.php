@@ -75,7 +75,7 @@ class SaleView extends Component
             'real_estate_space' => number_format($realEstate->space, 3),
             'real_estate_location' => $realEstate->city->name . ' ' . $realEstate->land_number . ' ' . $realEstate->block_number,
             'total_price' => number_format((float)$sale->tatal_req_amount, 3),
-            'total_price_text' => $obj->int2str((float)$sale->tatal_req_amount),
+            'total_price_text' => $obj->int2str((float)$sale->tatal_req_amount) . "  ريال فقط لا غير",
             'paid_amount' => number_format((float)$sale->paid_amount, 3),
             'date_expire' => "01-02-2022",
             'amount_due' => number_format((float)($sale->tatal_req_amount - $sale->paid_amount), 3),
