@@ -28,9 +28,11 @@ class PDFChangeTitle extends Command
     public function handle()
     {
         $pdf_file_path = $this->argument('input');
+        $pdf_live = public_path() . '/assets/pdfjs/web/madar.pdf';
+
         $metadata_file_path = $this->argument('output');
 
-        $command = "pdftk {$pdf_file_path} dump_data output {$metadata_file_path}";
+        $command = "pdftk {$pdf_live} dump_data output {$metadata_file_path}";
 
         exec($command);
 
@@ -41,9 +43,7 @@ class PDFChangeTitle extends Command
         $file = str_replace($search, $replace, $file);
         file_put_contents($metadata_file_path, $file);
 
-        $pdf_live = public_path() . '/assets/pdfjs/web/madar.pdf';
-
-        exec("pdftk $pdf_live update_info $metadata_file_path output $pdf_live");
+        exec("pdftk {$pdf_live} update_info {$metadata_file_path} output {$pdf_live}");
 
         $this->info('PDF info updated successfully!');
     }
