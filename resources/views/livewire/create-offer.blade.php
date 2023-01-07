@@ -624,7 +624,7 @@
 
                                             <div class="row mediators" wire:ignore.self>
 
-                                                <div class="col-md-6 mb-1 ">
+                                                <div class="col-md-6 mb-1">
                                                     <label class="form-label">الوسطاء</label>
                                                 </div>
 

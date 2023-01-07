@@ -2,8 +2,10 @@
 
 namespace App\Http\Livewire;
 
+use App\Http\Controllers\Services\CustomerService;
 use App\Http\Controllers\Services\ReservationService;
 use App\Http\Controllers\Services\SaleService;
+use App\Models\Customer;
 use App\Models\Offer;
 use App\Models\OfferEditors;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
@@ -30,6 +32,9 @@ class OfferView extends Component
     public $is_booked = false;
     public $user_id;
     public $check_sale = false;
+
+    public $customer_name = '';
+    public $phone_number = '';
 
     public function mount($offer_id)
     {
@@ -162,6 +167,10 @@ class OfferView extends Component
 
     public function updated($propertyName, $value)
     {
+        if ($propertyName == 'price') {
+            $this->is_numeric('price', $value);
+        }
+
         $this->validateOnly($propertyName);
     }
 
@@ -197,10 +206,31 @@ class OfferView extends Component
         return $validation;
     }
 
+    public function is_numeric($name, $value)
+    {
+        $string_value = str_replace(',', '', $value);
+        $float_value = (float)$string_value;
+        $after_comma = explode('.', $string_value);
+        $count = 0;
+
+        if (array_key_exists(1, $after_comma)) {
+            foreach ($after_comma as $num) {
+                $count = $count + 1;
+            }
+        }
+
+        if (is_numeric($string_value)) {
+            $this->fill([$name => number_format($float_value, $count)]);
+        } else {
+            $this->validate([$name => 'numeric'], [$name . '.numeric' => "الحقل يقبل ارقام فقط"]);
+        }
+        return $float_value;
+    }
+
     public function storeReservation(ReservationService $reservationService)
     {
         $data = $this->validate();
-
+        $data['price'] = $this->is_numeric('price', $this->price);
         $reservation = $reservationService->store($data, $this->offer);
 
         if ($reservation) {
@@ -259,5 +289,57 @@ class OfferView extends Component
 
         $this->check_sale = false;
         return redirect()->route('panel.offer', $this->offer->id);
+    }
+
+    public function createCustomer(CustomerService $customerService)
+    {
+        $data = $this->validate([
+            'customer_name' => ['required'],
+            'phone_number' => ['required', 'unique:customers,phone'],
+        ], [
+            'customer_name.required' => 'هذا الحقل مطلوب',
+            'phone_number.required' => 'هذا الحقل مطلوب',
+            'phone_number.unique' => 'رقم هاتف مستخدم، ادخل رقما مختلف',
+        ]);
+
+        $new_customer = Customer::create([
+            'user_id' => auth()->id(),
+            'name' => $data['customer_name'],
+            'phone' => $data['phone_number'],
+            'support_eskan' => 0,
+        ]);
+
+        $customers = Customer::get(['id', 'name', 'phone'])->toArray();
+
+        foreach ($customers as $key => $customer) {
+
+            foreach ($customer as $index => $value) {
+                if ($index == 'name') {
+                    $customer['text'] = $value . ' :: ' . $customer['phone'];
+                    unset($customer['name']);
+                    $customers[$key] = $customer;
+                }
+            }
+        }
+
+        array_push($customers, [
+            "id" => $new_customer->id,
+            "selected" => true,
+            "text" =>  $new_customer->name . '::' . $new_customer->phone,
+        ]);
+
+        $this->customer_id = $new_customer->id;
+
+        $customers_json = json_decode(json_encode($customers));
+
+        $this->emit('submitCustomer', $customers_json);
+
+        $this->alert('success', '', [
+            'toast' => true,
+            'position' => 'center',
+            'timer' => 3000,
+            'text' => '👍 تم إضافة العميل بنجاح',
+            'timerProgressBar' => true,
+        ]);
     }
 }

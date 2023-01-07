@@ -18,12 +18,6 @@
                                             <h2 class="fw-bolder mb-25"><a href="#"> {{ $offer->offer_code }}</a>
                                             </h2>
                                             <div class="font-medium-2">
-                                                {{-- <span class="fs-6">صاحب العرض: </span>
-                                                <a href="{{ route('panel.user', $offer->user_id) }}">
-                                                    <span class="text-success me-25 fs-6">
-                                                        {{ getUserName($offer->user_id) }}</span>
-                                                </a> --}}
-
                                                 <a
                                                     class="btn  bg-light-warning waves-effect waves-float waves-light mt-1">
                                                     <span>
@@ -51,20 +45,22 @@
                                         @endif
 
                                         @auth
-                                            @if ((($is_booked && auth()->id() == $user_id) || ($is_booked && auth()->user()->user_type == 'superadmin')) &&
-                                                !$offer->sale)
-                                                <a href="javascript:;" wire:click="cancelReservation"
-                                                    class="btn bg-light-danger mt-1 waves-effect waves-float waves-light">
-                                                    إلغاء الحجز
-                                                </a>
+                                            @if ($is_booked)
+                                                @if (auth()->id() == $user_id || in_array(auth()->user()->user_type, ['admin', 'superadmin']))
+                                                    @if (!$offer->sale)
+                                                        <a href="javascript:;" wire:click="cancelReservation"
+                                                            class="btn bg-light-danger mt-1 waves-effect waves-float waves-light">
+                                                            إلغاء الحجز
+                                                        </a>
+                                                    @endif
+                                                @endif
                                             @endif
                                         @endauth
 
                                         @if ($check_sale)
-
-                                            @if (in_array(auth()->user()->user_type, ['office', 'marketer']) && $offer->sale)
-                                                @if (auth()->id() == $offer->sale->user_id)
-                                                    @if (auth()->user()->can('updateSale', App\Models\Sale::class))
+                                            @if (auth()->id() == $offer->sale->user_id || in_array(auth()->user()->user_type, ['admin', 'superadmin']))
+                                                @if ($offer->sale)
+                                                    @can('updateSale', App\Models\Sale::class)
                                                         <a href="{{ route('panel.sale', $offer->sale->id) }}"
                                                             class="btn bg-light-info mt-1 waves-effect waves-float waves-light">
                                                             تفاصيل الاتفاقية
@@ -75,22 +71,7 @@
                                                             wire:click="cancelSale">
                                                             إلغاء صفقة البيع
                                                         </a>
-                                                    @endif
-                                                @endif
-                                            @endif
-
-                                            @if (in_array(auth()->user()->user_type, ['admin', 'superadmin']) && $offer->sale)
-                                                @if (auth()->user()->can('updateSale', App\Models\Sale::class))
-                                                    <a href="{{ route('panel.sale', $offer->sale->id) }}"
-                                                        class="btn bg-light-info mt-1 waves-effect waves-float waves-light">
-                                                        تفاصيل الاتفاقية
-                                                    </a>
-
-                                                    <a href="#"
-                                                        class="btn bg-light-danger mt-1 waves-effect waves-float waves-light"
-                                                        wire:click="cancelSale">
-                                                        إلغاء صفقة البيع
-                                                    </a>
+                                                    @endcan
                                                 @endif
                                             @endif
 
@@ -1044,7 +1025,7 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-12 col-md-6 customer-name" wire:ignore>
+                        <div class="col-md-6 mb-1 customer-name" wire:ignore>
                             <label class="form-label">اسم العميل</label>
                             <select class="js-select2-customer-name select2 form-select" wire:model='customer_id'
                                 @if ($is_booked) disabled @endif wire:ignore.self>
@@ -1056,23 +1037,26 @@
                             @error('customer_id')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
+
+                            <small class="text-info">
+                                <a type="button" href="#" data-bs-toggle="modal"
+                                    data-bs-target="#CreateCustomerForm">
+                                    اضغط هنا لإضافة عميل جديد</a>
+                            </small>
+
                         </div>
 
-
-                        <div class="col-12 col-md-6">
-                            <div class="row">
-                                <label class="form-label" for="price">السعر</label>
-                                <div class="input-group input-group-merge">
-                                    <input type="text" class="form-control" wire:model='price'
-                                        placeholder="السعر" @if ($is_booked) disabled @endif>
-                                    <span class="input-group-text">ريال</span>
-                                </div>
-                                @error('price')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
+                        <div class="col-md-6">
+                            <label class="form-label" for="price">السعر</label>
+                            <div class="input-group input-group-merge">
+                                <input type="text" class="form-control" wire:model='price' placeholder="السعر"
+                                    @if ($is_booked) disabled @endif>
+                                <span class="input-group-text">ريال</span>
                             </div>
+                            @error('price')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
                         </div>
-
                     </div>
 
                     <div class="row">
@@ -1114,9 +1098,68 @@
     </div>
 
 
+    <div class="modal fade" id="CreateCustomerForm" tabindex="-1" aria-labelledby="CreateCustomerFormTitle"
+        aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog modal-dialog-centered modal-lg" wire:ignore.self>
+            <div class="modal-content" wire:ignore.self>
+                <div class="modal-header bg-transparent" wire:ignore.self>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body pb-5 px-sm-4 mx-50" wire:ignore.self>
+                    <h1 class="address-title text-center mb-1" id="CreateCustomerFormTitle" wire:ignore.self>إضافة
+                        عميل جديد
+                    </h1>
+                    <p class="address-subtitle text-center mb-2 pb-75"></p>
+
+                    <form id="addNewAddressForm" class="row gy-1 gx-2" wire:ignore.self>
+
+
+                        <div class="col-12 col-md-6" wire:ignore.self>
+                            <label class="form-label">اسم العميل</label>
+                            <input type="text" wire:model.debounce.1s='customer_name' class="form-control"
+                                placeholder="اسم العميل" />
+                            @error('customer_name')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        <div class="col-12 col-md-6" wire:ignore.self>
+                            <label class="form-label">رقم الجوال</label>
+                            <input type="tel" wire:model.debounce.1s='phone_number' maxlength="10"
+                                class="form-control" placeholder="رقم الجوال" />
+                            @error('phone_number')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        <div class="col-12 text-center mt-2 pt-50" wire:ignore.self>
+                            <button type="button" class="btn btn-primary btn-submit me-1"
+                                wire:click="createCustomer">حفظ</button>
+                            <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal"
+                                aria-label="Close">الغاء</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
     @push('test')
         <script>
             $(document).ready(function() {
+
+                window.livewire.on('submitCustomer', (data) => {
+                    $('#CreateCustomerForm').modal('hide');
+                    $('.js-select2-customer-name').html('');
+                    $('.js-select2-customer-name').select2({
+                        placeholder: ' اختيار العميل',
+                        data: data,
+                        closeOnSelect: false,
+                    });
+                });
 
                 window.initSelectCompanyDrop = () => {
                     $('.js-select2-customer-name').select2({
