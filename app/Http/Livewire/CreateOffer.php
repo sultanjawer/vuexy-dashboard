@@ -236,7 +236,14 @@ class CreateOffer extends Component
     public function setNeiborhoods()
     {
         $this->city = City::find($this->city_id);
-        $neighborhoods = $this->city->neighborhoods()->get(['id', 'name'])->toArray();
+        $models = $this->city->neighborhoods()->get(['id', 'name']);
+        $model =  $models->first();
+
+        if ($model) {
+            $this->neighborhood_id = $model->id;
+        }
+
+        $neighborhoods = $models->toArray();
 
         foreach ($neighborhoods as $key => $neighborhood) {
 
