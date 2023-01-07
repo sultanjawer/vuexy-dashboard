@@ -71,17 +71,15 @@ class PDFService extends Controller
             'procEnv' => [
                 'LANG' => 'ar_SA.utf-8',
             ],
-            'command' => 'C:\Program Files (x86)\PDFtk\bin\pdftk.exe',
-            'useExec' => true,
+            // 'command' => 'C:\Program Files (x86)\PDFtk\bin\pdftk.exe',
+            // 'useExec' => true,
         ]);
 
         $result = $pdf->fillForm($fillable)
             ->needAppearances()
             ->saveAs($temp_path);
 
-        $this->updateInfo([
-            'title' => 'The PDF TK Tester'
-        ]);
+        $this->updateInfo('title');
 
 
         if ($result === false) {
