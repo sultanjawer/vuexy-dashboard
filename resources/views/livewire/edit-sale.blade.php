@@ -49,7 +49,11 @@
             <div class="bs-stepper-content px-0 mt-4" wire:ignore.self>
 
                 <div class="personal-info" style="display: block;" wire:ignore.self>
-                    <div class="content-header mb-2">
+
+                    <div class="demo-inline-spacing">
+                        <div class="spinner-border text-primary" role="status" wire:loading>
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
                         <h2 class="fw-bolder mb-75"> تفاصيل العرض</h2>
                     </div>
 
@@ -113,6 +117,9 @@
                     </div>
 
                     <div class="content-header mb-2">
+                        <div class="spinner-border text-primary" role="status" wire:loading>
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
                         <h2 class="fw-bolder mb-75">حساب الضريبة</h2>
                     </div>
 
@@ -352,7 +359,10 @@
 
                 <div class="account-details" style="display: none;" wire:ignore.self>
 
-                    <div class="content-header mb-2">
+                    <div class="demo-inline-spacing">
+                        <div class="spinner-border text-primary" role="status" wire:loading>
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
                         <h2 class="fw-bolder mb-75">بيانات العميل المشتري</h2>
                     </div>
 
@@ -579,7 +589,11 @@
 
                 <div class="account-home-details" style="display: none;" wire:ignore.self>
 
-                    <div class="content-header mb-2">
+
+                    <div class="demo-inline-spacing">
+                        <div class="spinner-border text-primary" role="status" wire:loading>
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
                         <h2 class="fw-bolder mb-75">بيانات العميل البائع</h2>
                     </div>
 
