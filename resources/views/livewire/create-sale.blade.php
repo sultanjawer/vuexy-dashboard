@@ -208,8 +208,6 @@
                                     max="100" placeholder="السعي" wire:change="saeePrc('saee_prc')"
                                     wire:model='saee_prc'>
                                 <span class="input-group-text">%</span>
-                                <span class="spinner-border spinner-border-sm" wire:loading
-                                    role="status" aria-hidden="true"></span>
                             </div>
 
                             @error('saee_prc')
