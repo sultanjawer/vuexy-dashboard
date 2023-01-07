@@ -39,6 +39,8 @@ class CreateSale extends Component
     public $message_paid_amount = '';
     public $success_message_saee_prc = '';
     public $error_message_saee_prc = '';
+    public $who_receive = '';
+
 
     public $customer_buyer_nationality_type = '';
     public $customer_seller_nationality_type = '';
@@ -119,6 +121,7 @@ class CreateSale extends Component
         'saee_price',
         'total_price',
         'paid_amount',
+        'who_receive',
 
         #Customer Buyer
         'customer_buyer_name',

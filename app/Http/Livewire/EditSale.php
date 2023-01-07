@@ -45,6 +45,7 @@ class EditSale extends Component
     public $message_paid_amount = '';
     public $success_message_saee_prc = '';
     public $error_message_saee_prc = '';
+    public $who_receive = '';
 
     public $customer_buyer_nationality_type = '';
     public $customer_seller_nationality_type = '';
@@ -125,6 +126,7 @@ class EditSale extends Component
         'saee_price',
         'total_price',
         'paid_amount',
+        'who_receive',
 
         #Customer Buyer
         'customer_buyer_name',
@@ -190,6 +192,8 @@ class EditSale extends Component
             $this->land_number = $realEstate->land_number;
             $this->is_numeric('space', $realEstate->space);
             $this->is_numeric('price', $realEstate->total_price);
+            $this->who_receive = $this->sale->who_receive;
+
 
             $this->check_number = $this->sale->check_number;
             $this->bank_id = $this->sale->bank_id;

@@ -158,6 +158,7 @@ class SaleService extends Controller
             'saee_prc' => $data['saee_prc'],
             'saee_price' => $data['saee_price'],
             'tatal_req_amount' => $data['total_price'],
+            'who_receive' => $data['who_receive'],
             'paid_amount' => $data['paid_amount'],
             'who_add' => $user->id,
             // 'who_edit',
@@ -218,6 +219,7 @@ class SaleService extends Controller
             'saee_price' => $data['saee_price'],
             'tatal_req_amount' => $data['total_price'],
             'paid_amount' => $data['paid_amount'],
+            'who_receive' => $data['who_receive'],
             'who_edit' => auth()->id(),
         ]);
 

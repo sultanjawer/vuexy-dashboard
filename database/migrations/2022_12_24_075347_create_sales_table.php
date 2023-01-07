@@ -39,6 +39,7 @@ return new class extends Migration
             $table->enum('sale_status', [1, 2]);
             $table->enum('is_first_home', [1, 2]);
 
+            $table->string('who_receive')->nullable();
             $table->integer('who_add')->nullable();
             $table->integer('who_edit')->nullable();
             $table->integer('who_cancel')->nullable();

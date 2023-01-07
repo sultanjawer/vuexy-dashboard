@@ -346,6 +346,17 @@
                             @enderror
                         @endif
 
+                        <div class="col-md-6 mb-1">
+                            <label class="form-label">اسم المستلم</label>
+                            <div class="input-group input-group-merge" wire:ignore.self>
+                                <input type="text" class="form-control " placeholder="اسم المستلم"
+                                    wire:model='who_receive' />
+                            </div>
+                            @error('who_receive')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
                     </div>
 
                     <div class="d-flex justify-content-between mt-2">
