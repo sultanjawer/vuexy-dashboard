@@ -130,7 +130,7 @@ class SaleView extends Component
             'sale_code' => $sale->sale_code,
             'customer_buyer_name' => $customer_buyer->name,
             'customer_seller_name' => $customer_seller->name,
-            'paid_amount' =>    "  ريال فقط لاغير  " . $this->paid_amount,
+            'paid_amount' =>    $this->paid_amount . "   ريال فقط لا غير.",
             'check_number' => "شيك " . $sale->check_number,
             'real_estate_data_1' => $real_estate_data_1,
             'real_estate_data_2' => $real_estate_data_2,
