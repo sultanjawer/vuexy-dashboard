@@ -43,7 +43,18 @@ class PDFChangeTitle extends Command
         $file = str_replace($search, $replace, $file);
         file_put_contents($metadata_file_path, $file);
 
-        exec("pdftk {$pdf_live} update_info {$metadata_file_path} output {$pdf_live}");
+        $output = array();
+        $return_var = 0;
+        exec("pdftk {$pdf_live} update_info {$metadata_file_path} output {$pdf_live}", $output, $return_var);
+
+        if ($return_var === 0) {
+            // The command was successful
+            dd($output);
+        } else {
+            // There was an error
+            dd("Error: $return_var");
+        }
+
 
         $this->info('PDF info updated successfully!');
     }
