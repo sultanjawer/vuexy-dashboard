@@ -10,7 +10,6 @@ use Livewire\Component;
 
 class SaleView extends Component
 {
-
     public $sale_id;
     public $sale;
     public $pdf_path;

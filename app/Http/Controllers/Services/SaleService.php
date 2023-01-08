@@ -197,6 +197,11 @@ class SaleService extends Controller
             'action' => 'sell',
         ]);
 
+        $reservations = $offer->reservations;
+        if ($reservations->count()) {
+            $reservations->first()->update(['status' => 2]);
+        }
+
         return true;
     }
 

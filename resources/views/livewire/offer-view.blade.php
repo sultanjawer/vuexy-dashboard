@@ -58,20 +58,25 @@
                                         @endauth
 
                                         @if ($check_sale)
-                                            @if (auth()->id() == $offer->sale->user_id || in_array(auth()->user()->user_type, ['admin', 'superadmin']))
+                                            @if (auth()->id() == $offer->sale->user_id ||
+                                                in_array(auth()->user()->user_type, ['admin', 'superadmin', 'marketer']))
                                                 @if ($offer->sale)
                                                     @can('updateSale', App\Models\Sale::class)
                                                         <a href="{{ route('panel.sale', $offer->sale->id) }}"
                                                             class="btn bg-light-info mt-1 waves-effect waves-float waves-light">
                                                             تفاصيل الاتفاقية
                                                         </a>
-
-                                                        <a href="#"
-                                                            class="btn bg-light-danger mt-1 waves-effect waves-float waves-light"
-                                                            wire:click="cancelSale">
-                                                            إلغاء صفقة البيع
-                                                        </a>
                                                     @endcan
+                                                @endif
+                                            @endif
+
+                                            @if (auth()->id() == $offer->sale->user_id || in_array(auth()->user()->user_type, ['admin', 'superadmin']))
+                                                @if ($offer->sale)
+                                                    <a href="#"
+                                                        class="btn bg-light-danger mt-1 waves-effect waves-float waves-light"
+                                                        wire:click="cancelSale">
+                                                        إلغاء صفقة البيع
+                                                    </a>
                                                 @endif
                                             @endif
 
@@ -81,11 +86,23 @@
                                             </a>
                                         @endif
 
+
                                         @if (!$check_sale)
-                                            <a href="{{ route('panel.create.sale', $offer->id) }}"
-                                                class="btn bg-light-primary mt-1 waves-effect waves-float waves-light">
-                                                بيع
-                                            </a>
+                                            @if ($offer->reservations->count())
+                                                @if ($offer->reservations->first()->user_id == auth()->id())
+                                                    <a href="{{ route('panel.create.sale', $offer->id) }}"
+                                                        class="btn bg-light-primary mt-1 waves-effect waves-float waves-light">
+                                                        بيع
+                                                    </a>
+                                                @endif
+                                            @endif
+
+                                            @if (!$offer->reservations->count())
+                                                <a href="{{ route('panel.create.sale', $offer->id) }}"
+                                                    class="btn bg-light-primary mt-1 waves-effect waves-float waves-light">
+                                                    بيع
+                                                </a>
+                                            @endif
                                         @endif
 
                                     </div>

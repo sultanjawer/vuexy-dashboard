@@ -46,7 +46,7 @@ class Offer extends Model
 
     public function reservations()
     {
-        return $this->hasMany(Reservation::class, 'offer_id', 'id');
+        return $this->hasMany(Reservation::class, 'offer_id', 'id')->where('status', 1);
     }
 
     public function sale()
