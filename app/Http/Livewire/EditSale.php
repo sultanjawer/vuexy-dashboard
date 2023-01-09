@@ -330,6 +330,9 @@ class EditSale extends Component
         $this->is_numeric('total_price', $total_price);
         $still_amount = (float)$total_price - (float)$this->sale->paid_amount;
         $this->is_numeric('still_amount', $still_amount);
+
+        $this->is_numeric('saee_price', $this->sale->saee_price);
+        $this->is_numeric('saee_prc', $this->sale->saee_prc);
     }
 
     public function rateCalculation($amount, $rate, $plus = null)
