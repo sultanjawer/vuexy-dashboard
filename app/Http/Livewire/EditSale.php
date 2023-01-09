@@ -666,6 +666,7 @@ class EditSale extends Component
             $process  = number_format((float)(($deserved_amount * 5) / 100), 3);
             $this->is_numeric('deserved_amount', $deserved_amount);
             $this->deserved_amount_mesage = "مقدار المبلغ المستحق $process ريال";
+            dd($real_estate_price , $saee_prc , $process , $vat ,$saee_price);
             $total_price = (float)($real_estate_price + $saee_prc + $process + $vat + $saee_price);
             $this->is_numeric('total_price', $total_price);
             return true;
