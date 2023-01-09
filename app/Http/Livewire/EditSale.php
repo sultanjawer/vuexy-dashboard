@@ -321,12 +321,14 @@ class EditSale extends Component
         $this->success_message_saee_prc = "";
         $this->message_paid_amount = '';
 
+
+        $deserved_amount_prc = ((float)$this->sale->deserved_amount * 5) / 100;
         $vat_prce = $this->is_numeric('vat_prce', $this->rateCalculation($realEstate->total_price, $this->vat));
         $this->success_message_vat = "مبلغ الضريبة من سعر العقار: $vat_prce ريال سعودي";
         $saee_prc = $this->is_numeric('saee_prc', $this->rateCalculation($realEstate->total_price, $this->saee_prc));
         $this->success_message_saee_prc = "مبلغ السعي من سعر العقار: $saee_prc ريال سعودي";
 
-        $total_price = (float)$realEstate->total_price + $vat_prce + $saee_prc + (float)$this->sale->saee_price + (float)$this->sale->deserved_amount;
+        $total_price = (float)$realEstate->total_price + $vat_prce + $saee_prc + (float)$this->sale->saee_price + (float)$deserved_amount_prc;
         $this->is_numeric('total_price', $total_price);
         $still_amount = (float)$total_price - (float)$this->sale->paid_amount;
         $this->is_numeric('still_amount', $still_amount);
@@ -660,9 +662,7 @@ class EditSale extends Component
         $saee_price = $this->is_numeric('saee_price', $this->saee_price);
         $vat = $this->is_numeric('vat', $this->vat);
         $total_price = 0;
-        $process  = (float)(($deserved_amount * 5) / 100);
 
-        dd($process, $deserved_amount);
         $this->deserved_amount_mesage = '';
         $this->deserved_amount_success = '';
 
@@ -684,6 +684,9 @@ class EditSale extends Component
 
     public function vat()
     {
+        $deserved_amount = (float)$this->is_numeric('deserved_amount', $this->deserved_amount);
+        $deserved_amount_prc = ($deserved_amount * 5) / 100;
+
         $this->success_message_vat = '';
         $this->message_vat = "";
         $real_estate_price = (float)$this->offer->realEstate->total_price;
@@ -701,7 +704,7 @@ class EditSale extends Component
         $vat = (float)$this->vat;
         $process = (float)(($real_estate_price * $vat) / 100);
         $saee_prc = (float)(($real_estate_price * $saee_prc) / 100);
-        $total_price = (float)($real_estate_price + $saee_prc + $process);
+        $total_price = (float)($real_estate_price + $saee_prc + $process + $deserved_amount_prc);
 
         $result = $this->is_numeric('total_price', $process);
         $this->is_numeric('total_price', $total_price);
@@ -723,6 +726,8 @@ class EditSale extends Component
 
     public function saeePrc()
     {
+        $deserved_amount = (float)$this->is_numeric('deserved_amount', $this->deserved_amount);
+        $deserved_amount_prc = ($deserved_amount * 5) / 100;
         $real_estate_price = (float)$this->offer->realEstate->total_price;
         $this->error_message_saee_prc = '';
         $this->success_message_saee_prc = '';
@@ -739,7 +744,7 @@ class EditSale extends Component
         $process = ($real_estate_price * (float)$saee_prc) / 100;
         $vat_prc = ($real_estate_price * $vat) / 100;
 
-        $total_price = $real_estate_price + $vat_prc + $process;
+        $total_price = $real_estate_price + $vat_prc + $process + $deserved_amount_prc;
         $result = $this->is_numeric('total_price', $process);
 
         $this->success_message_saee_prc = "مبلغ السعي من سعر العقار: $result ريال سعودي";
@@ -755,11 +760,13 @@ class EditSale extends Component
 
     public function saeePrice()
     {
+        $deserved_amount = (float)$this->is_numeric('deserved_amount', $this->deserved_amount);
+        $deserved_amount_prc = ($deserved_amount * 5) / 100;
         $real_estate_price = $this->offer->realEstate->total_price;
         $saee_price = (float)$this->saee_price;
         $vat = (float)$this->vat;
         $process = ($real_estate_price * $vat) / 100;
-        $total_price = $process + $real_estate_price + $saee_price;
+        $total_price = $process + $real_estate_price + $saee_price + $deserved_amount_prc;
         $this->is_numeric('total_price', $total_price);
         $this->is_numeric('saee_price', $saee_price);
         $this->paidAmount();
