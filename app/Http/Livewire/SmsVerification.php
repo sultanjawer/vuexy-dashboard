@@ -90,33 +90,36 @@ class SmsVerification extends Component
 
         $code = random_int(111111, 999999);
         $user = $userService->store($data, $code);
-        $admins = User::whereIn('user_type', ['superadmin', 'admin'])->get();
-        Notification::send($admins, new NewUser($user));
-        event(new EventsNewUser($user));
 
-        $result = $smsService->send($user);
+        return redirect()->route('login');
 
-        $result = 1;
+        // $admins = User::whereIn('user_type', ['superadmin', 'admin'])->get();
+        // Notification::send($admins, new NewUser($user));
+        // event(new EventsNewUser($user));
 
-        if ($result == '1') {
-            $this->user = $user;
+        // $result = $smsService->send($user);
 
-            $this->alert('warning', '', [
-                'toast' => true,
-                'position' => 'center',
-                'timer' => 9000,
-                'text' => 'يرجى إدخال كود التحقق المكون من 6 ارقام',
-                'timerProgressBar' => true,
-            ]);
-        } else {
-            $this->alert('warning', '', [
-                'toast' => true,
-                'position' => 'center',
-                'timer' => 15000,
-                'text' => 'يوجد خطأ ما يرجى التحقق من بياناتك',
-                'timerProgressBar' => true,
-            ]);
-        }
+        // $result = 1;
+
+        // if ($result == '1') {
+        //     $this->user = $user;
+
+        //     $this->alert('warning', '', [
+        //         'toast' => true,
+        //         'position' => 'center',
+        //         'timer' => 9000,
+        //         'text' => 'يرجى إدخال كود التحقق المكون من 6 ارقام',
+        //         'timerProgressBar' => true,
+        //     ]);
+        // } else {
+        //     $this->alert('warning', '', [
+        //         'toast' => true,
+        //         'position' => 'center',
+        //         'timer' => 15000,
+        //         'text' => 'يوجد خطأ ما يرجى التحقق من بياناتك',
+        //         'timerProgressBar' => true,
+        //     ]);
+        // }
     }
 
     public function sendSms()

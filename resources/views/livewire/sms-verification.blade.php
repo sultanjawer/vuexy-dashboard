@@ -12,63 +12,63 @@
             </div>
         @endif
 
-        @if (!$user && !$done)
-            <form class="auth-register-form mt-2" wire:submit.prevent='submit' wire:ignore.self>
-                @csrf
 
-                <div class="mb-1" wire:ignore.self>
-                    <label class="form-label">الإسم</label>
+        <form class="auth-register-form mt-2" wire:submit.prevent='submit' wire:ignore.self>
+            @csrf
 
-                    <input type="text" wire:model='name' placeholder="علي التاروتي" class="form-control"
-                        aria-describedby="name" autofocus="" tabindex="1" />
-                    @error('name')
-                        <small class="text-danger">{{ $message }}</small>
-                    @enderror
+            <div class="mb-1" wire:ignore.self>
+                <label class="form-label">الإسم</label>
+
+                <input type="text" wire:model='name' placeholder="اسم المستخدم" class="form-control"
+                    aria-describedby="name" autofocus="" tabindex="1" />
+                @error('name')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
+            </div>
+
+            <div class="mb-1">
+                <label class="form-label" for="register-phone">رقم الجوال</label>
+                <input class="form-control" dir="ltr" wire:model='phone' type="text" name="register_phone"
+                    placeholder="0599999999" maxlength="10" aria-describedby="register-phone" tabindex="2" />
+                @error('phone')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
+            </div>
+
+            <div class="mb-1">
+                <label class="form-label" for="register-email">الإيميل</label>
+                <input class="form-control" dir="ltr" wire:model='email' placeholder="example@gmail.com"
+                    aria-describedby="email" tabindex="3" />
+                @error('email')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
+            </div>
+
+            <div class="mb-1">
+                <label class="form-label" for="register-password">كلمة المرور</label>
+
+                <div class="input-group input-group-merge form-password-toggle">
+
+                    <input class="form-control form-control-merge" wire:model='password' type="password" name="password"
+                        placeholder="············" aria-describedby="password" tabindex="4" />
+
+                    <span class="input-group-text cursor-pointer">
+                        <i data-feather="eye"></i>
+                    </span>
+
                 </div>
 
-                <div class="mb-1">
-                    <label class="form-label" for="register-phone">رقم الجوال</label>
-                    <input class="form-control" dir="ltr" wire:model='phone' type="text" name="register_phone"
-                        placeholder="0591234567" maxlength="10" aria-describedby="register-phone" tabindex="2" />
-                    @error('phone')
-                        <small class="text-danger">{{ $message }}</small>
-                    @enderror
-                </div>
+                @error('password')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
+            </div>
 
-                <div class="mb-1">
-                    <label class="form-label" for="register-email">الإيميل</label>
-                    <input class="form-control" dir="ltr" wire:model='email' placeholder="example@gmail.com"
-                        aria-describedby="email" tabindex="3" />
-                    @error('email')
-                        <small class="text-danger">{{ $message }}</small>
-                    @enderror
-                </div>
+            <button class="btn btn-primary w-100" tabindex="5">التسجيل</button>
 
-                <div class="mb-1">
-                    <label class="form-label" for="register-password">كلمة المرور</label>
+        </form>
 
-                    <div class="input-group input-group-merge form-password-toggle">
 
-                        <input class="form-control form-control-merge" wire:model='password' type="password"
-                            name="password" placeholder="············" aria-describedby="password" tabindex="4" />
-
-                        <span class="input-group-text cursor-pointer">
-                            <i data-feather="eye"></i>
-                        </span>
-
-                    </div>
-
-                    @error('password')
-                        <small class="text-danger">{{ $message }}</small>
-                    @enderror
-                </div>
-
-                <button class="btn btn-primary w-100" tabindex="5">التسجيل</button>
-
-            </form>
-        @endif
-
-        @if ($user)
+        {{-- @if ($user)
             @if ($user->verification_code)
                 <div class="auth-register-form mt-2">
                     @csrf
@@ -101,7 +101,7 @@
 
                 </div>
             @endif
-        @endif
+        @endif --}}
 
         <p class="text-center mt-2">
             <span>يوجد لديك حساب بالفعل؟</span>

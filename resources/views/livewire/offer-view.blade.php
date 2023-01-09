@@ -1064,7 +1064,7 @@
                         </div>
 
                         <div class="col-md-6">
-                            <label class="form-label" for="price">السعر</label>
+                            <label class="form-label" for="price">مبلغ الحجز</label>
                             <div class="input-group input-group-merge">
                                 <input type="text" class="form-control" wire:model='price' placeholder="السعر"
                                     @if ($is_booked) disabled @endif>
