@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([
-            UserSeeder::class,
+            // UserSeeder::class,
             PermissionSeeder::class,
             UserSettingsSeeder::class,
             CitySeeder::class,
@@ -44,12 +44,12 @@ class DatabaseSeeder extends Seeder
             LandTypeSeeder::class,
             BranchSeeder::class,
             BankSeeder::class,
-            MediatorSeeder::class,
+            // MediatorSeeder::class,
             DesireToBuySeeder::class,
             PurchaseMethodSeeder::class,
             CustomerSeeder::class,
             OrderStatusSeeder::class,
-            OrderSeeder::class,
+            // OrderSeeder::class,
             OrderNoteSeeder::class,
             OrderNoteStatuseSeeder::class,
             InterfaceLengthSeeder::class,
@@ -58,9 +58,9 @@ class DatabaseSeeder extends Seeder
             BuildingStatusSeeder::class,
             OwnerShipTypeSeeder::class,
             StreetWidthSeeder::class,
-            RealEstateSeeder::class,
-            OfferSeeder::class,
-            ReservationSeeder::class,
+            // RealEstateSeeder::class,
+            // OfferSeeder::class,
+            // ReservationSeeder::class,
         ]);
     }
 }
