@@ -653,6 +653,10 @@ class EditSale extends Component
     {
         $deserved_amount = (float)$this->is_numeric('deserved_amount', $this->deserved_amount);
         $real_estate_price = (float)$this->offer->realEstate->total_price;
+        $saee_prc = $this->is_numeric('saee_prc', $this->saee_prc);
+        $saee_price = $this->is_numeric('saee_price', $this->saee_price);
+        $vat = $this->is_numeric('vat', $this->vat);
+        $total_price = 0;
 
         $this->deserved_amount_mesage = '';
         $this->deserved_amount_success = '';
@@ -662,6 +666,8 @@ class EditSale extends Component
             $process  = number_format((float)(($deserved_amount * 5) / 100), 3);
             $this->is_numeric('deserved_amount', $deserved_amount);
             $this->deserved_amount_mesage = "مقدار المبلغ المستحق $process ريال";
+            $total_price = (float)($real_estate_price + $saee_prc + $process + $vat + $saee_price);
+            $this->is_numeric('total_price', $total_price);
             return true;
         }
 
