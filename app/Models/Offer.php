@@ -13,6 +13,7 @@ class Offer extends Model
     protected $fillable = [
         'offer_code',
         'order_id',
+        'order_code',
         'real_estate_id',
         'offer_type_id',
         'user_id',

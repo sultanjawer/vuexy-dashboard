@@ -3,6 +3,8 @@
 namespace App\Http\Livewire;
 
 use App\Events\SuspendedOrder as EventsSuspendedOrder;
+use App\Models\Offer;
+use App\Models\OfferEditors;
 use App\Models\Order;
 use App\Models\OrderEditor;
 use App\Models\OrderNote;
@@ -23,8 +25,9 @@ class OrderView extends Component
     public $text = '';
     public $status_note = 1;
     public $order_id;
-
+    public $offers = [];
     public $order_note_statuses;
+    public $offer_id;
 
     public function updateOrderNotesStatuses()
     {
@@ -36,7 +39,75 @@ class OrderView extends Component
         $this->order_id = $order_id;
         $this->order = Order::find($this->order_id);
         $this->order_note_statuses = getOrderNoteStatuse();
+        $this->offers = Offer::get(['id', 'offer_code']);
         $this->getLastUpateTime();
+    }
+
+    public function offerConnect()
+    {
+        $user = auth()->user();
+
+        $order = Order::find($this->order_id);
+        $offer = Offer::find($this->offer_id);
+
+        $offer->update([
+            'order_id' => $order->id,
+            'order_code' => $order->order_code
+        ]);
+
+        $order->update([
+            'offer_id' => $offer->id,
+            'offer_code' => $offer->offer_code
+        ]);
+
+
+        if ($user->user_type == 'marketer') {
+            $link_ma =  route('panel.user', $user->id);
+            $marketer = "<a href='$link_ma'>$user->name</a>";
+            $note = "قام المسوق $marketer بربط العرض";
+        }
+
+        if ($user->user_type == 'admin' || $user->user_type == 'superadmin') {
+            $link_admin =  route('panel.user', $user->id);
+            $admin = "<a href='$link_admin'>$user->name</a>";
+            $note = "قام المدير $admin بربط العرض";
+        }
+
+        if ($user->user_type == 'office') {
+            $link_office =  route('panel.user', $user->id);
+            $office = "<a href='$link_office'>$user->name</a>";
+            $note = "قام المكتب $office بربط العرض";
+        }
+
+        OrderEditor::create([
+            'order_id' => $this->order->id,
+            'user_id' => auth()->id(),
+            'note' => $note,
+            'action' => 'edit',
+        ]);
+
+        OfferEditors::create([
+            'offer_id' => $offer->id,
+            'user_id' => $user->id,
+            'note' => $note,
+            'action' => 'edit',
+        ]);
+
+        $order->update([
+            'who_edit' => auth()->id(),
+            'order_status_id' => 2
+        ]);
+
+        $this->alert('success', '', [
+            'toast' => true,
+            'position' => 'center',
+            'timer' => 3000,
+            'text' => '👍 تم ربط العرض بنجاح',
+            'timerProgressBar' => true,
+        ]);
+
+        $this->emit('submitOfferCode');
+        $this->emit('refreshComponent');
     }
 
     public function render()

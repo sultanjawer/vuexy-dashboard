@@ -58,7 +58,7 @@
                                             <div class="mb-2">
                                                 <a class="btn bg-light-success waves-effect waves-float waves-light">
                                                     <span>
-                                                        تم ربط الطلب بالعرض
+                                                        تم ربط الطلب بالعرض: {{$order->offer_code}}
                                                     </span>
                                                 </a>
                                             </div>
@@ -106,15 +106,19 @@
                                         @endif
 
 
-                                        @if (!($order->order_status_id == 3) && !($order->order_status_id == 6))
-                                            <a class="btn bg-light-success waves-effect waves-float waves-light"
-                                                data-bs-target="#connectToOffer" data-bs-toggle="modal">
-                                                <span>
-                                                    <i data-feather='plus-square'></i>
-                                                    ربط بالعرض
-                                                </span>
-                                            </a>
+                                        @if (!$order->offer_code)
+                                            @if (!($order->order_status_id == 3) && !($order->order_status_id == 6))
+                                                <a class="btn bg-light-success waves-effect waves-float waves-light"
+                                                    data-bs-target="#connectToOffer" data-bs-toggle="modal">
+                                                    <span>
+                                                        <i data-feather='plus-square'></i>
+                                                        ربط بالعرض
+                                                    </span>
+                                                </a>
+                                            @endif
                                         @endif
+
+
                                         <img src="{{ asset('app-assets/images/illustration/badge.svg') }}"
                                             class="congratulation-medal" alt="Medal Pic">
                                     </div>
@@ -497,8 +501,35 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body pb-5 px-sm-5 pt-50" wire:ignore.self>
-                    <div class="text-center mb-2" wire:ignore.self>
-                        <h1 class="mb-1 ">قريبا...</h1>
+                    <div class="mb-2" wire:ignore.self>
+                        <h1 class="text-center mb-1 ">ربط العرض</h1>
+
+
+                        <div class="row" wire:ignore.self>
+                            <div class="col-md-6 mb-1" wire:ignore>
+                                <label class="form-label"> كود العرض :</label>
+                                <select class="offer-code-selection form-select select2" wire:model='offer_id'>
+
+                                    @if (!$offers->count())
+                                        <option value="">لا يوجد عروض متوفرة</option>
+                                    @endif
+
+                                    @foreach ($offers as $offer)
+                                        <option value="{{ $offer->id }}">{{ $offer->offer_code }}</option>
+                                    @endforeach
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 text-center mt-2 pt-50" wire:ignore.self>
+                                <button class="btn btn-success btn-submit me-1" wire:click='offerConnect'>ربط
+                                    العرض</button>
+                                <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal"
+                                    aria-label="Close">الغاء</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -507,10 +538,32 @@
 
     @push('order-create')
         <script>
-            window.livewire.on('submitNote', () => {
-                $('#addNote').modal('hide');
-                console.log('Ok');
-            })
+            $(document).ready(function() {
+
+                window.initSelectCompanyDrop = () => {
+                    $('.offer-code-selection').select2({
+                        placeholder: 'اختار كود العرض',
+                        closeOnSelect: false,
+                    });
+                };
+
+                $(".offer-code-selection").on('change', function() {
+                    console.log($(".offer-code-selection").val());
+                    var offer_id = $('.offer-code-selection').val();
+                    @this.set('offer_id', offer_id);
+                });
+
+                window.livewire.on('submitNote', () => {
+                    $('#addNote').modal('hide');
+                    console.log('Ok');
+                });
+
+                window.livewire.on('submitOfferCode', () => {
+                    $('#connectToOffer').modal('hide');
+                    console.log('Ok');
+                });
+
+            });
         </script>
     @endpush
 

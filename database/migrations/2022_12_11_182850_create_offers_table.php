@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('offers', function (Blueprint $table) {
             $table->id();
             $table->string('offer_code')->unique()->nullable(); #
+            $table->string('order_code')->unique()->nullable(); #
 
             $table->foreignId('order_id')->nullable()->unique()->constrained('orders')->cascadeOnDelete(); #
             $table->foreignId('real_estate_id')->constrained('real_estates')->cascadeOnDelete(); #
