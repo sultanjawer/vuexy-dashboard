@@ -17,7 +17,7 @@ class SaleView extends Component
     public $last_update_time;
     public $paid_amount = 0;
     public $space = 0;
-    public $tatal_price = 0;
+    public $total_price = 0;
     public $amount_due = 0;
     public $remain_price = 0;
 
@@ -42,7 +42,7 @@ class SaleView extends Component
         $this->is_numeric('paid_amount', $sale->paid_amount);
         $this->is_numeric('space', $realEstate->space);
         $this->is_numeric('amount_due', (float)($sale->tatal_req_amount - $sale->paid_amount));
-        $tatal_price = $this->is_numeric('tatal_price', $realEstate->tatal_price);
+        $total_price = $this->is_numeric('total_price', $realEstate->total_price);
 
         $real_data = $realEstate->city->name . ' بلك' . $realEstate->block_number . ' رقم الأرض' . $realEstate->land_number;
 
@@ -84,8 +84,8 @@ class SaleView extends Component
             'real_estate_statement' => $realEstate->real_estate_statement,
             'real_estate_space' => $this->space,
             'real_estate_location' => $real_data,
-            'total_price' =>  $this->tatal_price,
-            'total_price_text' => $obj->int2str($tatal_price) . "  ريال فقط لا غير",
+            'total_price' =>  $this->total_price,
+            'total_price_text' => $obj->int2str($total_price) . "  ريال فقط لا غير",
             'paid_amount' => $this->paid_amount,
             'date_expire' => "01-02-2022",
             'amount_due' => $this->amount_due,
