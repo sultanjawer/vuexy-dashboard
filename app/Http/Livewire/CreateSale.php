@@ -509,9 +509,7 @@ class CreateSale extends Component
         $saee_price = $this->is_numeric('saee_price', $this->saee_price);
         $vat = $this->is_numeric('vat', $this->vat);
         $total_price = 0;
-        $process  = (float)(($deserved_amount * 5) / 100);
 
-        dd($process, $deserved_amount);
         $this->deserved_amount_mesage = '';
         $this->deserved_amount_success = '';
 
