@@ -16,9 +16,9 @@ class NationalitySeeder extends Seeder
     public function run()
     {
         $licenseds = [
+            'السعودية',
             'الإماراتية',
             'القطرية',
-            'السعودية',
             'العمانية',
             'الكويتية',
             'جنسية البحرين'

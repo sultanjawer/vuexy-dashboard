@@ -17,6 +17,9 @@ class SaleView extends Component
     public $last_update_time;
     public $paid_amount = 0;
     public $space = 0;
+    public $tatal_price = 0;
+    public $amount_due = 0;
+    public $remain_price = 0;
 
     public function mount($sale_id)
     {
@@ -34,6 +37,14 @@ class SaleView extends Component
         $realEstate = $sale->realEstate;
 
         $obj = new Arabic('Numbers');
+
+
+        $this->is_numeric('paid_amount', $sale->paid_amount);
+        $this->is_numeric('space', $realEstate->space);
+        $this->is_numeric('amount_due', (float)($sale->tatal_req_amount - $sale->paid_amount));
+        $tatal_price = $this->is_numeric('tatal_price', $realEstate->tatal_price);
+
+        $real_data = $realEstate->city->name . ' بلك' . $realEstate->block_number . ' رقم الأرض' . $realEstate->land_number;
 
         $data_sale = [
             'sale_created_at' => (string)$this->sale->created_at->format('Y-m-d'),
@@ -71,13 +82,13 @@ class SaleView extends Component
 
             #Real Estate Information
             'real_estate_statement' => $realEstate->real_estate_statement,
-            'real_estate_space' => number_format($realEstate->space, 3),
-            'real_estate_location' => $realEstate->city->name . ' ' . $realEstate->land_number . ' ' . $realEstate->block_number,
-            'total_price' => number_format((float)$sale->tatal_req_amount, 3),
-            'total_price_text' => $obj->int2str((float)$sale->tatal_req_amount) . "  ريال فقط لا غير",
-            'paid_amount' => number_format((float)$sale->paid_amount, 3),
+            'real_estate_space' => $this->space,
+            'real_estate_location' => $real_data,
+            'total_price' =>  $this->tatal_price,
+            'total_price_text' => $obj->int2str($tatal_price) . "  ريال فقط لا غير",
+            'paid_amount' => $this->paid_amount,
             'date_expire' => "01-02-2022",
-            'amount_due' => number_format((float)($sale->tatal_req_amount - $sale->paid_amount), 3),
+            'amount_due' => $this->amount_due,
             'days' => "360",
             'customer_buyer_name' => $customer_buyer->name,
             'customer_seller_name' => $customer_seller->name,
@@ -97,6 +108,8 @@ class SaleView extends Component
         $realEstate = $sale->realEstate;
         $this->is_numeric('paid_amount', $sale->paid_amount);
         $this->is_numeric('space', $realEstate->space);
+        $this->is_numeric('space', $realEstate->space);
+        $this->is_numeric('remain_price',  (float)($sale->tatal_req_amount - $sale->paid_amount));
 
 
         if ($realEstate->property_type_id == 1) {
@@ -119,11 +132,11 @@ class SaleView extends Component
             $add = "شاليه " . $this->space . "م " .  "ب" . $realEstate->city->name;
         }
 
-        $real_estate_data = "دفعة اتفاقية تخص  " . $add . " والمتبقي " . $this->paid_amount . " ريال";
+        $real_estate_data = "دفعة اتفاقية تخص  " . $add . " والمتبقي " . $this->remain_price . " ريال";
         $real_estate_data_1 = "دفعة اتفاقية حجز رقم ";
         $real_estate_data_2 = " " . $sale->sale_code;
-        $real_estate_data_3 =  "   تخص   " . $add . " والمتبقي " . $this->paid_amount . " ريال";
-        $real_estate_data_t = "دفعة رقم (1): " . "مجموع ماتم دفعه حتى تاريخه " . $this->paid_amount . " ريال";
+        $real_estate_data_3 =  "   تخص   " . $add . " والمتبقي " . $this->remain_price . " ريال";
+        $real_estate_data_t = "دفعة رقم (1): " . "مجموع ماتم دفعه حتى تاريخه " . $this->remain_price . " ريال";
 
         $data_deposit = [
             'sale_date' => $sale->created_at->format('Y-m-d'),
