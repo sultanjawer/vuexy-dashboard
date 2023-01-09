@@ -515,9 +515,10 @@ class CreateSale extends Component
 
         if ($real_estate_price > 1000000) {
             $deserved_amount = $real_estate_price - 1000000;
-            $process  = number_format((float)(($deserved_amount * 5) / 100), 3);
+            $result  = number_format((float)(($deserved_amount * 5) / 100), 3);
+            $process  = (float)(($deserved_amount * 5) / 100);
             $this->is_numeric('deserved_amount', $deserved_amount);
-            $this->deserved_amount_mesage = "مقدار المبلغ المستحق $process ريال";
+            $this->deserved_amount_mesage = "مقدار المبلغ المستحق $result ريال";
 
             $total_price = (float)($real_estate_price + $saee_prc + $process + $vat + $saee_price);
             $this->is_numeric('total_price', $total_price);
