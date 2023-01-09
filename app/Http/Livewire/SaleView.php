@@ -109,8 +109,7 @@ class SaleView extends Component
         $this->is_numeric('paid_amount', $sale->paid_amount);
         $this->is_numeric('space', $realEstate->space);
         $this->is_numeric('space', $realEstate->space);
-        $this->is_numeric('remain_price',  (float)($sale->tatal_req_amount - $sale->paid_amount));
-
+        $this->is_numeric('remain_price',  (float)($sale->realEstate->total_price - $sale->paid_amount));
 
         if ($realEstate->property_type_id == 1) {
             $add = "أرض " . $this->space . "م " .  "ب" . $realEstate->city->name . ' ' . $realEstate->character;
