@@ -326,7 +326,7 @@ class EditSale extends Component
         $saee_prc = $this->is_numeric('saee_prc', $this->rateCalculation($realEstate->total_price, $this->saee_prc));
         $this->success_message_saee_prc = "مبلغ السعي من سعر العقار: $saee_prc ريال سعودي";
 
-        $total_price = (float)$realEstate->total_price + $vat_prce + $saee_prc + (float)$this->sale->saee_price;
+        $total_price = (float)$realEstate->total_price + $vat_prce + $saee_prc + (float)$this->sale->saee_price + (float)$this->sale->deserved_amount;
         $this->is_numeric('total_price', $total_price);
         $still_amount = (float)$total_price - (float)$this->sale->paid_amount;
         $this->is_numeric('still_amount', $still_amount);
