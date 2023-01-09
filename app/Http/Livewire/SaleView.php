@@ -136,7 +136,7 @@ class SaleView extends Component
         $real_estate_data_1 = "دفعة اتفاقية حجز رقم ";
         $real_estate_data_2 = " " . $sale->sale_code;
         $real_estate_data_3 =  "   تخص   " . $add . " والمتبقي " . $this->remain_price . " ريال";
-        $real_estate_data_t = "دفعة رقم (1): " . "مجموع ماتم دفعه حتى تاريخه " . $this->remain_price . " ريال";
+        $real_estate_data_t = "دفعة رقم (1): " . "مجموع ماتم دفعه حتى تاريخه " . $this->paid_amount . " ريال";
 
         $data_deposit = [
             'sale_date' => $sale->created_at->format('Y-m-d'),
