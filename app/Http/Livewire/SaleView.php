@@ -41,7 +41,7 @@ class SaleView extends Component
 
         $this->is_numeric('paid_amount', $sale->paid_amount);
         $this->is_numeric('space', $realEstate->space);
-        $this->is_numeric('amount_due', (float)($sale->tatal_req_amount - $sale->paid_amount));
+        $this->is_numeric('amount_due', (float)($sale->realEstate->total_price - $sale->paid_amount));
         $total_price = $this->is_numeric('total_price', $realEstate->total_price);
 
         $real_data = $realEstate->city->name . '   بلك  ' . $realEstate->block_number . '    رقم أرض   ' . $realEstate->land_number;
