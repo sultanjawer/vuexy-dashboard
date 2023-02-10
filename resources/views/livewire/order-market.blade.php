@@ -233,16 +233,16 @@
 
                                                     @if (in_array(auth()->user()->user_type, ['superadmin', 'admin', 'marketer']))
                                                         <td>
-                                                            @if (getUser($order->user_id)->user_type == 'marketer')
-                                                                {{ 'المسوق ' . $order->user->name }}
+                                                            @if (getUser($main_order->user_id)->user_type == 'marketer')
+                                                                {{ 'المسوق ' . $main_order->user->name }}
                                                             @endif
 
-                                                            @if (getUser($order->user_id)->user_type == 'office')
-                                                                {{ 'المكتب ' . $order->user->name }}
+                                                            @if (getUser($main_order->user_id)->user_type == 'office')
+                                                                {{ 'المكتب ' . $main_order->user->name }}
                                                             @endif
 
-                                                            @if (in_array(getUser($order->user_id)->user_type, ['admin', 'superadmin']))
-                                                                {{ 'المدير ' . $order->user->name }}
+                                                            @if (in_array(getUser($main_order->user_id)->user_type, ['admin', 'superadmin']))
+                                                                {{ 'المدير ' . $main_order->user->name }}
                                                             @endif
                                                         </td>
                                                     @endif
@@ -591,16 +591,16 @@
 
                                                     @if (in_array(auth()->user()->user_type, ['superadmin', 'admin', 'marketer']))
                                                         <td>
-                                                            @if (getUser($order->user_id)->user_type == 'marketer')
-                                                                {{ 'المسوق ' . $order->user->name }}
+                                                            @if (getUser($market_order->user_id)->user_type == 'marketer')
+                                                                {{ 'المسوق ' . $market_order->user->name }}
                                                             @endif
 
-                                                            @if (getUser($order->user_id)->user_type == 'office')
-                                                                {{ 'المكتب ' . $order->user->name }}
+                                                            @if (getUser($market_order->user_id)->user_type == 'office')
+                                                                {{ 'المكتب ' . $market_order->user->name }}
                                                             @endif
 
-                                                            @if (in_array(getUser($order->user_id)->user_type, ['admin', 'superadmin']))
-                                                                {{ 'المدير ' . $order->user->name }}
+                                                            @if (in_array(getUser($market_order->user_id)->user_type, ['admin', 'superadmin']))
+                                                                {{ 'المدير ' . $market_order->user->name }}
                                                             @endif
                                                         </td>
                                                     @endif

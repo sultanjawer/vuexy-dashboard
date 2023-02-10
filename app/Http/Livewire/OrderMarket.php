@@ -48,7 +48,6 @@ class OrderMarket extends Component
     public $oo_filters = [];
     public $oo_paginate_ids = [];
 
-
     public function updateOrderMarketer()
     {
         $this->emit('refreshComponent');

@@ -424,7 +424,7 @@ class EditSale extends Component
             $this->customer_buyer_phone = $this->customer_buyer->phone;
             $this->customer_buyer_email = $this->customer_buyer->email;
             $this->customer_buyer_id_number = $this->customer_buyer->nationality_id;
-            $this->customer_buyer_nationality = $this->customer_buyer->nationality ? $this->customer_buyer->nationality->id : null;
+            $this->customer_buyer_nationality = $this->customer_buyer->nationality ? $this->customer_buyer->nationality->id : 1;
             $this->customer_buyer_city_name = $this->customer_buyer->city_id;
             $this->customer_buyer_building_number = $this->customer_buyer->building_number;
             $this->customer_buyer_street_name = $this->customer_buyer->street_name;
@@ -472,7 +472,7 @@ class EditSale extends Component
             $this->customer_seller_phone = $this->customer_seller->phone;
             $this->customer_seller_email = $this->customer_seller->email;
             $this->customer_seller_id_number = $this->customer_seller->nationality_id;
-            $this->customer_seller_nationality = $this->customer_seller->nationality ? $this->customer_seller->nationality->id : null;
+            $this->customer_seller_nationality = $this->customer_seller->nationality ? $this->customer_seller->nationality->id : 1;
             $this->customer_seller_city_name = $this->customer_seller->city_id;
             $this->customer_seller_building_number = $this->customer_seller->building_number;
             $this->customer_seller_street_name = $this->customer_seller->street_name;

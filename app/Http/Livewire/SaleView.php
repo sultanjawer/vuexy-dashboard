@@ -96,7 +96,7 @@ class SaleView extends Component
 
         $pDFService = new PDFService();
         $pDFService->writePdf($data_sale, $sale->sale_code);
-        $this->pdf_path = asset('assets/pdfjs/web/viewer.html?file=madar_platform.pdf');
+        $this->pdf_path = asset('assets/pdfjs/web/viewer.html?file=madar.pdf');
     }
 
     public function setPaidAmountData($sale_id)
@@ -201,7 +201,7 @@ class SaleView extends Component
 
     public function download(PDFService $pDFService)
     {
-        $path = public_path('assets/pdfjs/web/madar_platform.pdf');
+        $path = public_path('assets/pdfjs/web/madar.pdf');
         return $pDFService->exportPdf($path, $this->sale->sale_code);
     }
 

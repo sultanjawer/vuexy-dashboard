@@ -131,6 +131,12 @@ if (!function_exists('getUsersCount')) {
     }
 }
 
+if (!function_exists('getUsers')) {
+    function getUsers()
+    {
+        return User::all();
+    }
+}
 
 if (!function_exists('getUsersOfficersCount')) {
     function getUsersOfficersCount()
@@ -600,7 +606,7 @@ if (!function_exists('getOffersUserCount')) {
     function getOffersUserCount()
     {
         $user = auth()->user();
-        return $user->branches->count();
+        return $user->offers->count();
     }
 }
 

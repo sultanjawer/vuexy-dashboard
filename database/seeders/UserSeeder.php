@@ -95,33 +95,32 @@ class UserSeeder extends Seeder
             'created_at' => now(),
         ]);
 
+        $users_types = [
+            1 => 'admin',
+            2 => 'marketer',
+            3 => 'office'
+        ];
 
-        // $users_types = [
-        //     1 => 'admin',
-        //     2 => 'marketer',
-        //     3 => 'office'
-        // ];
+        $count = 0;
 
-        // $count = 0;
+        while ($count < 100) {
+            $user_type = $users_types[random_int(1, 3)];
 
-        // while ($count < 10) {
-        //     $user_type = $users_types[random_int(1, 3)];
+            $count = $count + 1;
 
-        //     $count = $count + 1;
-
-        //     DB::table('users')->insert([
-        //         'name' => Str::random(7),
-        //         'phone' =>  '059' . random_int(1111111, 9999999),
-        //         'email' => $user_type . $count . '@gmail.com',
-        //         'password' => Hash::make('123456789'),
-        //         'user_status' => 'active',
-        //         // 'branches_ids' => json_encode([1, 2, 3]),
-        //         'email_verified_at' => now(),
-        //         'remember_token' => Str::random(10),
-        //         'user_type' => $user_type,
-        //         'verification_code' => null,
-        //         'created_at' => now(),
-        //     ]);
-        // }
+            DB::table('users')->insert([
+                'name' => Str::random(7),
+                'phone' =>  '059' . random_int(1111111, 9999999),
+                'email' => $user_type . $count . '@gmail.com',
+                'password' => Hash::make('123456789'),
+                'user_status' => 'active',
+                // 'branches_ids' => json_encode([1, 2, 3]),
+                'email_verified_at' => now(),
+                'remember_token' => Str::random(10),
+                'user_type' => $user_type,
+                'verification_code' => null,
+                'created_at' => now(),
+            ]);
+        }
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminPanel\UserController;
+use App\Http\Controllers\Api\ApiService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +29,7 @@ Route::as('admin.')->prefix('admin')->group(function () {
 });
 
 
+Route::get('/get-data/users-types-count', [ApiService::class, 'usersTypesCount']);
 
-
+Route::get('/get-data/{models}/{limit?}/{search?}', [ApiService::class, 'index']);
 

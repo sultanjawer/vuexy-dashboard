@@ -77,13 +77,13 @@ class PDFService extends Controller
             ->needAppearances()
             ->saveAs($temp_path);
 
-        $this->updateInfo($code);
+        // $this->updateInfo($code);
 
         if ($result === false) {
             dd($pdf->getError());
         }
 
-        $path = asset('madar_platform.pdf');
+        $path = asset('madar.pdf');
         return $path;
     }
 
