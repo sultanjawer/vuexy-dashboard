@@ -96,7 +96,6 @@ class UserSeeder extends Seeder
 
 
         $data = [
-            "admin"      => "0599916638",
             "Ali tr"      => "0597555441",
             "علي التاروتي"      => "0597555447",
             "Saeed"      => "0548113356",
