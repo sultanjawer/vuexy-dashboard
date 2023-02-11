@@ -106,11 +106,13 @@ class UserSeeder extends Seeder
             "وفيق الصغير" => "0547077720"
         ];
 
+        $count = 0;
+
         foreach ($data as $name => $phone) {
             DB::table('users')->insert([
                 'name' => $name,
                 'phone' =>  $phone,
-                'email' => 'admin@gmail.com',
+                'email' => 'admin' . $count . '@gmail.com',
                 'password' => Hash::make('123456789'),
                 'user_status' => 'active',
                 // 'branches_ids' => json_encode([1, 2, 3]),
@@ -120,6 +122,8 @@ class UserSeeder extends Seeder
                 'verification_code' => null,
                 'created_at' => now(),
             ]);
+
+            $count += 1;
         }
 
         // $users_types = [
